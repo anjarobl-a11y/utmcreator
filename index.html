@@ -1,0 +1,35 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>UTM Generator</title>
+  style.css
+</head>
+<body>
+
+  <div class="container">
+    <h1>UTM Generator</h1>
+
+    <label for="base">Ziel-URL</label>
+    <input id="base" type="text" placeholder="https://www.shop.de/produkt">
+
+    <label for="source">Source</label>
+    <select id="source"></select>
+
+    <label for="medium">Medium</label>
+    <select id="medium"></select>
+
+    <label for="campaign">Campaign</label>
+    <input id="campaign" type="text" placeholder="spring_sale_2026">
+
+    <button onclick="generateUTM()">UTM generieren</button>
+
+    <textarea id="result" readonly placeholder="Hier erscheint deine UTM-URL"></textarea>
+
+    <button onclick="copyUTM()">URL kopieren</button>
+  </div>
+
+  script.js
+</body>
+</html>
