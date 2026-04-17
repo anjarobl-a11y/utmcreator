@@ -8,9 +8,10 @@
 
   <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+
   <div class="container">
+
     <h1>UTM‑Historie</h1>
 
     <div id="history"></div>
@@ -20,30 +21,32 @@
     <p class="history-link">
       <a href="index.html">← zurück zum Generator</a>
     </p>
+
   </div>
 
   <script>
-    const historyContainer = document.getElementById("history");
+    const container = document.getElementById("history");
     const history = JSON.parse(localStorage.getItem("utmHistory")) || [];
 
     if (history.length === 0) {
-      historyContainer.innerHTML = "<p>Noch keine UTMs generiert.</p>";
+      container.innerHTML = "<p>Noch keine UTMs generiert.</p>";
     } else {
-      history.forEach(item => {
+      history.forEach(url => {
         const input = document.createElement("input");
-        input.value = item;
+        input.value = url;
         input.readOnly = true;
-        historyContainer.appendChild(input);
+        container.appendChild(input);
       });
     }
 
     function clearHistory() {
-      if (confirm("UTM-Historie wirklich löschen?")) {
+      if (confirm("UTM‑Historie wirklich löschen?")) {
         localStorage.removeItem("utmHistory");
         location.reload();
       }
     }
   </script>
+
 </body>
 </html>
 
