@@ -1,6 +1,7 @@
 
 /* =========================
-========================= */   Global
+   Global
+========================= */
 
 * {
   box-sizing: border-box;
@@ -56,7 +57,7 @@ h1 {
 }
 
 .hero {
-  height: 60px;
+  height: 56px;
 }
 
 /* =========================
@@ -74,9 +75,12 @@ input,
 select,
 textarea {
   width: 100%;
+  height: 44px;                 /* ✅ feste Control-Höhe */
   margin-top: 8px;
-  padding: 12px 14px;
+  padding: 0 14px;
   font-size: 14px;
+  line-height: 1.2;
+
   border: 1px solid #ccc;
   border-radius: 6px;
   font-family: "Poppins", sans-serif;
@@ -84,11 +88,12 @@ textarea {
 
 textarea {
   height: 100px;
+  padding: 10px 14px;
   resize: none;
 }
 
 /* =========================
-   Buttons (EIN DESIGN!)
+   Buttons (GLEICHE HÖHE WIE INPUTS)
 ========================= */
 
 button {
@@ -98,12 +103,14 @@ button {
   gap: 8px;
 
   width: 100%;
+  height: 44px;                 /* ✅ exakt wie Input */
   margin-top: 22px;
-  padding: 14px;
+  padding: 0 14px;
 
   font-size: 14px;
   font-weight: 600;
   font-family: "Poppins", sans-serif;
+  line-height: 1;
 
   background: #e4002b;
   color: white;
@@ -123,7 +130,7 @@ button:hover {
 }
 
 /* =========================
-   Mobile Responsive (FINAL)
+   Mobile Responsive
 ========================= */
 
 @media (max-width: 480px) {
@@ -136,7 +143,7 @@ button:hover {
   }
 
   .logo {
-    height: 36px;
+    height: 34px;
   }
 
   h1 {
@@ -144,7 +151,7 @@ button:hover {
   }
 
   .hero {
-    height: 52px;
+    height: 48px;
   }
 
   label {
@@ -152,15 +159,19 @@ button:hover {
   }
 
   input,
-  select,
-  textarea {
+  select {
+    height: 48px;
     font-size: 16px;
-    padding: 14px;
+  }
+
+  textarea {
+    height: 120px;
+    font-size: 16px;
   }
 
   button {
-    font-size: 16px;
-    padding: 16px;
+    height: 48px;               /* ✅ nur leicht größer auf Mobile */
+    font-size: 15px;
   }
 }
 
