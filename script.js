@@ -2,9 +2,15 @@
 // ✏️ HIER DEFINIERST DU ERLAUBTE UTM-KOMBINATIONEN
 const utmConfig = {
   google: ["cpc", "organic"],
-  meta: ["paid_social"],
+  bing: ["organic"],
+  instagram: ["cpc","organic"],
+  facebook: ["cpc,"organic"],
+  cb: ["partnerprogramme"],
+  sovendus: ["partnerprogramme"],
   newsletter: ["email"],
-  affiliate: ["affiliate"]
+  affiliate: ["awin"],
+  qr: ["qr"],
+  cooperation: ["cooperation"]
 };
 
 const sourceSelect = document.getElementById("source");
