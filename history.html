@@ -1,0 +1,50 @@
+
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UTM Historie</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="container">
+    <h1>UTM‑Historie</h1>
+
+    <div id="history"></div>
+
+    <button onclick="clearHistory()">Historie löschen</button>
+  </div>
+
+  <script>
+    const historyContainer = document.getElementById("history");
+    const history = JSON.parse(localStorage.getItem("utmHistory")) || [];
+
+    if (history.length === 0) {
+      historyContainer.innerHTML = "<p>Noch keine UTMs generiert.</p>";
+    } else {
+      history.forEach(entry => {
+        const div = document.createElement("div");
+        div.style.marginBottom = "12px";
+
+        div.innerHTML = `
+          <input type="text" value="${entry.url}" readonly>
+        `;
+
+        historyContainer.appendChild(div);
+      });
+    }
+
+    function clearHistory() {
+      if (confirm("UTM‑Historie wirklich löschen?")) {
+        localStorage.removeItem("utmHistory");
+        location.reload();
+      }
+    }
+  </script>
+
+</body>
+</html>
