@@ -1,6 +1,6 @@
 
 /* =========================
-   Global
+   Global Reset
 ========================= */
 
 *,
@@ -26,13 +26,12 @@ body {
 
 .container {
   max-width: 520px;
+  width: 100%;
   margin: 40px auto;
   padding: 24px;
   background: #ffffff;
   border-radius: 12px;
-
-  /* ✅ verhindert minimales Überlaufen auf Mobile */
-  overflow-x: hidden;
+  overflow-x: hidden; /* ✅ Sicherheitsnetz */
 }
 
 /* =========================
@@ -63,7 +62,6 @@ h1 {
   font-size: 28px;
   font-weight: 700;
   text-align: center;
-  line-height: 1.2;
 }
 
 .hero {
@@ -72,7 +70,7 @@ h1 {
 }
 
 /* =========================
-   Formular
+   Formular – FINAL ROBUST
 ========================= */
 
 label {
@@ -82,29 +80,37 @@ label {
   font-size: 14px;
 }
 
-/* ✅ Explizit begrenzte Form‑Controls */
+/* 🔑 ENTSCHEIDENDER FIX */
 input,
 select,
 textarea {
   box-sizing: border-box;
   width: 100%;
   max-width: 100%;
-
+  min-width: 0;                 /* ✅ verhindert Overflow */
+  
   height: 44px;
   margin-top: 8px;
   padding: 0 14px;
 
   font-size: 14px;
-  line-height: 1.2;
   font-family: "Poppins", sans-serif;
 
   border: 1px solid #ccc;
   border-radius: 6px;
   background-color: #ffffff;
 
-  /* ✅ Mobile Browser Reset */
+  /* ✅ Mobile Browser UI entfernen */
   -webkit-appearance: none;
   appearance: none;
+}
+
+/* iOS URL / Search UI endgültig killen */
+input[type="url"]::-webkit-search-decoration,
+input[type="url"]::-webkit-search-cancel-button,
+input[type="url"]::-webkit-search-results-button,
+input[type="url"]::-webkit-search-results-decoration {
+  display: none;
 }
 
 textarea {
@@ -114,13 +120,14 @@ textarea {
 }
 
 /* =========================
-   Buttons (IDENTISCHE GRÖSSE WIE INPUTS)
+   Buttons
 ========================= */
 
 button {
   box-sizing: border-box;
   width: 100%;
   max-width: 100%;
+  min-width: 0;
 
   height: 44px;
   margin-top: 22px;
@@ -134,7 +141,6 @@ button {
   font-size: 14px;
   font-weight: 600;
   font-family: "Poppins", sans-serif;
-  line-height: 1;
 
   background: #e4002b;
   color: #ffffff;
@@ -144,18 +150,13 @@ button {
   cursor: pointer;
 }
 
-button:hover {
-  opacity: 0.9;
-}
-
 .copy-icon {
   width: 16px;
   height: 16px;
-  max-width: 100%;
 }
 
 /* =========================
-   Mobile Responsive (FINAL & FEHLERFREI)
+   Mobile – FULL & STABIL
 ========================= */
 
 @media (max-width: 480px) {
@@ -167,23 +168,10 @@ button:hover {
     border-radius: 0;
   }
 
-  .logo {
-    height: 34px;
-  }
-
   h1 {
     font-size: 26px;
   }
 
-  .hero {
-    height: 48px;
-  }
-
-  label {
-    font-size: 15px;
-  }
-
-  /* Inputs größer – bleiben aber sicher im Container */
   input,
   select {
     height: 48px;
@@ -195,9 +183,10 @@ button:hover {
     font-size: 16px;
   }
 
-  /* Buttons bewusst NICHT vergrößert */
+  /* Buttons NICHT vergrößern */
   button {
     height: 44px;
     font-size: 14px;
   }
 }
+
