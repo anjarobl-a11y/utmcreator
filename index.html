@@ -1,15 +1,16 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>UTM Generator</title>
 
+  <!-- Styles -->
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+
   <div class="container">
 
     <!-- ✅ STABILO Logo -->
@@ -21,36 +22,4 @@
 
     <!-- ✅ Headline + kleines Icon -->
     <div class="headline-wrapper">
-      <h1>UTM Generator</h1>
-      <img src="image.png" alt="" class="hero">
-    </div>
-
-    <!-- Formular -->
-    <label for="base">Ziel‑URL</label>
-    <input id="base" type="url" placeholder="https://www.shop.de/produkt">
-
-    <label for="source">Source</label>
-    <select id="source"></select>
-
-    <label for="medium">Medium</label>
-    <select id="medium"></select>
-
-    <label for="campaign">Campaign</label>
-    <input id="campaign" type="text" placeholder="spring_sale_2026">
-
-    <button onclick="generateUTM()">UTM generieren</button>
-
-    <textarea id="result" readonly placeholder="Hier erscheint deine UTM‑URL"></textarea>
-
-    <button onclick="copyUTM()">URL kopieren</button>
-
-    <p class="history-link">
-      <a href="history.html">UTM‑Historie ansehen</a>
-    </p>
-
-  </div>
-
-  <script src="script.js"></script>
-</body>
-</html>
 
