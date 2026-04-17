@@ -55,12 +55,12 @@ h1 {
 
 /* Hero Illustration */
 .hero {
-height: 40px;
+height: 60px;
   width: auto;
   position: absolute;
   right: -56px;   /* Abstand rechts der Headline */
   top: 50%;
-  transform: translateY(-60%);
+  transform: translateY(-50%);
 }
 
 /* =========================
