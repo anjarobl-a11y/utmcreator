@@ -37,15 +37,14 @@ body {
 ========================= */
 
 .headline-wrapper {
-  position: relative;
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   margin-bottom: 30px;
-
 }
 
 h1 {
+  grid-column: 2;
   font-size: 28px;
   font-weight: 700;
   margin: 0;
@@ -55,12 +54,10 @@ h1 {
 
 /* Hero Illustration */
 .hero {
-height: 40px;
+  grid-column: 3;
+  height: 52px;          /* vorher 40px → +30% */
   width: auto;
-  position: absolute;
-  right: -56px;   /* Abstand rechts der Headline */
-  top: 50%;
-  transform: translateY(-60%);
+  margin-left: 12px;    /* Abstand zur Headline */
 }
 
 /* =========================
