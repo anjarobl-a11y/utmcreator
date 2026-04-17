@@ -37,12 +37,12 @@ body {
 ========================= */
 
 .headline-wrapper {
+  position: relative;
   display: flex;
-  align-items: center;
   justify-content: center;
-  gap: 12px;
+  align-items: center;
   margin-bottom: 30px;
-  text-align: center;
+
 }
 
 h1 {
@@ -55,8 +55,12 @@ h1 {
 
 /* Hero Illustration */
 .hero {
-  height: 40px;   /* bewusst kleiner als die Headline */
+height: 40px;
   width: auto;
+  position: absolute;
+  right: -56px;   /* Abstand rechts der Headline */
+  top: 50%;
+  transform: translateY(-60%);
 }
 
 /* =========================
