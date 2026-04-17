@@ -1,4 +1,5 @@
 
+/* =========================
    Global
 ========================= */
 
@@ -70,19 +71,22 @@ label {
   font-size: 14px;
 }
 
+/* ✅ WICHTIG: box-sizing explizit auf ALLE Controls */
 input,
 select,
 textarea {
+  box-sizing: border-box;
   width: 100%;
-  height: 44px;        /* Einheitliche Control-Höhe */
+  height: 44px;
   margin-top: 8px;
   padding: 0 14px;
+
   font-size: 14px;
   line-height: 1.2;
+  font-family: "Poppins", sans-serif;
 
   border: 1px solid #ccc;
   border-radius: 6px;
-  font-family: "Poppins", sans-serif;
 }
 
 textarea {
@@ -92,17 +96,18 @@ textarea {
 }
 
 /* =========================
-   Buttons (RUHIG & IDENTISCH)
+   Buttons (IDENTISCHE LOGIK WIE INPUTS)
 ========================= */
 
 button {
+  box-sizing: border-box;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
 
   width: 100%;
-  height: 44px;        /* ✅ FIX: gleiche Höhe wie Inputs */
+  height: 44px;
   margin-top: 22px;
   padding: 0 14px;
 
@@ -129,7 +134,7 @@ button:hover {
 }
 
 /* =========================
-   Mobile Responsive (FINAL & KORREKT)
+   Mobile Responsive (FINAL & STABIL)
 ========================= */
 
 @media (max-width: 480px) {
@@ -157,7 +162,7 @@ button:hover {
     font-size: 15px;
   }
 
-  /* Inputs größer für Touch – ✅ ok */
+  /* ✅ Inputs größer, bleiben aber IN DER BOX */
   input,
   select {
     height: 48px;
@@ -169,11 +174,9 @@ button:hover {
     font-size: 16px;
   }
 
-  /* 🔥 WICHTIG:
-     KEINE Button-Vergrößerung auf Mobile */
+  /* ✅ Buttons bleiben ruhig */
   button {
-    height: 44px;     /* bleibt identisch zu Desktop */
+    height: 44px;
     font-size: 14px;
   }
 }
-
