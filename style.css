@@ -16,7 +16,7 @@ body {
    Card Container
 ========================= */
 .container {
-  max-width: 520px;
+  max-width: 420px;
   margin: 40px auto;
   padding: 24px;
   background: #ffffff;
@@ -32,6 +32,7 @@ body {
   display: block;
   margin: 0 auto 12px auto;
   max-height: 32px;
+  width: auto;
 }
 
 /* =========================
@@ -53,6 +54,7 @@ body {
 
 .hero {
   max-height: 20px;
+  width: auto;
 }
 
 /* =========================
@@ -129,3 +131,4 @@ select:disabled {
   text-decoration: none;
   font-weight: 600;
 }
+``
