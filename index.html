@@ -1,37 +1,41 @@
 
 <!DOCTYPE html>
 <html lang="de">
-
 <head>
   <meta charset="UTF-8">
+
+  <!-- 🔑 SEHR WICHTIG: für korrektes Mobile-Scaling -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>UTM Generator</title>
 
   <!-- Google Font: Poppins -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  >
 
+  <!-- Styles -->
   <link rel="stylesheet" href="style.css">
 </head>
 
-  
 <body>
 
   <div class="container">
 
     <!-- STABILO Logo -->
-
-
-<img
-  src="https://cdn-live.be-stabilo.com/media/27/56/01/1675089023/STABILO-Logo_RGB_72dpi.png?ts=1677141540"
-  alt="STABILO Logo"
-  class="logo">
-
-
+    <img
+      src="https://cdn-live.be-stabilo.com/media/27/56/01/1675089023/STABILO-Logo_RGB_72dpi.png?ts=1677141540"
+      alt="STABILO Logo"
+      class="logo"
+    >
 
     <!-- Headline + Hero -->
     <div class="headline-wrapper">
       <h1>UTM Generator</h1>
+
       <img
         src="image.png"
         alt="UTM Hero Illustration"
@@ -40,10 +44,11 @@
     </div>
 
     <!-- FORMULAR -->
+
     <label for="base">Ziel‑URL</label>
     <input
       id="base"
-      type="text"
+      type="url"
       placeholder="https://www.shop.de/produkt"
     >
 
@@ -60,7 +65,7 @@
       placeholder="spring_sale_2026"
     >
 
-    <button onclick="generateUTM()">Tracking-URL generieren</button>
+    <button onclick="generateUTM()">UTM generieren</button>
 
     <textarea
       id="result"
@@ -68,7 +73,29 @@
       placeholder="Hier erscheint deine UTM‑URL"
     ></textarea>
 
-    <button onclick="copyUTM()">URL kopieren</button>
+    <!-- Copy to Clipboard Button -->
+    <button class="copy-button" onclick="copyUTM()">
+      <svg
+        class="copy-icon"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <!-- Clipboard -->
+        <path
+          d="M16 4h-1.18C14.4 2.84 13.3 2 12 2s-2.4.84-2.82 2H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z"
+          fill="currentColor"
+          opacity="0.75"
+        />
+        <!-- Blatt -->
+        <path
+          d="M9 6h6v2H9z"
+          fill="currentColor"
+        />
+      </svg>
+
+      <span>URL kopieren</span>
+    </button>
 
   </div>
 
@@ -76,6 +103,5 @@
   <script src="script.js"></script>
 
 </body>
-
-
 </html>
+
