@@ -53,8 +53,10 @@ body {
 }
 
 .hero {
-  max-height: 20px;
-  width: auto;
+   max-height: 80px;
+   width: auto;
+   margin-top: 2px;
+
 }
 
 /* =========================
