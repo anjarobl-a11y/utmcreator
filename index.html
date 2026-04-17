@@ -7,18 +7,30 @@
 
   <title>UTM Generator</title>
 
-  <!-- ✅ Google Font korrekt -->
-  <link rel="preconnect" href="https://fonts.googleapis href="https    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
-    rel="stylesheet"
- stylesheet" href="<div class="container">
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
-    <!-- ✅ Logo -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="container">
+
+    <!-- Logo -->
     <img
       src="https://cdn-live.be-stabilo.com/media/27/56/01/1675089023/STABILO-Logo_RGB_72dpi.png"
       alt="STABILO Logo"
       class="logo"
-   1>UTM Generator</h1>
-      <img src="    </div>
+    >
+
+    <!-- Headline + Hero -->
+    <div class="headline-wrapper">
+      <h1>UTM Generator</h1>
+      <img src="image.png" alt="" class="hero">
+    </div>
 
     <!-- Formular -->
     <label for="base">Ziel‑URL</label>
@@ -35,26 +47,37 @@
 
     <button onclick="generateUTM()">UTM generieren</button>
 
-    <textarea id="result" readonly placeholder="Hier erscheint deine UTM‑URL"></textarea>
+    <textarea
+      id="result"
+      readonly
+      placeholder="Hier erscheint deine UTM‑URL"
+    ></textarea>
 
     <button onclick="copyUTM()">
-      <svg class="copy-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-        <path d="M16 4h-1.18C14.4 2.84 13.3 2 12 2s-2.4.84-2.82 2H8
-        c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8
-        c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z"/>
-        <path d="M9 6h6v2H9z"/>
+      <svg
+        class="copy-icon"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        aria-hidden="true"
+      >
+        <path
+          d="M16 4h-1.18C14.4 2.84 13.3 2 12 2s-2.4.84-2.82 2H8
+          c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8
+          c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z"
+          fill="currentColor"
+        />
+        <path d="M9 6h6v2H9z" fill="currentColor" />
       </svg>
       URL kopieren
     </button>
 
+    <!-- Link zur Historie -->
     <p class="history-link">
-      <a href="historyHistorie ansehen</a>
+      <a href="history.html">UTM‑Historie ansehen</a>
     </p>
 
   </div>
 
-  <!-- ✅ JavaScript korrekt -->
-  <script src="script.jsbody>
+  <script src="script.js"></script>
+</body>
 </html>
-
-
