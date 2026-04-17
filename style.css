@@ -11,7 +11,7 @@ body {
 }
 
 /* =========================
-   Container
+   Container (Desktop)
 ========================= */
 
 .container {
@@ -35,7 +35,7 @@ body {
 }
 
 /* =========================
-   Headline + Hero
+   Headline + Hero (Desktop)
 ========================= */
 
 .headline-wrapper {
@@ -72,7 +72,6 @@ label {
   font-size: 14px;
 }
 
-/* Einheitliche Formularfelder */
 input,
 select,
 textarea {
@@ -89,7 +88,6 @@ textarea {
   background-color: #ffffff;
 }
 
-/* Fokus-Zustand */
 input:focus,
 select:focus,
 textarea:focus {
@@ -97,7 +95,6 @@ textarea:focus {
   border-color: #e4002b;
 }
 
-/* Textarea */
 textarea {
   height: 96px;
   resize: none;
@@ -130,25 +127,27 @@ button:hover {
 }
 
 /* =========================
-   RESPONSIVE – MOBILE FIRST FIX
+   RESPONSIVE – MOBILE FULLSIZE
 ========================= */
 
 @media (max-width: 480px) {
 
-  /* Container: mehr Raum, weniger Randdruck */
+  /* 🔑 Container wirklich Full-Width */
   .container {
-    margin: 16px;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 0; /* wirkt app-artig */
   }
 
-  /* Logo etwas größer, damit es nicht „verhungert“ */
+  /* Logo etwas präsenter */
   .logo {
-    height: 34px;
+    height: 36px;
     margin-bottom: 18px;
   }
 
-  /* Headline + Hero umstellen */
+  /* Headline + Hero neu anordnen */
   .headline-wrapper {
     grid-template-columns: auto auto;
     justify-content: center;
@@ -157,16 +156,16 @@ button:hover {
   }
 
   h1 {
-    font-size: 26px;          /* DEUTLICH lesbarer */
+    font-size: 26px;     /* deutlich größer */
     line-height: 1.2;
   }
 
   .hero {
-    height: 52px;             /* Icon wirkt jetzt klar & präsent */
+    height: 52px;
     margin-left: 0;
   }
 
-  /* Typo und Felder größer für Touch */
+  /* Typo & Felder Mobile-gerecht */
   label {
     font-size: 15px;
     margin-top: 20px;
@@ -175,19 +174,19 @@ button:hover {
   input,
   select,
   textarea {
-    font-size: 15px;
-    padding: 14px 16px;       /* wichtig für Mobile */
+    font-size: 16px;     /* verhindert iOS-Zoom */
+    padding: 14px 16px;
   }
 
   textarea {
-    height: 110px;
+    height: 120px;
   }
 
-  /* Button: klarer Touch‑Target */
+  /* Buttons als echte Touch-Targets */
   button {
-    font-size: 15px;
+    font-size: 16px;
     padding: 16px;
-    margin-top: 26px;
+    margin-top: 24px;
   }
 }
-``
+
