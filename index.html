@@ -4,42 +4,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>UTM Generator</title>
-
-  <!-- Poppins -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
-    rel="stylesheet"
-  >
 
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-
   <div class="container">
 
-    <!-- Logo -->
-    <img
-      src="https://cdn-live.be-stabilo.com/media/27/56/01/1675089023/STABILO-Logo_RGB_72dpi.png?ts=1677141540"
-      alt="STABILO Logo"
-      class="logo"
-    >
+    <h1>UTM Generator</h1>
 
-    <!-- Headline + Hero -->
-    <div class="headline-wrapper">
-      <h1>UTM Generator</h1>
-      <img
-        src="image.png"
-        alt="UTM Illustration"
-        class="hero"
-      >
-    </div>
-
-    <!-- Formular -->
     <label for="base">Ziel‑URL</label>
     <input id="base" type="url" placeholder="https://www.shop.de/produkt">
 
@@ -56,27 +30,12 @@
 
     <textarea id="result" readonly placeholder="Hier erscheint deine UTM‑URL"></textarea>
 
-    <!-- Copy Button (GLEICHE BUTTON-KLASSE!) -->
-    <button onclick="copyUTM()">
-      <svg
-        class="copy-icon"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        aria-hidden="true"
-      >
-        <path
-          d="M16 4h-1.18C14.4 2.84 13.3 2 12 2s-2.4.84-2.82 2H8
-          c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8
-          c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z"
-          fill="currentColor"
-        />
-        <path
-          d="M9 6h6v2H9z"
-          fill="currentColor"
-        />
-      </svg>
-      URL kopieren
-    </button>
+    <button onclick="copyUTM()">URL kopieren</button>
+
+    <!-- ✅ Historien-Link -->
+    <p class="history-link">
+      <a href="history.html">UTM‑Historie ansehen</a>
+    </p>
 
   </div>
 
