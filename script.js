@@ -40,7 +40,7 @@ function generateUTM() {
   const campaign = document.getElementById("campaign").value;
 
   if (!base || !campaign) {
-    alert("Bitte Ziel-URL und Campaign ausfüllen");
+    alert("Please enter landingpage url and campaign");
     return;
   }
 
@@ -64,5 +64,5 @@ function copyUTM() {
   const result = document.getElementById("result");
   result.select();
   document.execCommand("copy");
-  alert("UTM URL kopiert ✅");
+  alert("URL copied ✅");
 }
