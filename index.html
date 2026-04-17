@@ -7,13 +7,10 @@
 
   <title>UTM Generator</title>
 
-  <!-- Poppins -->
+  <!-- Google Font -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
-    rel="stylesheet"
-  >
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="style.css">
 </head>
@@ -24,7 +21,7 @@
 
     <!-- Logo -->
     <img
-      src="https://cdn-live.be-stabilo.com/media/27/56/01/1675089023/STABILO-Logo_RGB_72dpi.png?ts=1677141540"
+      src="https://cdn-live.be-stabilo.com/media/27/56/01/1675089023/STABILO-Logo_RGB_72dpi.png"
       alt="STABILO Logo"
       class="logo"
     >
@@ -32,11 +29,7 @@
     <!-- Headline + Hero -->
     <div class="headline-wrapper">
       <h1>UTM Generator</h1>
-      <img
-        src="image.png"
-        alt="UTM Illustration"
-        class="hero"
-      >
+      <img src="image.png" alt="" class="hero">
     </div>
 
     <!-- Formular -->
@@ -54,9 +47,12 @@
 
     <button onclick="generateUTM()">UTM generieren</button>
 
-    <textarea id="result" readonly placeholder="Hier erscheint deine UTM‑URL"></textarea>
+    <textarea
+      id="result"
+      readonly
+      placeholder="Hier erscheint deine UTM‑URL"
+    ></textarea>
 
-    <!-- Copy Button (GLEICHE BUTTON-KLASSE!) -->
     <button onclick="copyUTM()">
       <svg
         class="copy-icon"
@@ -70,18 +66,18 @@
           c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2z"
           fill="currentColor"
         />
-        <path
-          d="M9 6h6v2H9z"
-          fill="currentColor"
-        />
+        <path d="M9 6h6v2H9z" fill="currentColor" />
       </svg>
       URL kopieren
     </button>
+
+    <!-- Link zur Historie -->
+    <p class="history-link">
+      <a href="history.html">UTM‑Historie ansehen</a>
+    </p>
 
   </div>
 
   <script src="script.js"></script>
 </body>
 </html>
-
-
