@@ -4,19 +4,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>UTM Historie</title>
+  <title>UTM‑Historie</title>
 
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-
   <div class="container">
     <h1>UTM‑Historie</h1>
 
     <div id="history"></div>
 
     <button onclick="clearHistory()">Historie löschen</button>
+
+    <p class="history-link">
+      <a href="index.html">← zurück zum Generator</a>
+    </p>
   </div>
 
   <script>
@@ -26,25 +29,21 @@
     if (history.length === 0) {
       historyContainer.innerHTML = "<p>Noch keine UTMs generiert.</p>";
     } else {
-      history.forEach(entry => {
-        const div = document.createElement("div");
-        div.style.marginBottom = "12px";
-
-        div.innerHTML = `
-          <input type="text" value="${entry.url}" readonly>
-        `;
-
-        historyContainer.appendChild(div);
+      history.forEach(item => {
+        const input = document.createElement("input");
+        input.value = item;
+        input.readOnly = true;
+        historyContainer.appendChild(input);
       });
     }
 
     function clearHistory() {
-      if (confirm("UTM‑Historie wirklich löschen?")) {
+      if (confirm("UTM-Historie wirklich löschen?")) {
         localStorage.removeItem("utmHistory");
         location.reload();
       }
     }
   </script>
-
 </body>
 </html>
+
