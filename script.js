@@ -4,7 +4,7 @@ const utmConfig = {
   google: ["cpc", "organic"],
   bing: ["organic"],
   instagram: ["cpc","organic"],
-  facebook: ["cpc,"organic"],
+  facebook: ["cpc","organic"],
   cb: ["partnerprogramme"],
   sovendus: ["partnerprogramme"],
   newsletter: ["email"],
