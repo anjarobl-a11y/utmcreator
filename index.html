@@ -1,20 +1,48 @@
 
 <!DOCTYPE html>
 <html lang="de">
+
 <head>
   <meta charset="UTF-8">
   <title>UTM Generator</title>
 
-  <!-- ✅ CSS korrekt einbinden -->
+  <!-- Google Font: Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="style.css">
 </head>
+
+  
 <body>
 
   <div class="container">
-    <h1>UTM Generator</h1>
 
-    <label for="base">Ziel-URL</label>
-    <input id="base" type="text" placeholder="https://www.shop.de/produkt">
+    <!-- STABILO Logo -->
+    <img
+      src="https://cdn-live.be-stabilo.com/media/27/56/01/1675089023/STABILO-Logo_RGB_72dpi.png?ts=1677141540"
+      alt="STABILO Logo"
+      class="logo"
+    >
+
+    <!-- Headline + Hero -->
+    <div class="headline-wrapper">
+      <h1>UTM Generator</h1>
+      <img
+        src="image.png"
+        alt="UTM Hero Illustration"
+        class="hero"
+      >
+    </div>
+
+    <!-- FORMULAR -->
+    <label for="base">Ziel‑URL</label>
+    <input
+      id="base"
+      type="text"
+      placeholder="https://www.shop.de/produkt"
+    >
 
     <label for="source">Source</label>
     <select id="source"></select>
@@ -23,17 +51,28 @@
     <select id="medium"></select>
 
     <label for="campaign">Campaign</label>
-    <input id="campaign" type="text" placeholder="spring_sale_2026">
+    <input
+      id="campaign"
+      type="text"
+      placeholder="spring_sale_2026"
+    >
 
     <button onclick="generateUTM()">UTM generieren</button>
 
-    <textarea id="result" readonly placeholder="Hier erscheint deine UTM-URL"></textarea>
+    <textarea
+      id="result"
+      readonly
+      placeholder="Hier erscheint deine UTM‑URL"
+    ></textarea>
 
     <button onclick="copyUTM()">URL kopieren</button>
+
   </div>
 
-  <!-- ✅ JavaScript korrekt einbinden -->
+  <!-- JavaScript -->
   <script src="script.js"></script>
 
 </body>
+
+
 </html>
