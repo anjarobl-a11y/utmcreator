@@ -1,12 +1,14 @@
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  // ✅ Erlaubte UTM-Kombinationen
+  // =========================
+  // UTM-Konfiguration
+  // =========================
   const utmConfig = {
     google: ["cpc", "organic"],
     bing: ["organic"],
     instagram: ["cpc", "organic"],
-    facebook: ["cpc", "organic"],   // ✅ Syntaxfehler gefixt
+    facebook: ["cpc", "organic"],
     cb: ["partnerprogramme"],
     sovendus: ["partnerprogramme"],
     newsletter: ["email"],
@@ -18,12 +20,20 @@ document.addEventListener("DOMContentLoaded", () => {
   const sourceSelect = document.getElementById("source");
   const mediumSelect = document.getElementById("medium");
 
+  // Sicherheitscheck
   if (!sourceSelect || !mediumSelect) {
-    console.error("Source or Medium select not found in DOM");
+    console.error("Source or Medium select not found.");
     return;
   }
 
-  // ✅ Source-Dropdown befüllen
+  // =========================
+  // Initial State
+  // =========================
+
+  // Medium ist zunächst deaktiviert
+  mediumSelect.disabled = true;
+
+  // Source Dropdown befüllen
   Object.keys(utmConfig).forEach(source => {
     const option = document.createElement("option");
     option.value = source;
@@ -31,12 +41,20 @@ document.addEventListener("DOMContentLoaded", () => {
     sourceSelect.appendChild(option);
   });
 
-  // ✅ Medium abhängig von Source aktualisieren
+  // =========================
+  // Medium abhängig von Source
+  // =========================
   function updateMedium() {
     mediumSelect.innerHTML = "";
 
     const selectedSource = sourceSelect.value;
-    if (!utmConfig[selectedSource]) return;
+
+    if (!selectedSource || !utmConfig[selectedSource]) {
+      mediumSelect.disabled = true;
+      return;
+    }
+
+    mediumSelect.disabled = false;
 
     utmConfig[selectedSource].forEach(medium => {
       const option = document.createElement("option");
@@ -48,10 +66,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   sourceSelect.addEventListener("change", updateMedium);
 
-  // ✅ Initialer Zustand
-  updateMedium();
-
-  // ✅ UTM URL generieren
+  // =========================
+  // UTM generieren
+  // =========================
   window.generateUTM = function () {
     const base = document.getElementById("base").value;
     const campaign = document.getElementById("campaign").value;
@@ -65,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const valid = /^[a-z0-9_]+$/;
     if (!valid.test(campaign)) {
-      alert("Campaign nur lowercase + underscores erlaubt");
+      alert("Campaign only lowercase letters, numbers and underscores");
       return;
     }
 
@@ -78,7 +95,9 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("result").value = url;
   };
 
-  // ✅ URL kopieren
+  // =========================
+  // Copy to Clipboard
+  // =========================
   window.copyUTM = function () {
     const result = document.getElementById("result");
     result.select();
@@ -87,4 +106,3 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
 });
-
