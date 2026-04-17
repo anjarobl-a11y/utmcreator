@@ -1,3 +1,4 @@
+
 /* =========================
    Global
 ========================= */
@@ -28,12 +29,12 @@ body {
 .logo {
   display: block;
   margin: 0 auto 16px auto;
-  height: 32px;        /* ca. Höhe der Headline */
+  height: 32px;
   width: auto;
 }
 
 /* =========================
-   Headline + Hero
+   Headline + Hero (FINAL)
 ========================= */
 
 .headline-wrapper {
@@ -55,7 +56,7 @@ h1 {
 /* Hero Illustration */
 .hero {
   grid-column: 3;
-  height: 52px;          /* vorher 40px → +30% */
+  height: 52px;          /* ≈ +30 % größer als vorher */
   width: auto;
   margin-left: 12px;    /* Abstand zur Headline */
 }
@@ -95,7 +96,7 @@ textarea {
 button {
   margin-top: 18px;
   cursor: pointer;
-  background: #e4002b; /* STABILO Rot */
+  background: #e4002b;
   color: white;
   border: none;
   border-radius: 6px;
@@ -107,7 +108,7 @@ button:hover {
 }
 
 /* =========================
-   Responsive (optional, aber empfohlen)
+   Responsive
 ========================= */
 
 @media (max-width: 480px) {
@@ -121,5 +122,9 @@ button:hover {
 
   .logo {
     height: 28px;
+  }
+
+  .headline-wrapper {
+    grid-template-columns: 1fr;
   }
 }
