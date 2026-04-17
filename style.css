@@ -1,6 +1,6 @@
 
 /* =========================
- Reset & Global
+   Global Reset
 ========================= */
 
 *,
@@ -9,8 +9,13 @@
   box-sizing: border-box;
 }
 
+html,
 body {
   margin: 0;
+  padding: 0;
+}
+
+body {
   font-family: "Poppins", sans-serif;
   background: #f5f5f5;
 }
@@ -20,15 +25,13 @@ body {
 ========================= */
 
 .container {
-  width: 100%;
   max-width: 520px;
+  width: 100%;
   margin: 40px auto;
   padding: 24px;
   background: #ffffff;
   border-radius: 12px;
-
-  /* ✅ verhindert Margin-Collapse optisch */
-  display: flow-root;
+  overflow-x: hidden; /* ✅ Sicherheitsnetz */
 }
 
 /* =========================
@@ -38,11 +41,7 @@ body {
 .logo {
   display: block;
   margin: 0 auto 20px auto;
-
-  height: auto;
-  max-height: 32px;   /* ✅ HARTE BEGRENZUNG */
-  width: auto;
-  max-width: 100%;
+  height: 32px;
 }
 
 /* =========================
@@ -50,7 +49,8 @@ body {
 ========================= */
 
 .headline-wrapper {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto auto;
   justify-content: center;
   align-items: center;
   gap: 12px;
@@ -64,16 +64,13 @@ h1 {
   text-align: center;
 }
 
-/* ✅ Hero sauber begrenzen */
 .hero {
-  height: auto;
-  max-height: 48px;   /* ✅ verhindert Aufblasen */
-  width: auto;
+  height: 56px;
   max-width: 100%;
 }
 
 /* =========================
-   Formular
+   Formular – FINAL ROBUST
 ========================= */
 
 label {
@@ -83,45 +80,39 @@ label {
   font-size: 14px;
 }
 
+/* 🔑 ENTSCHEIDENDER FIX */
 input,
 select,
 textarea {
+  box-sizing: border-box;
   width: 100%;
   max-width: 100%;
-  min-width: 0;
-
+  min-width: 0;                 /* ✅ verhindert Overflow */
+  
   height: 44px;
   margin-top: 8px;
   padding: 0 14px;
 
   font-size: 14px;
-  font-family: inherit;
+  font-family: "Poppins", sans-serif;
 
   border: 1px solid #ccc;
   border-radius: 6px;
   background-color: #ffffff;
 
+  /* ✅ Mobile Browser UI entfernen */
   -webkit-appearance: none;
   appearance: none;
 }
 
-/* Dropdown-Pfeil */
-select {
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23666'%3E%3Cpath d='M5.5 7.5 10 12 14.5 7.5'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px center;
-  background-size: 16px;
-  padding-right: 40px;
+/* iOS URL / Search UI endgültig killen */
+input[type="url"]::-webkit-search-decoration,
+input[type="url"]::-webkit-search-cancel-button,
+input[type="url"]::-webkit-search-results-button,
+input[type="url"]::-webkit-search-results-decoration {
+  display: none;
 }
 
-/* Disabled State */
-select:disabled {
-  background-color: #f0f0f0;
-  color: #999;
-  cursor: not-allowed;
-}
-
-/* Textarea */
 textarea {
   height: 100px;
   padding: 10px 14px;
@@ -133,12 +124,13 @@ textarea {
 ========================= */
 
 button {
+  box-sizing: border-box;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
+
   height: 44px;
-
-  /* ✅ statt margin-top spacing über padding des Containers */
   margin-top: 22px;
-
   padding: 0 14px;
 
   display: inline-flex;
@@ -148,7 +140,7 @@ button {
 
   font-size: 14px;
   font-weight: 600;
-  font-family: inherit;
+  font-family: "Poppins", sans-serif;
 
   background: #e4002b;
   color: #ffffff;
@@ -158,38 +150,19 @@ button {
   cursor: pointer;
 }
 
-button:hover {
-  opacity: 0.9;
-}
-
-/* Copy Icon */
 .copy-icon {
   width: 16px;
   height: 16px;
 }
 
 /* =========================
-   History-Link
-========================= */
-
-.history-link {
-  margin-top: 18px;
-  text-align: center;
-  font-size: 14px;
-}
-
-.history-link a {
-  color: #e4002b;
-  text-decoration: none;
-  font-weight: 600;
-}
-
-/* =========================
-   Mobile
+   Mobile – FULL & STABIL
 ========================= */
 
 @media (max-width: 480px) {
+
   .container {
+    max-width: 100%;
     margin: 0;
     padding: 20px;
     border-radius: 0;
@@ -201,15 +174,16 @@ button:hover {
 
   input,
   select {
-    font-size: 16px;
     height: 48px;
+    font-size: 16px;
   }
 
   textarea {
-    font-size: 16px;
     height: 120px;
+    font-size: 16px;
   }
 
+  /* Buttons NICHT vergrößern */
   button {
     height: 44px;
     font-size: 14px;
