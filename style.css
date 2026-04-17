@@ -12,6 +12,15 @@ body {
   border-radius: 8px;
 }
 
+
+.logo {
+  display: block;
+  margin: 0 auto 16px auto;
+  height: 32px;   /* gleiche Größenordnung wie Überschrift */
+  width: auto;
+}
+
+
 label {
   margin-top: 15px;
   display: block;
