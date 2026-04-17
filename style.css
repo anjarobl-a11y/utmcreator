@@ -56,7 +56,7 @@ h1 {
 /* Hero Illustration */
 .hero {
   grid-column: 3;
-  height: 70px;          /* ≈ +30 % größer als vorher */
+  height: 52px;          /* ≈ +30 % größer als vorher */
   width: auto;
   margin-left: 12px;    /* Abstand zur Headline */
 }
