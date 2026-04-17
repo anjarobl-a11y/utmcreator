@@ -1,68 +1,87 @@
 
-// ✏️ HIER DEFINIERST DU ERLAUBTE UTM-KOMBINATIONEN
-const utmConfig = {
-  google: ["cpc", "organic"],
-  meta: ["paid_social"],
-  newsletter: ["email"],
-  affiliate: ["affiliate"]
-};
+document.addEventListener("DOMContentLoaded", () => {
 
-const sourceSelect = document.getElementById("source");
-const mediumSelect = document.getElementById("medium");
+  const utmConfig = {
+    google: ["cpc", "organic"],
+    bing: ["organic"],
+    instagram: ["cpc", "organic"],
+    facebook: ["cpc", "organic"],
+    newsletter: ["email"],
+    affiliate: ["awin"]
+  };
 
-// Source Dropdown befüllen
-Object.keys(utmConfig).forEach(source => {
-  const option = document.createElement("option");
-  option.value = source;
-  option.textContent = source;
-  sourceSelect.appendChild(option);
+  const sourceSelect = document.getElementById("source");
+  const mediumSelect = document.getElementById("medium");
+
+  /* ========= Source: leer starten ========= */
+
+  const sourcePlaceholder = document.createElement("option");
+  sourcePlaceholder.textContent = "Bitte Source auswählen";
+  sourcePlaceholder.value = "";
+  sourcePlaceholder.disabled = true;
+  sourcePlaceholder.selected = true;
+  sourceSelect.appendChild(sourcePlaceholder);
+
+  Object.keys(utmConfig).forEach(source => {
+    const option = document.createElement("option");
+    option.value = source;
+    option.textContent = source;
+    sourceSelect.appendChild(option);
+  });
+
+  /* ========= Medium: disabled starten ========= */
+
+  mediumSelect.disabled = true;
+
+  const mediumPlaceholder = document.createElement("option");
+  mediumPlaceholder.textContent = "Bitte zuerst Source auswählen";
+  mediumPlaceholder.disabled = true;
+  mediumPlaceholder.selected = true;
+  mediumSelect.appendChild(mediumPlaceholder);
+
+  sourceSelect.addEventListener("change", () => {
+    mediumSelect.innerHTML = "";
+    mediumSelect.disabled = false;
+
+    utmConfig[sourceSelect.value].forEach(medium => {
+      const option = document.createElement("option");
+      option.value = medium;
+      option.textContent = medium;
+      mediumSelect.appendChild(option);
+    });
+  });
+
+  /* ========= UTM generieren + Historie speichern ========= */
+
+  window.generateUTM = function () {
+    const base = document.getElementById("base").value;
+    const campaign = document.getElementById("campaign").value;
+    const source = sourceSelect.value;
+    const medium = mediumSelect.value;
+
+    if (!base || !campaign || !source || !medium) {
+      alert("Bitte alle Felder ausfüllen");
+      return;
+    }
+
+    const url =
+      `${base}?utm_source=${source}&utm_medium=${medium}&utm_campaign=${campaign}`;
+
+    document.getElementById("result").value = url;
+
+    const history = JSON.parse(localStorage.getItem("utmHistory")) || [];
+    history.unshift(url);
+    localStorage.setItem("utmHistory", JSON.stringify(history));
+  };
+
+  /* ========= Copy ========= */
+
+  window.copyUTM = function () {
+    const result = document.getElementById("result");
+    result.select();
+    document.execCommand("copy");
+    alert("URL kopiert ✅");
+  };
+
 });
 
-// Medium abhängig von Source aktualisieren
-function updateMedium() {
-  mediumSelect.innerHTML = "";
-  utmConfig[sourceSelect.value].forEach(medium => {
-    const option = document.createElement("option");
-    option.value = medium;
-    option.textContent = medium;
-    mediumSelect.appendChild(option);
-  });
-}
-
-sourceSelect.addEventListener("change", updateMedium);
-updateMedium();
-
-// UTM URL generieren
-function generateUTM() {
-  const base = document.getElementById("base").value;
-  const source = sourceSelect.value;
-  const medium = mediumSelect.value;
-  const campaign = document.getElementById("campaign").value;
-
-  if (!base || !campaign) {
-    alert("Please enter landingpage url and campaign");
-    return;
-  }
-
-  const valid = /^[a-z0-9_]+$/;
-  if (!valid.test(campaign)) {
-    alert("Campaign nur lowercase + underscores erlaubt");
-    return;
-  }
-
-  const url =
-    base +
-    "?utm_source=" + encodeURIComponent(source) +
-    "&utm_medium=" + encodeURIComponent(medium) +
-    "&utm_campaign=" + encodeURIComponent(campaign);
-
-  document.getElementById("result").value = url;
-}
-
-// URL kopieren
-function copyUTM() {
-  const result = document.getElementById("result");
-  result.select();
-  document.execCommand("copy");
-  alert("URL copied ✅");
-}
