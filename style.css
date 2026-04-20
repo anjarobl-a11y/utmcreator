@@ -204,3 +204,36 @@ button:hover {
   text-decoration: underline;
 }
 
+
+/* =========================
+   History Table
+========================= */
+.history-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+  font-size: 13px;
+}
+
+.history-table th {
+  text-align: left;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+.history-table td {
+  padding: 8px;
+  vertical-align: top;
+}
+
+.history-table input {
+  width: 100%;
+  font-size: 12px;
+  padding: 6px;
+}
+
+/* Duplikate hervorheben */
+.history-table tr.duplicate {
+  background-color: #e6f7e6;
+}
+
