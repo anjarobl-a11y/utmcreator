@@ -39,7 +39,7 @@ body {
 ========================= */
 .headline-wrapper {
   display: flex;
-  align-items: baseline; /* ✅ perfekte optische Zentrierung */
+  align-items: center; /* ✅ perfekte optische Zentrierung */
   justify-content: center;
   gap: 10px;
   margin-bottom: 24px;
@@ -55,6 +55,7 @@ body {
 .hero {
   max-height: 80px;
   width: auto;
+  transform: translateY(4px);
 }
 
 /* =========================
