@@ -1,12 +1,17 @@
 document.addEventListener("DOMContentLoaded", () => {
 
   const utmConfig = {
-    google: ["cpc", "organic"],
-    bing: ["organic"],
-    instagram: ["cpc", "organic"],
-    facebook: ["cpc", "organic"],
+    google: ["cpc"],
+    bing: ["cpc"],
+    instagram: ["paid social"],
+    instagram_organic: ["social"],
+    facebook: ["paid social"],
+    facebook_organic: ["social"],
+    tiktok: ["paid social"],
+    tiktok_organic: ["social"],
     newsletter: ["email"],
-    affiliate: ["awin"]
+    awin: ["affiliate"],
+    partnerprogramme: ["cb","sovendus"]
   };
 
   const sourceSelect = document.getElementById("source");
