@@ -21,7 +21,7 @@ body {
   padding: 24px;
   background: #ffffff;
   border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 /* =========================
@@ -29,33 +29,39 @@ body {
 ========================= */
 .logo {
   display: block;
-  margin: 0 auto 12px;
+  margin: 0 auto 12px auto;
   max-height: 32px;
   width: auto;
+  cursor: pointer;
 }
 
 /* =========================
-   Headline + Hero
+   Headline + Superheld
+   (EXAKT horizontal, kein Umbruch)
 ========================= */
 .headline-wrapper {
-  display: flex;
-  align-items: center; /* ✅ perfekte optische Zentrierung */
+  display: inline-flex;      /* wichtig: inline + flex */
   justify-content: center;
-  gap: 10px;
-  margin-bottom: 24px;
+  align-items: center;       /* echte vertikale Mitte */
+  gap: 12px;
+  flex-wrap: nowrap;         /* Umbruch verhindern */
+  white-space: nowrap;       /* zusätzliche Absicherung */
+  margin: 0 auto 24px auto;
 }
 
 .headline-wrapper h1 {
   margin: 0;
   font-size: 22px;
   font-weight: 700;
+  line-height: 1;
 }
 
-/* Superheld */
+/* Superheld-Icon */
 .hero {
+  display: inline-block;     /* kein block → keine neue Zeile */
   max-height: 80px;
   width: auto;
-  transform: translateY(4px);
+  /* KEIN margin-top, KEIN baseline, KEIN align-hack */
 }
 
 /* =========================
@@ -72,9 +78,10 @@ input,
 select,
 textarea,
 button {
-  font-family: inherit; /* ✅ wichtig für vollständige Poppins-Nutzung */
+  font-family: inherit;      /* überall Poppins */
 }
 
+/* Inputs / Selects */
 input,
 select,
 textarea {
@@ -88,6 +95,7 @@ textarea {
   border-radius: 6px;
 }
 
+/* Textarea */
 textarea {
   height: 80px;
   padding: 10px 12px;
@@ -97,11 +105,12 @@ textarea {
 /* Disabled Medium */
 select:disabled {
   background: #eeeeee;
-  color: #888;
+  color: #888888;
+  cursor: not-allowed;
 }
 
 /* =========================
-   Buttons
+   Primary Buttons
 ========================= */
 button {
   width: 100%;
@@ -121,7 +130,8 @@ button:hover {
 }
 
 /* =========================
-   Optional Parameters Toggle (Secondary)
+   Optionale Parameter Toggle
+   (sekundär, KEIN CTA)
 ========================= */
 .optional-toggle {
   margin-top: 16px;
@@ -129,7 +139,7 @@ button:hover {
   border: none;
   padding: 0;
   width: auto;
-  color: #555;
+  color: #555555;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
@@ -157,13 +167,13 @@ button:hover {
   visibility: hidden;
   position: absolute;
   width: 180px;
-  background: #333;
-  color: #fff;
+  background: #333333;
+  color: #ffffff;
   padding: 6px;
   font-size: 12px;
   line-height: 1.4;
   border-radius: 6px;
-  top: -5px;
+  top: -6px;
   left: 100%;
   z-index: 10;
 }
@@ -185,4 +195,8 @@ button:hover {
   color: #e4002b;
   text-decoration: none;
   font-weight: 600;
+}
+
+.history-link a:hover {
+  text-decoration: underline;
 }
