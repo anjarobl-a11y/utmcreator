@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>UTM‑Historie</title>
+  <title>UTM history</title>
 
   <!-- Basis-Styles (für Reset, Font etc.) -->
   <link rel="stylesheet" href="style.css">
@@ -17,12 +17,12 @@
 
   <div class="container">
 
-    <h1>UTM‑Historie</h1>
+    <h1>UTM history</h1>
 
     <table class="history-table">
       <thead>
         <tr>
-          <th>Erstellt am</th>
+          <th>Creation date</th>
           <th>UTM‑URL</th>
         </tr>
       </thead>
@@ -30,11 +30,11 @@
     </table>
 
     <!-- Aktionen -->
-    <button onclick="downloadCSV()">CSV exportieren</button>
-    <button onclick="clearHistory()">Historie löschen</button>
+    <button onclick="downloadCSV()">Export to CSV</button>
+    <button onclick="clearHistory()">Delete history</button>
 
     <p class="history-link">
-      <a href="index.html">← zurück zum Generator</a>
+      <a href="index.html">← back to UTM Generator</a>
     </p>
 
   </div>
@@ -57,7 +57,7 @@
     if (history.length === 0) {
       tbody.innerHTML = `
         <tr>
-          <td colspan="2">Noch keine UTMs generiert.</td>
+          <td colspan="2">No UTM URLs found.</td>
         </tr>
       `;
     } else {
@@ -93,7 +93,7 @@
     ========================= */
     function downloadCSV() {
       if (history.length === 0) {
-        alert("Keine Daten für den Export vorhanden.");
+        alert("No data to export found.");
         return;
       }
 
@@ -130,7 +130,7 @@
        Historie löschen
     ========================= */
     function clearHistory() {
-      if (confirm("UTM‑Historie wirklich löschen?")) {
+      if (confirm("Really delete UTM history?")) {
         localStorage.removeItem("utmHistory");
         location.reload();
       }
