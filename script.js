@@ -18,27 +18,27 @@ document.addEventListener("DOMContentLoaded", () => {
   const contentInput = document.getElementById("content");
   const resultField = document.getElementById("result");
 
-  /* Source leer */
-  const sp = document.createElement("option");
-  sp.textContent = "Bitte Source auswählen";
-  sp.disabled = true;
-  sp.selected = true;
-  sourceSelect.appendChild(sp);
+  // Source: leer starten
+  const sourcePlaceholder = document.createElement("option");
+  sourcePlaceholder.textContent = "Bitte Source auswählen";
+  sourcePlaceholder.disabled = true;
+  sourcePlaceholder.selected = true;
+  sourceSelect.appendChild(sourcePlaceholder);
 
-  Object.keys(utmConfig).forEach(src => {
+  Object.keys(utmConfig).forEach(source => {
     const o = document.createElement("option");
-    o.value = src;
-    o.textContent = src;
+    o.value = source;
+    o.textContent = source;
     sourceSelect.appendChild(o);
   });
 
-  /* Medium disabled */
+  // Medium: disabled starten
   mediumSelect.disabled = true;
-  const mp = document.createElement("option");
-  mp.textContent = "Bitte zuerst Source wählen";
-  mp.disabled = true;
-  mp.selected = true;
-  mediumSelect.appendChild(mp);
+  const mediumPlaceholder = document.createElement("option");
+  mediumPlaceholder.textContent = "Bitte zuerst Source auswählen";
+  mediumPlaceholder.disabled = true;
+  mediumPlaceholder.selected = true;
+  mediumSelect.appendChild(mediumPlaceholder);
 
   sourceSelect.addEventListener("change", () => {
     mediumSelect.innerHTML = "";
@@ -51,20 +51,20 @@ document.addEventListener("DOMContentLoaded", () => {
     mediumSelect.disabled = false;
   });
 
-  /* Optional Toggle */
+  // Optionale Felder ein/ausklappen
   const toggleBtn = document.querySelector(".optional-toggle");
   const optionalFields = document.querySelector(".optional-fields");
 
   toggleBtn.addEventListener("click", () => {
-    const open = !optionalFields.hasAttribute("hidden");
+    const isOpen = !optionalFields.hasAttribute("hidden");
     optionalFields.toggleAttribute("hidden");
-    toggleBtn.textContent = open
+    toggleBtn.textContent = isOpen
       ? "Optionale Parameter anzeigen"
       : "Optionale Parameter ausblenden";
-    toggleBtn.setAttribute("aria-expanded", String(!open));
+    toggleBtn.setAttribute("aria-expanded", String(!isOpen));
   });
 
-  /* UTM generieren */
+  // UTM generieren
   window.generateUTM = function () {
     if (!baseInput.value || !sourceSelect.value || !mediumSelect.value || !campaignInput.value) {
       alert("Bitte alle Pflichtfelder ausfüllen.");
@@ -90,9 +90,10 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("utmHistory", JSON.stringify(history));
   };
 
-  /* Copy */
+  // Copy
   window.copyUTM = function () {
     resultField.select();
     document.execCommand("copy");
   };
+
 });
