@@ -30,7 +30,7 @@ body {
 /* Headline + Hero */
 .headline-wrapper {
   display: flex;
-  align-items: center;      /* ✅ wieder sauber zentriert */
+  align-items: baseline;      /* ✅ wieder sauber zentriert */
   justify-content: center;
   gap: 10px;
   margin-bottom: 24px;
@@ -45,7 +45,7 @@ body {
 .hero {
   max-height: 80px;
   width: auto;
-  margin-top: 6px;          /* ✅ Icon justiert, Text bleibt ruhig */
+  margin-top: 0;          /* ✅ Icon justiert, Text bleibt ruhig */
 }
 
 /* Formular */
