@@ -55,7 +55,7 @@ body {
 /* Superheld dekorativ rechts */
 .hero {
   position: absolute;          /* ✅ entkoppelt vom Text */
-  right: -10px;                /* Feinjustierung */
+  right: 10px;                /* Feinjustierung */
   top: 50%;
   transform: translateY(-50%);
   max-height: 80px;
