@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Source: leer starten
   const sourcePlaceholder = document.createElement("option");
-  sourcePlaceholder.textContent = "Bitte Source auswählen";
+  sourcePlaceholder.textContent = "Please select Source";
   sourcePlaceholder.disabled = true;
   sourcePlaceholder.selected = true;
   sourceSelect.appendChild(sourcePlaceholder);
@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Medium: disabled starten
   mediumSelect.disabled = true;
   const mediumPlaceholder = document.createElement("option");
-  mediumPlaceholder.textContent = "Bitte zuerst Source auswählen";
+  mediumPlaceholder.textContent = "Please select Source first";
   mediumPlaceholder.disabled = true;
   mediumPlaceholder.selected = true;
   mediumSelect.appendChild(mediumPlaceholder);
