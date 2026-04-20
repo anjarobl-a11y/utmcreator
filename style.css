@@ -14,8 +14,10 @@ body {
 
 /* =========================
    Card Container
+   (Referenz für Superheld!)
 ========================= */
 .container {
+  position: relative;              /* 🔑 wichtig */
   max-width: 420px;
   margin: 40px auto;
   padding: 24px;
@@ -25,7 +27,7 @@ body {
 }
 
 /* =========================
-   Logo (zentriert)
+   Logo (zentriert oben)
 ========================= */
 .logo {
   display: block;
@@ -36,31 +38,32 @@ body {
 }
 
 /* =========================
-   Header – EXAKT wie Screenshot 2
+   Header – Titel zentriert,
+   Superheld dekorativ rechts
 ========================= */
 .headline-wrapper {
-  position: relative;          /* Bezug für Superheld */
+  position: relative;
   margin-bottom: 24px;
 }
 
-/* Überschrift wirklich zentriert */
+/* Überschrift allein zentriert */
 .headline-wrapper h1 {
   margin: 0;
-  text-align: center;          /* ✅ DAS war der fehlende Kern */
+  text-align: center;              /* ✅ echte Mitte */
   font-size: 22px;
   font-weight: 700;
   line-height: 1.2;
 }
 
-/* Superheld dekorativ rechts */
+/* Superheld – relativ zur Card */
 .hero {
-  position: absolute;          /* ✅ entkoppelt vom Text */
-  right: 0;                /* Feinjustierung */
+  position: absolute;
   top: 50%;
+  right: 24px;                     /* ✅ HIER steuerst du den Abstand */
   transform: translateY(-50%);
   max-height: 80px;
   width: auto;
-  pointer-events: none;        /* rein dekorativ */
+  pointer-events: none;
 }
 
 /* =========================
@@ -108,7 +111,7 @@ select:disabled {
 }
 
 /* =========================
-   Primary Buttons
+   Primary Buttons (CTA)
 ========================= */
 button {
   width: 100%;
@@ -129,6 +132,7 @@ button:hover {
 
 /* =========================
    Optionale Parameter Toggle
+   (sekundär, dezent)
 ========================= */
 .optional-toggle {
   margin-top: 16px;
@@ -180,7 +184,8 @@ button:hover {
 }
 
 /* =========================
-   History Link (linksbündig, grau)
+   History Link
+   (linksbündig, grau)
 ========================= */
 .history-link {
   margin-top: 16px;
@@ -198,3 +203,4 @@ button:hover {
 .history-link a:hover {
   text-decoration: underline;
 }
+
