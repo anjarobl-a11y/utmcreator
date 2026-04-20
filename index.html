@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -5,76 +6,60 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>UTM Generator</title>
 
-  <!-- Styles -->
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-
   <div class="container">
 
-    <!-- ✅ STABILO Logo -->
-    <img
-      src="https://cdn-live.be-stabilo.com/media/27/56/01/1675089023/STABILO-Logo_RGB_72dpi.png"
-      alt="STABILO Logo"
-      class="logo"
-    >
+    <!-- Logo -->
+    <a href="./">
+      <img
+        src="https://cdn-live.be-stabilo.com/media/27/56/01/1675089023/STABILO-Logo_RGB_72dpi.png"
+        alt="STABILO Logo"
+        class="logo"
+      >
+    </a>
 
-    <!-- ✅ Headline + kleines Icon -->
+    <!-- Headline + Hero -->
     <div class="headline-wrapper">
       <h1>UTM Generator</h1>
-      <img
-        src="image.png"
-        alt=""
-        class="hero"
-      >
+      <img src="image.png" alt="" class="hero">
     </div>
 
     <!-- Formular -->
-
     <label for="base">Ziel‑URL</label>
-    <input
-      id="base"
-      type="url"
-      placeholder="https://www.stabilo.com/de/"
-    >
+    <input id="base" type="url" placeholder="https://www.stabilo.com/…" >
 
-    <label for="source">Source</label>
+    <label for="source">Source *</label>
     <select id="source"></select>
 
-    <label for="medium">Medium</label>
+    <label for="medium">Medium *</label>
     <select id="medium"></select>
 
-    <label for="campaign">Campaign</label>
-    <input
-      id="campaign"
-      type="text"
-      placeholder="example_campaign_2026"
-    >
+    <label for="campaign">Campaign *</label>
+    <input id="campaign" type="text" placeholder="spring_sale_2026">
 
-    <button onclick="generateUTM()">
-      UTM generieren
-    </button>
+    <!-- ✅ NEU: optionale Felder -->
+    <label for="term">Keyword (utm_term)</label>
+    <input id="term" type="text" placeholder="z. B. fineliner">
 
-    <textarea
-      id="result"
-      readonly
-      placeholder="Hier erscheint deine UTM‑URL"
-    ></textarea>
+    <label for="content">Content (utm_content)</label>
+    <input id="content" type="text" placeholder="z. B. ad_variant_a">
 
-    <button onclick="copyUTM()">
-      URL kopieren
-    </button>
+    <button onclick="generateUTM()">UTM generieren</button>
 
-    <!-- Historien-Link -->
+    <textarea id="result" readonly placeholder="Hier erscheint deine UTM‑URL"></textarea>
+
+    <button onclick="copyUTM()">URL kopieren</button>
+
     <p class="history-link">
       <a href="history.html">UTM‑Historie ansehen</a>
     </p>
 
   </div>
 
-  <!-- Script -->
   <script src="script.js"></script>
-
 </body>
 </html>
+
