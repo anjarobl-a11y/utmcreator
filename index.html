@@ -36,7 +36,7 @@
     </div>
 
     <!-- Pflichtfelder -->
-    <label for="base">Ziel‑URL *</label>
+    <label for="base">Landingpage URL *</label>
     <input id="base" type="url" placeholder="https://www.stabilo.com/…" />
 
     <label for="source">Source *</label>
@@ -55,7 +55,7 @@
         class="optional-toggle"
         aria-expanded="false"
       >
-        Optionale Parameter anzeigen
+        Show optional parameters
       </button>
 
       <div class="optional-fields" hidden>
@@ -63,7 +63,7 @@
           Keyword (utm_term)
           <span class="tooltip">ⓘ
             <span class="tooltip-text">
-              Für Keywords, z. B. in Paid‑Search‑Kampagnen.
+              e. g. Keywords or target group
             </span>
           </span>
         </label>
@@ -73,7 +73,7 @@
           Content (utm_content)
           <span class="tooltip">ⓘ
             <span class="tooltip-text">
-              Zur Unterscheidung von Creatives oder Varianten.
+              e. g. creatives or variants
             </span>
           </span>
         </label>
@@ -81,18 +81,18 @@
       </div>
     </div>
 
-    <button onclick="generateUTM()">UTM generieren</button>
+    <button onclick="generateUTM()">Create tracking URL </button>
 
     <textarea
       id="result"
       readonly
-      placeholder="Hier erscheint deine UTM‑URL"
+      placeholder="Your tracking URL will appear here"
     ></textarea>
 
-    <button onclick="copyUTM()">URL kopieren</button>
+    <button onclick="copyUTM()">Copy URL</button>
 
     <p class="history-link">
-      <a href="history.html">UTM‑Historie ansehen</a>
+      <a href="history.html">Show UTM Generator history</a>
     </p>
 
   </div>
