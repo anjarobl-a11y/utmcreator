@@ -5,13 +5,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>UTM Generator</title>
 
+  <!-- ✅ Google Font: Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Styles -->
   <link rel="stylesheet" href="style.css" />
 </head>
 
 <body>
   <div class="container">
 
-    <!-- Logo: Klick = Reload -->
+    <!-- Logo (Reload) -->
     <a href="./">
       <img
         src="https://cdn-live.be-stabilo.com/media/27/56/01/1675089023/STABILO-Logo_RGB_72dpi.png"
@@ -39,7 +48,7 @@
     <label for="campaign">Campaign *</label>
     <input id="campaign" type="text" placeholder="spring_sale_2026" />
 
-    <!-- Optionale Felder (einklappbar) -->
+    <!-- Optionale Felder -->
     <div class="optional-wrapper">
       <button
         type="button"
@@ -54,7 +63,7 @@
           Keyword (utm_term)
           <span class="tooltip">ⓘ
             <span class="tooltip-text">
-              Keywords, z. B. aus Paid Search Kampagnen.
+              Für Keywords, z. B. in Paid‑Search‑Kampagnen.
             </span>
           </span>
         </label>
@@ -74,7 +83,11 @@
 
     <button onclick="generateUTM()">UTM generieren</button>
 
-    <textarea id="result" readonly placeholder="Hier erscheint deine UTM‑URL"></textarea>
+    <textarea
+      id="result"
+      readonly
+      placeholder="Hier erscheint deine UTM‑URL"
+    ></textarea>
 
     <button onclick="copyUTM()">URL kopieren</button>
 
@@ -87,3 +100,4 @@
   <script src="script.js"></script>
 </body>
 </html>
+
