@@ -59,15 +59,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const isOpen = !optionalFields.hasAttribute("hidden");
     optionalFields.toggleAttribute("hidden");
     toggleBtn.textContent = isOpen
-      ? "Optionale Parameter anzeigen"
-      : "Optionale Parameter ausblenden";
+      ? "Show optional parameters"
+      : "Hide optional parameters";
     toggleBtn.setAttribute("aria-expanded", String(!isOpen));
   });
 
   // UTM generieren
   window.generateUTM = function () {
     if (!baseInput.value || !sourceSelect.value || !mediumSelect.value || !campaignInput.value) {
-      alert("Bitte alle Pflichtfelder ausfüllen.");
+      alert("Please fill in all required fields.");
       return;
     }
 
