@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", () => {
 
   const utmConfig = {
@@ -10,112 +9,90 @@ document.addEventListener("DOMContentLoaded", () => {
     affiliate: ["awin"]
   };
 
-  const sourceSelect  = document.getElementById("source");
-  const mediumSelect  = document.getElementById("medium");
+  const sourceSelect = document.getElementById("source");
+  const mediumSelect = document.getElementById("medium");
 
-  const baseInput     = document.getElementById("base");
+  const baseInput = document.getElementById("base");
   const campaignInput = document.getElementById("campaign");
-  const termInput     = document.getElementById("term");
-  const contentInput  = document.getElementById("content");
-  const resultField   = document.getElementById("result");
+  const termInput = document.getElementById("term");
+  const contentInput = document.getElementById("content");
+  const resultField = document.getElementById("result");
 
-  /* =========================
-     Source – leer starten
-  ========================= */
+  /* Source leer */
+  const sp = document.createElement("option");
+  sp.textContent = "Bitte Source auswählen";
+  sp.disabled = true;
+  sp.selected = true;
+  sourceSelect.appendChild(sp);
 
-  const sourcePlaceholder = document.createElement("option");
-  sourcePlaceholder.textContent = "Bitte Source auswählen";
-  sourcePlaceholder.value = "";
-  sourcePlaceholder.disabled = true;
-  sourcePlaceholder.selected = true;
-  sourceSelect.appendChild(sourcePlaceholder);
-
-  Object.keys(utmConfig).forEach(source => {
-    const option = document.createElement("option");
-    option.value = source;
-    option.textContent = source;
-    sourceSelect.appendChild(option);
+  Object.keys(utmConfig).forEach(src => {
+    const o = document.createElement("option");
+    o.value = src;
+    o.textContent = src;
+    sourceSelect.appendChild(o);
   });
 
-  /* =========================
-     Medium – disabled starten
-  ========================= */
-
+  /* Medium disabled */
   mediumSelect.disabled = true;
-
-  const mediumPlaceholder = document.createElement("option");
-  mediumPlaceholder.textContent = "Bitte zuerst Source auswählen";
-  mediumPlaceholder.disabled = true;
-  mediumPlaceholder.selected = true;
-  mediumSelect.appendChild(mediumPlaceholder);
+  const mp = document.createElement("option");
+  mp.textContent = "Bitte zuerst Source wählen";
+  mp.disabled = true;
+  mp.selected = true;
+  mediumSelect.appendChild(mp);
 
   sourceSelect.addEventListener("change", () => {
     mediumSelect.innerHTML = "";
-    mediumSelect.disabled = false;
-
-    utmConfig[sourceSelect.value].forEach(medium => {
-      const option = document.createElement("option");
-      option.value = medium;
-      option.textContent = medium;
-      mediumSelect.appendChild(option);
+    utmConfig[sourceSelect.value].forEach(m => {
+      const o = document.createElement("option");
+      o.value = m;
+      o.textContent = m;
+      mediumSelect.appendChild(o);
     });
+    mediumSelect.disabled = false;
   });
 
-  /* =========================
-     UTM generieren
-  ========================= */
+  /* Optional Toggle */
+  const toggleBtn = document.querySelector(".optional-toggle");
+  const optionalFields = document.querySelector(".optional-fields");
 
+  toggleBtn.addEventListener("click", () => {
+    const open = !optionalFields.hasAttribute("hidden");
+    optionalFields.toggleAttribute("hidden");
+    toggleBtn.textContent = open
+      ? "Optionale Parameter anzeigen"
+      : "Optionale Parameter ausblenden";
+    toggleBtn.setAttribute("aria-expanded", String(!open));
+  });
+
+  /* UTM generieren */
   window.generateUTM = function () {
-
-    const base     = baseInput.value.trim();
-    const source   = sourceSelect.value;
-    const medium   = mediumSelect.value;
-    const campaign = campaignInput.value.trim();
-    const term     = termInput.value.trim();
-    const content  = contentInput.value.trim();
-
-    // Pflichtfelder prüfen
-    if (!base || !source || !medium || !campaign) {
-      alert("Bitte Source, Medium, Campaign und Ziel‑URL ausfüllen.");
+    if (!baseInput.value || !sourceSelect.value || !mediumSelect.value || !campaignInput.value) {
+      alert("Bitte alle Pflichtfelder ausfüllen.");
       return;
     }
 
-    // Basis‑UTM
     let url =
-      `${base}?utm_source=${encodeURIComponent(source)}` +
-      `&utm_medium=${encodeURIComponent(medium)}` +
-      `&utm_campaign=${encodeURIComponent(campaign)}`;
+      `${baseInput.value}?utm_source=${sourceSelect.value}` +
+      `&utm_medium=${mediumSelect.value}` +
+      `&utm_campaign=${campaignInput.value}`;
 
-    // ✅ Optionale Parameter nur anhängen, wenn befüllt
-    if (term) {
-      url += `&utm_term=${encodeURIComponent(term)}`;
+    if (termInput.value) {
+      url += `&utm_term=${encodeURIComponent(termInput.value)}`;
     }
-
-    if (content) {
-      url += `&utm_content=${encodeURIComponent(content)}`;
+    if (contentInput.value) {
+      url += `&utm_content=${encodeURIComponent(contentInput.value)}`;
     }
 
     resultField.value = url;
 
-    // Historie speichern
     const history = JSON.parse(localStorage.getItem("utmHistory")) || [];
-    history.unshift({
-      url,
-      createdAt: new Date().toISOString()
-    });
+    history.unshift({ url, createdAt: new Date().toISOString() });
     localStorage.setItem("utmHistory", JSON.stringify(history));
   };
 
-  /* =========================
-     Copy
-  ========================= */
-
+  /* Copy */
   window.copyUTM = function () {
     resultField.select();
     document.execCommand("copy");
-    alert("URL kopiert ✅");
   };
-
 });
-
-
