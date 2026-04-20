@@ -4,33 +4,37 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>UTM history</title>
+  <title>UTM‑Historie</title>
 
-  <!-- Styles -->
+  <!-- Basis-Styles (für Reset, Font etc.) -->
   <link rel="stylesheet" href="style.css">
+
+  <!-- ✅ Gekapselte History-Styles -->
+  <link rel="stylesheet" href="history.css">
 </head>
 
-<body>
+<body class="history-page">
+
   <div class="container">
 
-    <h1>UTM history</h1>
+    <h1>UTM‑Historie</h1>
 
     <table class="history-table">
       <thead>
         <tr>
-          <th>Creation date</th>
-          <th>UTM URL</th>
+          <th>Erstellt am</th>
+          <th>UTM‑URL</th>
         </tr>
       </thead>
       <tbody id="historyBody"></tbody>
     </table>
 
     <!-- Aktionen -->
-    <button onclick="downloadCSV()">Export to CSV</button>
-    <button onclick="clearHistory()">Delete history</button>
+    <button onclick="downloadCSV()">CSV exportieren</button>
+    <button onclick="clearHistory()">Historie löschen</button>
 
     <p class="history-link">
-      <a href="index.html">← back to Generator</a>
+      <a href="index.html">← zurück zum Generator</a>
     </p>
 
   </div>
@@ -40,7 +44,7 @@
     const tbody = document.getElementById("historyBody");
 
     /* =========================
-       Duplikate erkennen
+       Duplikate zählen
     ========================= */
     const urlCount = {};
     history.forEach(item => {
@@ -53,7 +57,7 @@
     if (history.length === 0) {
       tbody.innerHTML = `
         <tr>
-          <td colspan="2">No UTM URLs found.</td>
+          <td colspan="2">Noch keine UTMs generiert.</td>
         </tr>
       `;
     } else {
@@ -68,7 +72,10 @@
         const formattedDate =
           date.toLocaleDateString("de-DE") +
           " " +
-          date.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" });
+          date.toLocaleTimeString("de-DE", {
+            hour: "2-digit",
+            minute: "2-digit"
+          });
 
         tr.innerHTML = `
           <td>${formattedDate}</td>
@@ -86,7 +93,7 @@
     ========================= */
     function downloadCSV() {
       if (history.length === 0) {
-        alert("No data for export available.");
+        alert("Keine Daten für den Export vorhanden.");
         return;
       }
 
@@ -105,7 +112,10 @@
           )
           .join("\n");
 
-      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const blob = new Blob([csvContent], {
+        type: "text/csv;charset=utf-8;"
+      });
+
       const url = URL.createObjectURL(blob);
 
       const link = document.createElement("a");
@@ -120,11 +130,12 @@
        Historie löschen
     ========================= */
     function clearHistory() {
-      if (confirm("Really delete history?")) {
+      if (confirm("UTM‑Historie wirklich löschen?")) {
         localStorage.removeItem("utmHistory");
         location.reload();
       }
     }
   </script>
+
 </body>
 </html>
