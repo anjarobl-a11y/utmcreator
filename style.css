@@ -1,45 +1,32 @@
 
-/* =========================
-   Global / Reset
-========================= */
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
+/* Layout */
 body {
   margin: 0;
   font-family: Arial, sans-serif;
   background: #f5f5f5;
 }
 
-/* =========================
-   Card Container
-========================= */
 .container {
   max-width: 420px;
   margin: 40px auto;
   padding: 24px;
-  background: #ffffff;
+  background: #fff;
   border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 24px rgba(0,0,0,.08);
 }
 
-/* =========================
-   Logo
-========================= */
+/* Logo + Header */
 .logo {
   display: block;
-  margin: 0 auto 12px auto;
+  margin: 0 auto 12px;
   max-height: 32px;
-  width: auto;
 }
 
-/* =========================
-   Headline + Hero
-========================= */
 .headline-wrapper {
   display: flex;
-  align-items: flex-start; /* wichtig für großes Icon */
+  align-items: flex-start;
   justify-content: center;
   gap: 10px;
   margin-bottom: 24px;
@@ -48,99 +35,86 @@ body {
 .headline-wrapper h1 {
   margin: 0;
   font-size: 22px;
-  font-weight: 700;
 }
 
-/* Superheld-Icon */
 .hero {
-  max-height: 80px;   /* hier steuerst du die Größe */
-  width: auto;
-  margin-top: 2px;   /* feiner optischer Ausgleich */
+  max-height: 80px;
+  margin-top: 2px;
 }
 
-/* =========================
-   Formular
-========================= */
+/* Formular */
 label {
-  display: block;
   margin-top: 14px;
+  display: block;
   font-size: 13px;
   font-weight: 600;
 }
 
-/* optionale Felder kennzeichnen */
-label[for="term"]::after,
-label[for="content"]::after {
-  content: " (optional)";
-  font-weight: normal;
-  color: #777;
-}
-
-input,
-select,
-textarea {
+input, select, textarea, button {
   width: 100%;
-  height: 40px;
   margin-top: 4px;
-  padding: 0 12px;
-  font-size: 14px;
-  background: #fafafa;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+  padding: 8px 10px;
 }
 
-/* Textarea */
 textarea {
   height: 80px;
-  padding: 10px 12px;
-  resize: none;
 }
 
-/* =========================
-   Disabled Medium
-========================= */
+/* Disabled */
 select:disabled {
-  background: #eeeeee;
-  color: #888888;
-  cursor: not-allowed;
+  background: #eee;
 }
 
-/* =========================
-   Buttons
-========================= */
-button {
-  width: 100%;
-  height: 42px;
+/* Optional */
+.optional-toggle {
   margin-top: 16px;
-  background: #e4002b;
-  color: #ffffff;
+  background: none;
   border: none;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 700;
+  color: #e4002b;
   cursor: pointer;
-}
-
-button:hover {
-  opacity: 0.9;
-}
-
-/* =========================
-   History Link
-========================= */
-.history-link {
-  margin-top: 14px;
-  text-align: center;
   font-size: 13px;
 }
 
-.history-link a {
-  color: #e4002b;
-  text-decoration: none;
-  font-weight: 600;
+.optional-fields {
+  margin-top: 12px;
 }
 
-.history-link a:hover {
-  text-decoration: underline;
+/* Tooltip */
+.tooltip {
+  margin-left: 4px;
+  font-size: 12px;
+  position: relative;
+  cursor: help;
 }
 
+.tooltip-text {
+  visibility: hidden;
+  position: absolute;
+  width: 180px;
+  background: #333;
+  color: #fff;
+  padding: 6px;
+  font-size: 12px;
+  border-radius: 6px;
+  top: -5px;
+  left: 100%;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+}
+
+/* Buttons & History */
+button {
+  margin-top: 16px;
+  background: #e4002b;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+}
+
+.history-link {
+  margin-top: 16px;
+  text-align: center;
+}
