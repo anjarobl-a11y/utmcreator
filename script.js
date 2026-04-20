@@ -10,10 +10,18 @@ document.addEventListener("DOMContentLoaded", () => {
     affiliate: ["awin"]
   };
 
-  const sourceSelect = document.getElementById("source");
-  const mediumSelect = document.getElementById("medium");
+  const sourceSelect  = document.getElementById("source");
+  const mediumSelect  = document.getElementById("medium");
 
-  /* ========= Source: leer starten ========= */
+  const baseInput     = document.getElementById("base");
+  const campaignInput = document.getElementById("campaign");
+  const termInput     = document.getElementById("term");
+  const contentInput  = document.getElementById("content");
+  const resultField   = document.getElementById("result");
+
+  /* =========================
+     Source – leer starten
+  ========================= */
 
   const sourcePlaceholder = document.createElement("option");
   sourcePlaceholder.textContent = "Bitte Source auswählen";
@@ -29,7 +37,9 @@ document.addEventListener("DOMContentLoaded", () => {
     sourceSelect.appendChild(option);
   });
 
-  /* ========= Medium: disabled starten ========= */
+  /* =========================
+     Medium – disabled starten
+  ========================= */
 
   mediumSelect.disabled = true;
 
@@ -51,44 +61,61 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  /* ========= UTM generieren + Historie speichern ========= */
+  /* =========================
+     UTM generieren
+  ========================= */
 
+  window.generateUTM = function () {
 
-window.generateUTM = function () {
-  const base = document.getElementById("base").value;
-  const campaign = document.getElementById("campaign").value;
-  const source = sourceSelect.value;
-  const medium = mediumSelect.value;
+    const base     = baseInput.value.trim();
+    const source   = sourceSelect.value;
+    const medium   = mediumSelect.value;
+    const campaign = campaignInput.value.trim();
+    const term     = termInput.value.trim();
+    const content  = contentInput.value.trim();
 
-  if (!base || !campaign || !source || !medium) {
-    alert("Bitte alle Felder ausfüllen");
-    return;
-  }
+    // Pflichtfelder prüfen
+    if (!base || !source || !medium || !campaign) {
+      alert("Bitte Source, Medium, Campaign und Ziel‑URL ausfüllen.");
+      return;
+    }
 
-  const url =
-    `${base}?utm_source=${source}&utm_medium=${medium}&utm_campaign=${campaign}`;
+    // Basis‑UTM
+    let url =
+      `${base}?utm_source=${encodeURIComponent(source)}` +
+      `&utm_medium=${encodeURIComponent(medium)}` +
+      `&utm_campaign=${encodeURIComponent(campaign)}`;
 
-  document.getElementById("result").value = url;
+    // ✅ Optionale Parameter nur anhängen, wenn befüllt
+    if (term) {
+      url += `&utm_term=${encodeURIComponent(term)}`;
+    }
 
-  const history = JSON.parse(localStorage.getItem("utmHistory")) || [];
+    if (content) {
+      url += `&utm_content=${encodeURIComponent(content)}`;
+    }
 
-  history.unshift({
-    url: url,
-    createdAt: new Date().toISOString()
-  });
+    resultField.value = url;
 
-  localStorage.setItem("utmHistory", JSON.stringify(history));
-};
+    // Historie speichern
+    const history = JSON.parse(localStorage.getItem("utmHistory")) || [];
+    history.unshift({
+      url,
+      createdAt: new Date().toISOString()
+    });
+    localStorage.setItem("utmHistory", JSON.stringify(history));
+  };
 
-
-  /* ========= Copy ========= */
+  /* =========================
+     Copy
+  ========================= */
 
   window.copyUTM = function () {
-    const result = document.getElementById("result");
-    result.select();
+    resultField.select();
     document.execCommand("copy");
     alert("URL kopiert ✅");
   };
 
 });
+
 
