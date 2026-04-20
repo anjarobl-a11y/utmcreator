@@ -25,7 +25,7 @@ body {
 }
 
 /* =========================
-   Logo (zentriert oben)
+   Logo (zentriert)
 ========================= */
 .logo {
   display: block;
@@ -36,30 +36,31 @@ body {
 }
 
 /* =========================
-   Header: Titel + Superheld
-   → EXAKT wie im Screenshot
+   Header – EXAKT wie Screenshot 2
 ========================= */
 .headline-wrapper {
-  display: flex;                 /* horizontales Layout */
-  justify-content: center;       /* Gruppe zentrieren */
-  align-items: center;           /* vertikal mittig */
-  gap: 12px;
+  position: relative;          /* Bezug für Superheld */
   margin-bottom: 24px;
 }
 
+/* Überschrift wirklich zentriert */
 .headline-wrapper h1 {
   margin: 0;
+  text-align: center;          /* ✅ DAS war der fehlende Kern */
   font-size: 22px;
   font-weight: 700;
-  line-height: 1.1;
-  white-space: nowrap;           /* Text bleibt in einer Zeile */
+  line-height: 1.2;
 }
 
-/* Superheld rechts daneben */
+/* Superheld dekorativ rechts */
 .hero {
-  display: block;
+  position: absolute;          /* ✅ entkoppelt vom Text */
+  right: -10px;                /* Feinjustierung */
+  top: 50%;
+  transform: translateY(-50%);
   max-height: 80px;
   width: auto;
+  pointer-events: none;        /* rein dekorativ */
 }
 
 /* =========================
@@ -128,7 +129,6 @@ button:hover {
 
 /* =========================
    Optionale Parameter Toggle
-   (sekundär, dezent)
 ========================= */
 .optional-toggle {
   margin-top: 16px;
@@ -140,7 +140,6 @@ button:hover {
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  text-align: left;
 }
 
 .optional-toggle:hover {
@@ -181,8 +180,7 @@ button:hover {
 }
 
 /* =========================
-   History Link
-   (linksbündig, grau)
+   History Link (linksbündig, grau)
 ========================= */
 .history-link {
   margin-top: 16px;
