@@ -1,3 +1,4 @@
+
 /* =========================
    Reset & Global
 ========================= */
@@ -36,14 +37,15 @@ body {
 
 /* =========================
    Headline + Superheld
+   (EXAKT horizontal, kein Umbruch)
 ========================= */
 .headline-wrapper {
-  display: inline-flex;
+  display: inline-flex;      /* wichtig: inline + flex */
   justify-content: center;
-  align-items: center;
+  align-items: center;       /* echte vertikale Mitte */
   gap: 12px;
-  flex-wrap: nowrap;
-  white-space: nowrap;
+  flex-wrap: nowrap;         /* Umbruch verhindern */
+  white-space: nowrap;       /* zusätzliche Absicherung */
   margin: 0 auto 24px auto;
 }
 
@@ -54,11 +56,12 @@ body {
   line-height: 1;
 }
 
-/* Superheld */
+/* Superheld-Icon */
 .hero {
-  display: inline-block;
+  display: inline-block;     /* kein block → keine neue Zeile */
   max-height: 80px;
   width: auto;
+  /* KEIN margin-top, KEIN baseline, KEIN align-hack */
 }
 
 /* =========================
@@ -75,9 +78,10 @@ input,
 select,
 textarea,
 button {
-  font-family: inherit;
+  font-family: inherit;      /* überall Poppins */
 }
 
+/* Inputs / Selects */
 input,
 select,
 textarea {
@@ -127,7 +131,7 @@ button:hover {
 
 /* =========================
    Optionale Parameter Toggle
-   (sekundär, kein CTA)
+   (sekundär, KEIN CTA)
 ========================= */
 .optional-toggle {
   margin-top: 16px;
@@ -180,26 +184,20 @@ button:hover {
 
 /* =========================
    History Link
-   (gleiches Styling wie optional-toggle)
 ========================= */
 .history-link {
   margin-top: 16px;
   text-align: center;
+  font-size: 13px;
 }
 
 .history-link a {
-  background: none;
-  border: none;
-  padding: 0;
-  width: auto;
-
-  color: #555555;
-  font-size: 13px;
-  font-weight: 600;
+  color: #e4002b;
   text-decoration: none;
-  cursor: pointer;
+  font-weight: 600;
 }
 
 .history-link a:hover {
   text-decoration: underline;
 }
+
