@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -12,7 +11,7 @@
 <body>
   <div class="container">
 
-    <!-- Logo -->
+    <!-- Logo (Reload) -->
     <a href="./">
       <img
         src="https://cdn-live.be-stabilo.com/media/27/56/01/1675089023/STABILO-Logo_RGB_72dpi.png"
@@ -27,9 +26,9 @@
       <img src="image.png" alt="" class="hero">
     </div>
 
-    <!-- Formular -->
-    <label for="base">Ziel‑URL</label>
-    <input id="base" type="url" placeholder="https://www.stabilo.com/…" >
+    <!-- Pflichtfelder -->
+    <label for="base">Ziel‑URL *</label>
+    <input id="base" type="url" placeholder="https://www.stabilo.com/…">
 
     <label for="source">Source *</label>
     <select id="source"></select>
@@ -40,12 +39,34 @@
     <label for="campaign">Campaign *</label>
     <input id="campaign" type="text" placeholder="spring_sale_2026">
 
-    <!-- ✅ NEU: optionale Felder -->
-    <label for="term">Keyword (utm_term)</label>
-    <input id="term" type="text" placeholder="z. B. fineliner">
+    <!-- Optionale Felder -->
+    <div class="optional-wrapper">
+      <button type="button" class="optional-toggle" aria-expanded="false">
+        Optionale Parameter anzeigen
+      </button>
 
-    <label for="content">Content (utm_content)</label>
-    <input id="content" type="text" placeholder="z. B. ad_variant_a">
+      <div class="optional-fields" hidden>
+        <label for="term">
+          Keyword (utm_term)
+          <span class="tooltip">ⓘ
+            <span class="tooltip-text">
+              Für Keywords, z. B. Paid Search.
+            </span>
+          </span>
+        </label>
+        <input id="term" type="text" placeholder="z. B. fineliner">
+
+        <label for="content">
+          Content (utm_content)
+          <span class="tooltip">ⓘ
+            <span class="tooltip-text">
+              Zur Unterscheidung von Creatives / Varianten.
+            </span>
+          </span>
+        </label>
+        <input id="content" type="text" placeholder="z. B. banner_a">
+      </div>
+    </div>
 
     <button onclick="generateUTM()">UTM generieren</button>
 
@@ -56,10 +77,8 @@
     <p class="history-link">
       <a href="history.html">UTM‑Historie ansehen</a>
     </p>
-
   </div>
 
   <script src="script.js"></script>
 </body>
 </html>
-
