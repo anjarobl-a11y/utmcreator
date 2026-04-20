@@ -16,7 +16,6 @@ body {
    CARD CONTAINER
 ========================= */
 .container {
-  position: relative;               /* Referenz für dekorative Elemente */
   max-width: 420px;
   margin: 40px auto;
   padding: 24px;
@@ -26,47 +25,42 @@ body {
 }
 
 /* =========================
-   HEADER – DESIGN BASELINE
-   ❗️NICHT MEHR ÄNDERN
-   Ziel: Screenshot 2
+   LOGO (oben, zentriert)
 ========================= */
-
-/* Logo zentriert oben */
 .logo {
   display: block;
-  margin: 0 auto 16px auto;
+  margin: 0 auto 12px auto;
   max-height: 32px;
   width: auto;
   cursor: pointer;
 }
 
-/* Wrapper für Titel + dekorativen Superhelden */
+/* =========================
+   HEADER – NEUE DESIGN BASELINE
+   Logo oben, darunter Text + Hero
+========================= */
 .headline-wrapper {
-  position: relative;
+  display: flex;
+  justify-content: center;   /* Gruppe zentrieren */
+  align-items: center;       /* vertikal ausrichten */
+  gap: 10px;                 /* Abstand Text ↔ Hero */
   margin-bottom: 24px;
-
-  /* Platz für den Superhelden reservieren */
-  padding-right: 96px;
 }
 
-/* Überschrift – MUSS allein zentriert sein */
+/* Überschrift */
 .headline-wrapper h1 {
   margin: 0;
-  text-align: center;
   font-size: 22px;
   font-weight: 700;
   line-height: 1.2;
+  text-align: center;
 }
 
-/* Superheld – rein dekorativ, beeinflusst Text nicht */
+/* Superheld direkt daneben */
 .hero {
-  position: absolute;
-  right: 24px;                      /* Abstand zur Card-Kante */
-  top: 50%;
-  transform: translateY(-50%);
-  max-height: 80px;
+  display: block;
+  max-height: 64px;          /* bewusst etwas kleiner als vorher */
   width: auto;
-  pointer-events: none;
 }
 
 /* =========================
@@ -114,7 +108,7 @@ select:disabled {
 }
 
 /* =========================
-   PRIMARY BUTTONS (CTA)
+   PRIMARY BUTTONS
 ========================= */
 button {
   width: 100%;
@@ -135,7 +129,6 @@ button:hover {
 
 /* =========================
    OPTIONALE PARAMETER TOGGLE
-   (sekundär, kein CTA)
 ========================= */
 .optional-toggle {
   margin-top: 16px;
@@ -188,8 +181,6 @@ button:hover {
 
 /* =========================
    HISTORY LINK
-   (linksbündig, grau,
-    gleicher Rang wie Toggle)
 ========================= */
 .history-link {
   margin-top: 16px;
