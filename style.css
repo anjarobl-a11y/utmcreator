@@ -1,3 +1,4 @@
+
 /* =========================
    Reset & Global
 ========================= */
@@ -24,44 +25,39 @@ body {
 }
 
 /* =========================
-   Logo
+   Logo (zentriert oben)
 ========================= */
 .logo {
   display: block;
-  margin: 0 auto 12px auto;
+  margin: 0 auto 16px auto;
   max-height: 32px;
   width: auto;
   cursor: pointer;
 }
 
 /* =========================
-   Headline + Superheld
-   -> MUSS zentriert bleiben
+   Header: Titel + Superheld
+   → EXAKT wie im Screenshot
 ========================= */
 .headline-wrapper {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  display: flex;                 /* horizontales Layout */
+  justify-content: center;       /* Gruppe zentrieren */
+  align-items: center;           /* vertikal mittig */
   gap: 12px;
-  flex-wrap: nowrap;
-  white-space: nowrap;
-
-  /* 🔑 der Schlüssel:
-     Wrapper selbst zentrieren,
-     NICHT über text-align */
-  margin: 0 auto 24px auto;
+  margin-bottom: 24px;
 }
 
 .headline-wrapper h1 {
   margin: 0;
   font-size: 22px;
   font-weight: 700;
-  line-height: 1;
+  line-height: 1.1;
+  white-space: nowrap;           /* Text bleibt in einer Zeile */
 }
 
-/* Superheld */
+/* Superheld rechts daneben */
 .hero {
-  display: inline-block;
+  display: block;
   max-height: 80px;
   width: auto;
 }
@@ -96,6 +92,7 @@ textarea {
   border-radius: 6px;
 }
 
+/* Textarea */
 textarea {
   height: 80px;
   padding: 10px 12px;
@@ -110,7 +107,7 @@ select:disabled {
 }
 
 /* =========================
-   Primary Buttons (CTA)
+   Primary Buttons
 ========================= */
 button {
   width: 100%;
@@ -139,7 +136,6 @@ button:hover {
   border: none;
   padding: 0;
   width: auto;
-
   color: #555555;
   font-size: 13px;
   font-weight: 600;
@@ -186,19 +182,14 @@ button:hover {
 
 /* =========================
    History Link
-   -> linksbündig + grau,
-      gleicher Stil wie optional-toggle
+   (linksbündig, grau)
 ========================= */
 .history-link {
   margin-top: 16px;
-  text-align: left; /* ✅ linksbündig */
+  text-align: left;
 }
 
 .history-link a {
-  background: none;
-  border: none;
-  padding: 0;
-
   color: #555555;
   font-size: 13px;
   font-weight: 600;
