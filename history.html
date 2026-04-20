@@ -2,15 +2,17 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>UTM history</title>
 
+  <!-- Styles -->
   <link rel="stylesheet" href="style.css">
 </head>
-<body>
 
+<body>
   <div class="container">
+
     <h1>UTM history</h1>
 
     <table class="history-table">
@@ -23,27 +25,35 @@
       <tbody id="historyBody"></tbody>
     </table>
 
+    <!-- Aktionen -->
+    <button onclick="downloadCSV()">Export to CSV</button>
     <button onclick="clearHistory()">Delete history</button>
 
     <p class="history-link">
-      <a href="index.html">← back to UTM Generator</a>
+      <a href="index.html">← back to Generator</a>
     </p>
+
   </div>
 
   <script>
     const history = JSON.parse(localStorage.getItem("utmHistory")) || [];
     const tbody = document.getElementById("historyBody");
 
-    // Zähle URLs zur Duplikat-Erkennung
+    /* =========================
+       Duplikate erkennen
+    ========================= */
     const urlCount = {};
     history.forEach(item => {
       urlCount[item.url] = (urlCount[item.url] || 0) + 1;
     });
 
+    /* =========================
+       Tabelle rendern
+    ========================= */
     if (history.length === 0) {
       tbody.innerHTML = `
         <tr>
-          <td colspan="2">Noch keine UTMs generiert.</td>
+          <td colspan="2">No UTM URLs found.</td>
         </tr>
       `;
     } else {
@@ -71,13 +81,50 @@
       });
     }
 
+    /* =========================
+       CSV Export
+    ========================= */
+    function downloadCSV() {
+      if (history.length === 0) {
+        alert("No data for export available.");
+        return;
+      }
+
+      const header = ["created_at", "utm_url"];
+      const rows = history.map(item => [
+        item.createdAt,
+        item.url
+      ]);
+
+      const csvContent =
+        [header, ...rows]
+          .map(row =>
+            row.map(value =>
+              `"${String(value).replace(/"/g, '""')}"`
+            ).join(";")
+          )
+          .join("\n");
+
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "utm-history.csv";
+      link.click();
+
+      URL.revokeObjectURL(url);
+    }
+
+    /* =========================
+       Historie löschen
+    ========================= */
     function clearHistory() {
-      if (confirm("UTM‑Historie wirklich löschen?")) {
+      if (confirm("Really delete history?")) {
         localStorage.removeItem("utmHistory");
         location.reload();
       }
     }
   </script>
-
 </body>
 </html>
