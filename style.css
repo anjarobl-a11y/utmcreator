@@ -1,6 +1,6 @@
 
 /* =========================
-   Global
+   Global / Reset
 ========================= */
 * {
   box-sizing: border-box;
@@ -20,7 +20,6 @@ body {
   margin: 40px auto;
   padding: 24px;
   background: #ffffff;
-
   border-radius: 12px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
@@ -36,13 +35,13 @@ body {
 }
 
 /* =========================
-   Headline + Icon
+   Headline + Hero
 ========================= */
 .headline-wrapper {
   display: flex;
+  align-items: flex-start; /* wichtig für großes Icon */
   justify-content: center;
-  align-items: center;
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 24px;
 }
 
@@ -52,21 +51,29 @@ body {
   font-weight: 700;
 }
 
+/* Superheld-Icon */
 .hero {
-   height: 80px;
-   width: auto;
-   margin-top: 2px;
-
+  max-height: 80px;   /* hier steuerst du die Größe */
+  width: auto;
+  margin-top: 2px;   /* feiner optischer Ausgleich */
 }
 
 /* =========================
-   Form
+   Formular
 ========================= */
 label {
   display: block;
   margin-top: 14px;
   font-size: 13px;
   font-weight: 600;
+}
+
+/* optionale Felder kennzeichnen */
+label[for="term"]::after,
+label[for="content"]::after {
+  content: " (optional)";
+  font-weight: normal;
+  color: #777;
 }
 
 input,
@@ -76,17 +83,26 @@ textarea {
   height: 40px;
   margin-top: 4px;
   padding: 0 12px;
-
   font-size: 14px;
   background: #fafafa;
   border: 1px solid #ddd;
   border-radius: 6px;
 }
 
+/* Textarea */
 textarea {
   height: 80px;
   padding: 10px 12px;
   resize: none;
+}
+
+/* =========================
+   Disabled Medium
+========================= */
+select:disabled {
+  background: #eeeeee;
+  color: #888888;
+  cursor: not-allowed;
 }
 
 /* =========================
@@ -96,12 +112,10 @@ button {
   width: 100%;
   height: 42px;
   margin-top: 16px;
-
   background: #e4002b;
   color: #ffffff;
   border: none;
   border-radius: 8px;
-
   font-size: 14px;
   font-weight: 700;
   cursor: pointer;
@@ -109,14 +123,6 @@ button {
 
 button:hover {
   opacity: 0.9;
-}
-
-/* =========================
-   Disabled Medium
-========================= */
-select:disabled {
-  background: #eeeeee;
-  color: #888888;
 }
 
 /* =========================
@@ -134,41 +140,7 @@ select:disabled {
   font-weight: 600;
 }
 
-
-/* =========================
-   UTM History Table
-========================= */
-
-.history-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 16px;
-  font-size: 13px;
+.history-link a:hover {
+  text-decoration: underline;
 }
-
-.history-table th {
-  text-align: left;
-  padding: 8px;
-  border-bottom: 1px solid #ddd;
-}
-
-.history-table td {
-  padding: 8px;
-  vertical-align: top;
-}
-
-.history-table input {
-  width: 100%;
-  font-size: 12px;
-  padding: 6px;
-}
-
-/* =========================
-   Duplicate Highlight
-========================= */
-
-.history-table tr.duplicate {
-  background-color: #e6f7e6; /* hellgrün */
-}
-
 
