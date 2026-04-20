@@ -11,31 +11,63 @@
 <body>
 
   <div class="container">
-
     <h1>UTM‑Historie</h1>
 
-    <div id="history"></div>
+    <table class="history-table">
+      <thead>
+        <tr>
+          <th>Erstellt am</th>
+          <th>UTM‑URL</th>
+        </tr>
+      </thead>
+      <tbody id="historyBody"></tbody>
+    </table>
 
     <button onclick="clearHistory()">Historie löschen</button>
 
     <p class="history-link">
       <a href="index.html">← zurück zum Generator</a>
     </p>
-
   </div>
 
   <script>
-    const container = document.getElementById("history");
     const history = JSON.parse(localStorage.getItem("utmHistory")) || [];
+    const tbody = document.getElementById("historyBody");
+
+    // Zähle URLs zur Duplikat-Erkennung
+    const urlCount = {};
+    history.forEach(item => {
+      urlCount[item.url] = (urlCount[item.url] || 0) + 1;
+    });
 
     if (history.length === 0) {
-      container.innerHTML = "<p>Noch keine UTMs generiert.</p>";
+      tbody.innerHTML = `
+        <tr>
+          <td colspan="2">Noch keine UTMs generiert.</td>
+        </tr>
+      `;
     } else {
-      history.forEach(url => {
-        const input = document.createElement("input");
-        input.value = url;
-        input.readOnly = true;
-        container.appendChild(input);
+      history.forEach(item => {
+        const tr = document.createElement("tr");
+
+        if (urlCount[item.url] > 1) {
+          tr.classList.add("duplicate");
+        }
+
+        const date = new Date(item.createdAt);
+        const formattedDate =
+          date.toLocaleDateString("de-DE") +
+          " " +
+          date.toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" });
+
+        tr.innerHTML = `
+          <td>${formattedDate}</td>
+          <td>
+            <input type="text" value="${item.url}" readonly>
+          </td>
+        `;
+
+        tbody.appendChild(tr);
       });
     }
 
@@ -49,4 +81,3 @@
 
 </body>
 </html>
-
