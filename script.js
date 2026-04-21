@@ -1,118 +1,103 @@
-
 document.addEventListener("DOMContentLoaded", () => {
 
   const utmConfig = {
     google: ["cpc"],
     bing: ["cpc"],
-
-    facebook: ["paid_social"],
-    instagram: ["paid_social"],
-    tiktok: ["paid_social"],
-
+    instagram: ["paid social"],
+    instagram_organic: ["social"],
+    facebook: ["paid social"],
+    facebook_organic: ["social"],
+    tiktok: ["paid social"],
+    tiktok_organic: ["social"],
     newsletter: ["email"],
-
-    corporate_benefits: ["partnerprogramme"],
-    sovendus: ["partnerprogramme"],
-    awin: ["affiliate"]
+    awin: ["affiliate"],
+    partnerprogramme: ["cb","sovendus"]
   };
 
   const sourceSelect = document.getElementById("source");
   const mediumSelect = document.getElementById("medium");
-  const campaignInput = document.getElementById("campaign");
-  const errorEl = document.getElementById("campaign-error");
 
-  /* Source */
+  const baseInput = document.getElementById("base");
+  const campaignInput = document.getElementById("campaign");
+  const termInput = document.getElementById("term");
+  const contentInput = document.getElementById("content");
+  const resultField = document.getElementById("result");
+
+  // Source: leer starten
   const sourcePlaceholder = document.createElement("option");
-  sourcePlaceholder.textContent = "Bitte Source auswählen";
+  sourcePlaceholder.textContent = "Please select Source";
   sourcePlaceholder.disabled = true;
   sourcePlaceholder.selected = true;
   sourceSelect.appendChild(sourcePlaceholder);
 
   Object.keys(utmConfig).forEach(source => {
-    const opt = document.createElement("option");
-    opt.value = source;
-    opt.textContent = source;
-    sourceSelect.appendChild(opt);
+    const o = document.createElement("option");
+    o.value = source;
+    o.textContent = source;
+    sourceSelect.appendChild(o);
   });
 
-  /* Medium */
+  // Medium: disabled starten
   mediumSelect.disabled = true;
+  const mediumPlaceholder = document.createElement("option");
+  mediumPlaceholder.textContent = "Please select Source first";
+  mediumPlaceholder.disabled = true;
+  mediumPlaceholder.selected = true;
+  mediumSelect.appendChild(mediumPlaceholder);
 
   sourceSelect.addEventListener("change", () => {
     mediumSelect.innerHTML = "";
     utmConfig[sourceSelect.value].forEach(m => {
-      const opt = document.createElement("option");
-      opt.value = m;
-      opt.textContent = m;
-      mediumSelect.appendChild(opt);
+      const o = document.createElement("option");
+      o.value = m;
+      o.textContent = m;
+      mediumSelect.appendChild(o);
     });
     mediumSelect.disabled = false;
   });
 
-  /* Optionale Felder */
-  document.querySelector(".optional-toggle").addEventListener("click", e => {
-    const fields = document.querySelector(".optional-fields");
-    fields.toggleAttribute("hidden");
-    e.target.textContent = fields.hasAttribute("hidden")
-      ? "Optionale Parameter anzeigen"
-      : "Optionale Parameter ausblenden";
+  // Optionale Felder ein/ausklappen
+  const toggleBtn = document.querySelector(".optional-toggle");
+  const optionalFields = document.querySelector(".optional-fields");
+
+  toggleBtn.addEventListener("click", () => {
+    const isOpen = !optionalFields.hasAttribute("hidden");
+    optionalFields.toggleAttribute("hidden");
+    toggleBtn.textContent = isOpen
+      ? "Show optional parameters"
+      : "Hide optional parameters";
+    toggleBtn.setAttribute("aria-expanded", String(!isOpen));
   });
 
-  /* Campaign Validierung */
-  function validateCampaign(campaign, source, medium) {
-    errorEl.textContent = "";
-    campaignInput.classList.remove("invalid");
-
-    if (campaign.length > 50) {
-      errorEl.textContent = "Campaign darf maximal 50 Zeichen lang sein.";
-      campaignInput.classList.add("invalid");
-      return false;
-    }
-
-    const pattern = /^[a-z0-9_]+$/;
-    if (!pattern.test(campaign)) {
-      errorEl.textContent =
-        "Nur Kleinbuchstaben, Zahlen und Unterstriche erlaubt (keine Leerzeichen).";
-      campaignInput.classList.add("invalid");
-      return false;
-    }
-
-    if (campaign.includes(source) || campaign.includes(medium)) {
-      errorEl.textContent =
-        "Campaign darf Source oder Medium nicht enthalten.";
-      campaignInput.classList.add("invalid");
-      return false;
-    }
-
-    return true;
-  }
-
-  /* UTM generieren */
+  // UTM generieren
   window.generateUTM = function () {
-    const base = document.getElementById("base").value.trim();
-    const source = sourceSelect.value;
-    const medium = mediumSelect.value;
-    const campaign = campaignInput.value.trim().toLowerCase();
-    const term = document.getElementById("term").value.trim();
-    const content = document.getElementById("content").value.trim();
-
-    if (!base || !source || !medium || !campaign) return;
-    if (!validateCampaign(campaign, source, medium)) return;
+    if (!baseInput.value || !sourceSelect.value || !mediumSelect.value || !campaignInput.value) {
+      alert("Please fill in all required fields.");
+      return;
+    }
 
     let url =
-      `${base}?utm_source=${source}` +
-      `&utm_medium=${medium}` +
-      `&utm_campaign=${campaign}`;
+      `${baseInput.value}?utm_source=${sourceSelect.value}` +
+      `&utm_medium=${mediumSelect.value}` +
+      `&utm_campaign=${campaignInput.value}`;
 
-    if (term) url += `&utm_term=${encodeURIComponent(term)}`;
-    if (content) url += `&utm_content=${encodeURIComponent(content)}`;
+    if (termInput.value) {
+      url += `&utm_term=${encodeURIComponent(termInput.value)}`;
+    }
+    if (contentInput.value) {
+      url += `&utm_content=${encodeURIComponent(contentInput.value)}`;
+    }
 
-    document.getElementById("result").value = url;
+    resultField.value = url;
+
+    const history = JSON.parse(localStorage.getItem("utmHistory")) || [];
+    history.unshift({ url, createdAt: new Date().toISOString() });
+    localStorage.setItem("utmHistory", JSON.stringify(history));
   };
 
+  // Copy
   window.copyUTM = function () {
-    const result = document.getElementById("result");
-    result.select();
+    resultField.select();
     document.execCommand("copy");
   };
 
