@@ -1,103 +1,118 @@
+
 document.addEventListener("DOMContentLoaded", () => {
 
   const utmConfig = {
     google: ["cpc"],
     bing: ["cpc"],
-    instagram: ["paid social"],
-    instagram_organic: ["social"],
-    facebook: ["paid social"],
-    facebook_organic: ["social"],
-    tiktok: ["paid social"],
-    tiktok_organic: ["social"],
+
+    facebook: ["paid_social"],
+    instagram: ["paid_social"],
+    tiktok: ["paid_social"],
+
     newsletter: ["email"],
-    awin: ["affiliate"],
-    partnerprogramme: ["cb","sovendus"]
+
+    corporate_benefits: ["partnerprogramme"],
+    sovendus: ["partnerprogramme"],
+    awin: ["affiliate"]
   };
 
   const sourceSelect = document.getElementById("source");
   const mediumSelect = document.getElementById("medium");
-
-  const baseInput = document.getElementById("base");
   const campaignInput = document.getElementById("campaign");
-  const termInput = document.getElementById("term");
-  const contentInput = document.getElementById("content");
-  const resultField = document.getElementById("result");
+  const errorEl = document.getElementById("campaign-error");
 
-  // Source: leer starten
+  /* Source */
   const sourcePlaceholder = document.createElement("option");
-  sourcePlaceholder.textContent = "Please select Source";
+  sourcePlaceholder.textContent = "Bitte Source auswählen";
   sourcePlaceholder.disabled = true;
   sourcePlaceholder.selected = true;
   sourceSelect.appendChild(sourcePlaceholder);
 
   Object.keys(utmConfig).forEach(source => {
-    const o = document.createElement("option");
-    o.value = source;
-    o.textContent = source;
-    sourceSelect.appendChild(o);
+    const opt = document.createElement("option");
+    opt.value = source;
+    opt.textContent = source;
+    sourceSelect.appendChild(opt);
   });
 
-  // Medium: disabled starten
+  /* Medium */
   mediumSelect.disabled = true;
-  const mediumPlaceholder = document.createElement("option");
-  mediumPlaceholder.textContent = "Please select Source first";
-  mediumPlaceholder.disabled = true;
-  mediumPlaceholder.selected = true;
-  mediumSelect.appendChild(mediumPlaceholder);
 
   sourceSelect.addEventListener("change", () => {
     mediumSelect.innerHTML = "";
     utmConfig[sourceSelect.value].forEach(m => {
-      const o = document.createElement("option");
-      o.value = m;
-      o.textContent = m;
-      mediumSelect.appendChild(o);
+      const opt = document.createElement("option");
+      opt.value = m;
+      opt.textContent = m;
+      mediumSelect.appendChild(opt);
     });
     mediumSelect.disabled = false;
   });
 
-  // Optionale Felder ein/ausklappen
-  const toggleBtn = document.querySelector(".optional-toggle");
-  const optionalFields = document.querySelector(".optional-fields");
-
-  toggleBtn.addEventListener("click", () => {
-    const isOpen = !optionalFields.hasAttribute("hidden");
-    optionalFields.toggleAttribute("hidden");
-    toggleBtn.textContent = isOpen
-      ? "Show optional parameters"
-      : "Hide optional parameters";
-    toggleBtn.setAttribute("aria-expanded", String(!isOpen));
+  /* Optionale Felder */
+  document.querySelector(".optional-toggle").addEventListener("click", e => {
+    const fields = document.querySelector(".optional-fields");
+    fields.toggleAttribute("hidden");
+    e.target.textContent = fields.hasAttribute("hidden")
+      ? "Optionale Parameter anzeigen"
+      : "Optionale Parameter ausblenden";
   });
 
-  // UTM generieren
-  window.generateUTM = function () {
-    if (!baseInput.value || !sourceSelect.value || !mediumSelect.value || !campaignInput.value) {
-      alert("Please fill in all required fields.");
-      return;
+  /* Campaign Validierung */
+  function validateCampaign(campaign, source, medium) {
+    errorEl.textContent = "";
+    campaignInput.classList.remove("invalid");
+
+    if (campaign.length > 50) {
+      errorEl.textContent = "Campaign darf maximal 50 Zeichen lang sein.";
+      campaignInput.classList.add("invalid");
+      return false;
     }
+
+    const pattern = /^[a-z0-9_]+$/;
+    if (!pattern.test(campaign)) {
+      errorEl.textContent =
+        "Nur Kleinbuchstaben, Zahlen und Unterstriche erlaubt (keine Leerzeichen).";
+      campaignInput.classList.add("invalid");
+      return false;
+    }
+
+    if (campaign.includes(source) || campaign.includes(medium)) {
+      errorEl.textContent =
+        "Campaign darf Source oder Medium nicht enthalten.";
+      campaignInput.classList.add("invalid");
+      return false;
+    }
+
+    return true;
+  }
+
+  /* UTM generieren */
+  window.generateUTM = function () {
+    const base = document.getElementById("base").value.trim();
+    const source = sourceSelect.value;
+    const medium = mediumSelect.value;
+    const campaign = campaignInput.value.trim().toLowerCase();
+    const term = document.getElementById("term").value.trim();
+    const content = document.getElementById("content").value.trim();
+
+    if (!base || !source || !medium || !campaign) return;
+    if (!validateCampaign(campaign, source, medium)) return;
 
     let url =
-      `${baseInput.value}?utm_source=${sourceSelect.value}` +
-      `&utm_medium=${mediumSelect.value}` +
-      `&utm_campaign=${campaignInput.value}`;
+      `${base}?utm_source=${source}` +
+      `&utm_medium=${medium}` +
+      `&utm_campaign=${campaign}`;
 
-    if (termInput.value) {
-      url += `&utm_term=${encodeURIComponent(termInput.value)}`;
-    }
-    if (contentInput.value) {
-      url += `&utm_content=${encodeURIComponent(contentInput.value)}`;
-    }
+    if (term) url += `&utm_term=${encodeURIComponent(term)}`;
+    if (content) url += `&utm_content=${encodeURIComponent(content)}`;
 
-    resultField.value = url;
-
-    const history = JSON.parse(localStorage.getItem("utmHistory")) || [];
-    history.unshift({ url, createdAt: new Date().toISOString() });
-    localStorage.setItem("utmHistory", JSON.stringify(history));
+    document.getElementById("result").value = url;
   };
 
-  // Copy
   window.copyUTM = function () {
-    resultField.select();
+    const result = document.getElementById("result");
+    result.select();
     document.execCommand("copy");
   };
 
