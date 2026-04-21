@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -5,38 +6,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>UTM Generator</title>
 
-  <!-- ✅ Google Font: Poppins -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
-    rel="stylesheet"
-  />
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
 
-  <!-- Styles -->
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
   <div class="container">
 
-    <!-- Logo (Reload) -->
-    <a href="./">
-      <img
-        src="https://cdn-live.be-stabilo.com/media/27/56/01/1675089023/STABILO-Logo_RGB_72dpi.png"
-        alt="STABILO Logo"
-        class="logo"
-      />
-    </a>
+    <!-- Logo -->
+    <img
+      src="https://cdn-live.be-stabilo.com/media/27/56/01/1675089023/STABILO-Logo_RGB_72dpi.png"
+      alt="STABILO Logo"
+      class="logo"
+    >
 
-    <!-- Headline + Superheld -->
+    <!-- Header -->
     <div class="headline-wrapper">
       <h1>UTM Generator</h1>
-      <img src="image.png" alt="" class="hero" />
+      <img src="image.png" alt="" class="hero">
     </div>
 
-    <!-- Pflichtfelder -->
-    <label for="base">Landingpage URL *</label>
+    <!-- Formular -->
+    <label for="base">Ziel‑URL *</label>
     <input id="base" type="url" placeholder="https://www.stabilo.com/…" />
 
     <label for="source">Source *</label>
@@ -46,53 +41,39 @@
     <select id="medium"></select>
 
     <label for="campaign">Campaign *</label>
-    <input id="campaign" type="text" placeholder="spring_sale_2026" />
+    <input
+      id="campaign"
+      type="text"
+      placeholder="spring_sale_2026"
+      aria-describedby="campaign-error"
+    >
+    <p id="campaign-error" class="field-error" aria-live="polite"></p>
 
-    <!-- Optionale Felder -->
-    <div class="optional-wrapper">
-      <button
-        type="button"
-        class="optional-toggle"
-        aria-expanded="false"
-      >
-        Show optional parameters
-      </button>
+    <!-- Optionale Parameter -->
+    <button type="button" class="optional-toggle" aria-expanded="false">
+      Optionale Parameter anzeigen
+    </button>
 
-      <div class="optional-fields" hidden>
-        <label for="term">
-          Keyword (utm_term)
-          <span class="tooltip">ⓘ
-            <span class="tooltip-text">
-              e. g. Keywords or target group
-            </span>
-          </span>
-        </label>
-        <input id="term" type="text" placeholder="z. B. fineliner" />
+    <div class="optional-fields" hidden>
+      <label for="term">Keyword (utm_term)</label>
+      <input id="term" type="text">
 
-        <label for="content">
-          Content (utm_content)
-          <span class="tooltip">ⓘ
-            <span class="tooltip-text">
-              e. g. creatives or variants
-            </span>
-          </span>
-        </label>
-        <input id="content" type="text" placeholder="z. B. banner_a" />
-      </div>
+      <label for="content">Content (utm_content)</label>
+      <input id="content" type="text">
     </div>
 
-    <button onclick="generateUTM()">Create tracking URL </button>
+    <button onclick="generateUTM()">UTM generieren</button>
 
     <textarea
       id="result"
       readonly
-      placeholder="Your tracking URL will appear here"
+      placeholder="Hier erscheint deine UTM‑URL"
     ></textarea>
 
-    <button onclick="copyUTM()">Copy URL</button>
+    <button onclick="copyUTM()">URL kopieren</button>
 
     <p class="history-link">
-      <a href="history.html">Show UTM Generator history</a>
+      <a href="history.html">UTM‑Historie ansehen</a>
     </p>
 
   </div>
@@ -100,4 +81,3 @@
   <script src="script.js"></script>
 </body>
 </html>
-
