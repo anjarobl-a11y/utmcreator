@@ -27,12 +27,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const termInput = document.getElementById("term");
   const resultField = document.getElementById("result");
   const campaignError = document.getElementById("campaignError");
+  const campaignGuidance = document.getElementById("campaignGuidance");
   const optionalWrapper = document.querySelector(".optional-wrapper");
   const createButton = document.querySelector('button[onclick="generateUTM()"]');
+  const copyButton = document.querySelector('button[onclick="copyUTM()"]');
 
-  const campaignLabel = document.querySelector('label[for="campaign"]');
-  const contentLabel = document.querySelector('label[for="content"]');
-  const termLabel = document.querySelector('label[for="term"]');
+  const campaignLabel = campaignInput ? document.querySelector(`label[for="${campaignInput.id}"]`) : null;
 
   const noManualTrackingNotice = document.createElement("div");
   noManualTrackingNotice.innerHTML = "⚡ this platform offers you a tracking template option - no manual UTM setup required";
@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function toggleNoManualTrackingMode() {
     const isBlocked = isNoManualTrackingSelected();
 
-    [campaignLabel, campaignInput, campaignError].forEach(element => {
+    [campaignLabel, campaignInput, campaignError, campaignGuidance].forEach(element => {
       if (!element) return;
       element.hidden = isBlocked;
     });
@@ -136,17 +136,18 @@ document.addEventListener("DOMContentLoaded", () => {
       optionalWrapper.hidden = isBlocked;
     }
 
-    if (contentLabel) {
-      contentLabel.hidden = isBlocked;
-    }
-
-    if (termLabel) {
-      termLabel.hidden = isBlocked;
-    }
-
     if (createButton) {
       createButton.hidden = isBlocked;
       createButton.disabled = isBlocked;
+    }
+
+    if (resultField) {
+      resultField.hidden = isBlocked;
+    }
+
+    if (copyButton) {
+      copyButton.hidden = isBlocked;
+      copyButton.disabled = isBlocked;
     }
 
     noManualTrackingNotice.style.display = isBlocked ? "block" : "none";
@@ -279,4 +280,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
   toggleNoManualTrackingMode();
 });
+
 
