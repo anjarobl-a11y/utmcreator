@@ -17,8 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const baseInput = document.getElementById("base");
   const campaignInput = document.getElementById("campaign");
-  const termInput = document.getElementById("term");
   const contentInput = document.getElementById("content");
+  const termInput = document.getElementById("term");
   const resultField = document.getElementById("result");
 
   // Source: leer starten
@@ -79,13 +79,13 @@ document.addEventListener("DOMContentLoaded", () => {
       `&utm_medium=${mediumSelect.value}` +
       `&utm_campaign=${campaignInput.value}`;
 
-    if (termInput.value) {
-      url += `&utm_term=${encodeURIComponent(termInput.value)}`;
-    }
     if (contentInput.value) {
       url += `&utm_content=${encodeURIComponent(contentInput.value)}`;
     }
-
+    if (termInput.value) {
+      url += `&utm_term=${encodeURIComponent(termInput.value)}`;
+    }
+    
     resultField.value = url;
 
     const history = JSON.parse(localStorage.getItem("utmHistory")) || [];
