@@ -1,8 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
 
   const utmConfig = {
-    google: ["⛔ no_manual_tracking"],
-    microsoft: ["⛔ no_manual_tracking"],
+    google_ads: ["⛔ no_manual_tracking"],
+    microsoft_ads: ["⛔ no_manual_tracking"],
     awin: ["⛔ no_manual_tracking"],
     newsletter: ["⛔ no_manual_tracking"],
     amazon: ["sp","sb","sd","dsp"],
