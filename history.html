@@ -1,141 +1,106 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>UTM history</title>
-
-  <!-- Basis-Styles (für Reset, Font etc.) -->
-  <link rel="stylesheet" href="style.css">
-
-  <!-- ✅ Gekapselte History-Styles -->
-  <link rel="stylesheet" href="history.css">
+  <title>UTM Generator</title>
+  <!-- ✅ Google Font: Poppins -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css" />
 </head>
-
-<body class="history-page">
-
+<body>
   <div class="container">
+    <!-- Logo (Reload) -->
+    <a href="./">
+      <img
+        src="https://cdn-live.be-stabilo.com/media/27/56/01/1675089023/STABILO-Logo_RGB_72dpi.png"
+        alt="STABILO Logo"
+        class="logo"
+      />
+    </a>
 
-    <h1>UTM history</h1>
+    <!-- Headline + Superheld -->
+    <div class="headline-wrapper">
+      <h1>UTM Generator</h1>
+      <img src="image.png" alt="" class="hero" />
+    </div>
 
-    <table class="history-table">
-      <thead>
-        <tr>
-          <th>Creation date</th>
-          <th>UTM‑URL</th>
-        </tr>
-      </thead>
-      <tbody id="historyBody"></tbody>
-    </table>
+    <!-- Pflichtfelder -->
+    <label for="base">Landingpage URL *</label>
+    <input id="base" type="url" placeholder="https://www.stabilo.com/…" />
 
-    <!-- Aktionen -->
-    <button onclick="downloadCSV()">Export to CSV</button>
-    <button onclick="clearHistory()">Delete history</button>
+    <label for="source">Source *</label>
+    <select id="source"></select>
 
-    <p class="history-link">
-      <a href="index.html">← back to UTM Generator</a>
+    <label for="medium">Medium *</label>
+    <select id="medium"></select>
+
+    <label for="campaign">Campaign *</label>
+    <input
+      id="campaign"
+      type="text"
+      placeholder="spring_sale_2026"
+      aria-describedby="campaignError campaignGuidance"
+    />
+    <div id="campaignError" class="field-error" aria-live="polite" hidden></div>
+    <p id="campaignGuidance" class="field-guidance">
+      Rules: lowercase only, no spaces, use only a-z, 0-9, underscore (_) or hyphen (-).
     </p>
 
+    <!-- Optionale Felder -->
+    <div class="optional-wrapper">
+      <button
+        type="button"
+        class="optional-toggle"
+        aria-expanded="false"
+      >
+        Show optional parameters
+      </button>
+
+      <div class="optional-fields" hidden>
+        <label for="content">
+          Content (utm_content)
+          <span class="tooltip">ⓘ
+            <span class="tooltip-text">
+              e. g. creative format or variants
+            </span>
+          </span>
+        </label>
+        <input id="content" type="text" placeholder="e. g. story, reel, banner_a, carousel, video" />
+
+        <label for="term">
+          Keyword (utm_term)
+          <span class="tooltip">ⓘ
+            <span class="tooltip-text">
+              e. g. keywords or target group
+            </span>
+          </span>
+        </label>
+        <input id="term" type="text" placeholder="e. g. fineliner, lookalike, retargeting, prospecting" />
+      </div>
+    </div>
+
+    <button onclick="generateUTM()">Create tracking URL </button>
+
+    <textarea
+      id="result"
+      readonly
+      placeholder="Your tracking URL will appear here"
+    ></textarea>
+
+    <button onclick="copyUTM()">Copy URL</button>
+
+    <p class="history-link">
+      <a href="history.html">Show UTM Generator history</a>
+    </p>
   </div>
 
-  <script>
-    const history = JSON.parse(localStorage.getItem("utmHistory")) || [];
-    const tbody = document.getElementById("historyBody");
-
-    /* =========================
-       Duplikate zählen
-    ========================= */
-    const urlCount = {};
-    history.forEach(item => {
-      urlCount[item.url] = (urlCount[item.url] || 0) + 1;
-    });
-
-    /* =========================
-       Tabelle rendern
-    ========================= */
-    if (history.length === 0) {
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="2">No UTM URLs found.</td>
-        </tr>
-      `;
-    } else {
-      history.forEach(item => {
-        const tr = document.createElement("tr");
-
-        if (urlCount[item.url] > 1) {
-          tr.classList.add("duplicate");
-        }
-
-        const date = new Date(item.createdAt);
-        const formattedDate =
-          date.toLocaleDateString("de-DE") +
-          " " +
-          date.toLocaleTimeString("de-DE", {
-            hour: "2-digit",
-            minute: "2-digit"
-          });
-
-        tr.innerHTML = `
-          <td>${formattedDate}</td>
-          <td>
-            <input type="text" value="${item.url}" readonly>
-          </td>
-        `;
-
-        tbody.appendChild(tr);
-      });
-    }
-
-    /* =========================
-       CSV Export
-    ========================= */
-    function downloadCSV() {
-      if (history.length === 0) {
-        alert("No data to export found.");
-        return;
-      }
-
-      const header = ["created_at", "utm_url"];
-      const rows = history.map(item => [
-        item.createdAt,
-        item.url
-      ]);
-
-      const csvContent =
-        [header, ...rows]
-          .map(row =>
-            row.map(value =>
-              `"${String(value).replace(/"/g, '""')}"`
-            ).join(";")
-          )
-          .join("\n");
-
-      const blob = new Blob([csvContent], {
-        type: "text/csv;charset=utf-8;"
-      });
-
-      const url = URL.createObjectURL(blob);
-
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "utm-history.csv";
-      link.click();
-
-      URL.revokeObjectURL(url);
-    }
-
-    /* =========================
-       Historie löschen
-    ========================= */
-    function clearHistory() {
-      if (confirm("Really delete UTM history?")) {
-        localStorage.removeItem("utmHistory");
-        location.reload();
-      }
-    }
-  </script>
-
+  <script src="script.js"></script>
 </body>
 </html>
