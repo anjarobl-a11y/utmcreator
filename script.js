@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
     sovendus: ["affiliate"]
   };
 
+  const NO_MANUAL_TRACKING_VALUE = "⛔ no_manual_tracking";
   const DISCOURAGED_CAMPAIGN_TOKENS = ["mail", "nl"];
 
   const sourceSelect = document.getElementById("source");
@@ -26,6 +27,27 @@ document.addEventListener("DOMContentLoaded", () => {
   const termInput = document.getElementById("term");
   const resultField = document.getElementById("result");
   const campaignError = document.getElementById("campaignError");
+  const optionalWrapper = document.querySelector(".optional-wrapper");
+  const createButton = document.querySelector('button[onclick="generateUTM()"]');
+
+  const campaignLabel = document.querySelector('label[for="campaign"]');
+  const contentLabel = document.querySelector('label[for="content"]');
+  const termLabel = document.querySelector('label[for="term"]');
+
+  const noManualTrackingNotice = document.createElement("div");
+  noManualTrackingNotice.innerHTML = "⚡ this platform offers you a tracking template option - no manual UTM setup required";
+  noManualTrackingNotice.setAttribute("role", "status");
+  noManualTrackingNotice.setAttribute("aria-live", "polite");
+  noManualTrackingNotice.style.display = "none";
+  noManualTrackingNotice.style.marginTop = "16px";
+  noManualTrackingNotice.style.fontSize = "13px";
+  noManualTrackingNotice.style.fontWeight = "600";
+  noManualTrackingNotice.style.lineHeight = "1.5";
+  noManualTrackingNotice.style.color = "#555555";
+
+  if (createButton) {
+    createButton.parentNode.insertBefore(noManualTrackingNotice, createButton);
+  }
 
   function normalizeTokens(value) {
     return String(value || "")
@@ -80,6 +102,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function renderCampaignErrors(errors) {
+    if (!campaignError) {
+      return;
+    }
+
     if (errors.length === 0) {
       campaignError.hidden = true;
       campaignError.innerHTML = "";
@@ -94,7 +120,57 @@ document.addEventListener("DOMContentLoaded", () => {
     campaignInput.setAttribute("aria-invalid", "true");
   }
 
+  function isNoManualTrackingSelected() {
+    return mediumSelect.value === NO_MANUAL_TRACKING_VALUE;
+  }
+
+  function toggleNoManualTrackingMode() {
+    const isBlocked = isNoManualTrackingSelected();
+
+    [campaignLabel, campaignInput, campaignError].forEach(element => {
+      if (!element) return;
+      element.hidden = isBlocked;
+    });
+
+    if (optionalWrapper) {
+      optionalWrapper.hidden = isBlocked;
+    }
+
+    if (contentLabel) {
+      contentLabel.hidden = isBlocked;
+    }
+
+    if (termLabel) {
+      termLabel.hidden = isBlocked;
+    }
+
+    if (createButton) {
+      createButton.hidden = isBlocked;
+      createButton.disabled = isBlocked;
+    }
+
+    noManualTrackingNotice.style.display = isBlocked ? "block" : "none";
+
+    if (isBlocked) {
+      campaignInput.classList.remove("input-error");
+      campaignInput.removeAttribute("aria-invalid");
+      if (campaignError) {
+        campaignError.hidden = true;
+        campaignError.innerHTML = "";
+      }
+      campaignInput.value = "";
+      contentInput.value = "";
+      termInput.value = "";
+      resultField.value = "";
+    }
+  }
+
   function validateCampaignField() {
+    if (isNoManualTrackingSelected()) {
+      renderCampaignErrors([]);
+      return true;
+    }
+
     const errors = getCampaignErrors();
     renderCampaignErrors(errors);
     return errors.length === 0;
@@ -131,11 +207,16 @@ document.addEventListener("DOMContentLoaded", () => {
       mediumSelect.appendChild(o);
     });
     mediumSelect.disabled = false;
+    toggleNoManualTrackingMode();
+    validateCampaignField();
+  });
+
+  mediumSelect.addEventListener("change", () => {
+    toggleNoManualTrackingMode();
     validateCampaignField();
   });
 
   campaignInput.addEventListener("input", validateCampaignField);
-  mediumSelect.addEventListener("change", validateCampaignField);
   contentInput.addEventListener("input", validateCampaignField);
   termInput.addEventListener("input", validateCampaignField);
 
@@ -143,17 +224,24 @@ document.addEventListener("DOMContentLoaded", () => {
   const toggleBtn = document.querySelector(".optional-toggle");
   const optionalFields = document.querySelector(".optional-fields");
 
-  toggleBtn.addEventListener("click", () => {
-    const isOpen = !optionalFields.hasAttribute("hidden");
-    optionalFields.toggleAttribute("hidden");
-    toggleBtn.textContent = isOpen
-      ? "Show optional parameters"
-      : "Hide optional parameters";
-    toggleBtn.setAttribute("aria-expanded", String(!isOpen));
-  });
+  if (toggleBtn && optionalFields) {
+    toggleBtn.addEventListener("click", () => {
+      const isOpen = !optionalFields.hasAttribute("hidden");
+      optionalFields.toggleAttribute("hidden");
+      toggleBtn.textContent = isOpen
+        ? "Show optional parameters"
+        : "Hide optional parameters";
+      toggleBtn.setAttribute("aria-expanded", String(!isOpen));
+    });
+  }
 
   // UTM generieren
   window.generateUTM = function () {
+    if (isNoManualTrackingSelected()) {
+      toggleNoManualTrackingMode();
+      return;
+    }
+
     if (!baseInput.value || !sourceSelect.value || !mediumSelect.value || !campaignInput.value) {
       alert("Please fill in all required fields.");
       return;
@@ -188,4 +276,7 @@ document.addEventListener("DOMContentLoaded", () => {
     resultField.select();
     document.execCommand("copy");
   };
+
+  toggleNoManualTrackingMode();
 });
+
