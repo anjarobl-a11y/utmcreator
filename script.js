@@ -26,13 +26,49 @@ document.addEventListener("DOMContentLoaded", () => {
   const contentInput = document.getElementById("content");
   const termInput = document.getElementById("term");
   const resultField = document.getElementById("result");
-  const campaignError = document.getElementById("campaignError");
-  const campaignGuidance = document.getElementById("campaignGuidance");
   const optionalWrapper = document.querySelector(".optional-wrapper");
   const createButton = document.querySelector('button[onclick="generateUTM()"]');
   const copyButton = document.querySelector('button[onclick="copyUTM()"]');
 
-  const campaignLabel = campaignInput ? document.querySelector(`label[for="${campaignInput.id}"]`) : null;
+  const campaignLabel = campaignInput
+    ? document.querySelector(`label[for="${campaignInput.id}"]`)
+    : null;
+
+  let campaignError = document.getElementById("campaignError");
+  if (!campaignError && campaignInput) {
+    campaignError = document.createElement("div");
+    campaignError.id = "campaignError";
+    campaignError.setAttribute("aria-live", "polite");
+    campaignError.hidden = true;
+    campaignInput.insertAdjacentElement("afterend", campaignError);
+  }
+
+  let campaignGuidance = document.getElementById("campaignGuidance");
+  if (!campaignGuidance && campaignError) {
+    campaignGuidance = document.createElement("p");
+    campaignGuidance.id = "campaignGuidance";
+    campaignGuidance.textContent = "Rules: lowercase only, no spaces, use only a-z, 0-9, underscore (_) or hyphen (-).";
+    campaignError.insertAdjacentElement("afterend", campaignGuidance);
+  }
+
+  if (campaignInput) {
+    campaignInput.setAttribute("aria-describedby", "campaignError campaignGuidance");
+  }
+
+  if (campaignError) {
+    campaignError.style.marginTop = "6px";
+    campaignError.style.fontSize = "12px";
+    campaignError.style.fontWeight = "600";
+    campaignError.style.lineHeight = "1.5";
+    campaignError.style.color = "#e4002b";
+  }
+
+  if (campaignGuidance) {
+    campaignGuidance.style.margin = "6px 0 0 0";
+    campaignGuidance.style.fontSize = "12px";
+    campaignGuidance.style.lineHeight = "1.5";
+    campaignGuidance.style.color = "#666666";
+  }
 
   const noManualTrackingNotice = document.createElement("div");
   noManualTrackingNotice.innerHTML = "⚡ this platform offers you a tracking template option - no manual UTM setup required";
@@ -111,6 +147,7 @@ document.addEventListener("DOMContentLoaded", () => {
       campaignError.innerHTML = "";
       campaignInput.classList.remove("input-error");
       campaignInput.removeAttribute("aria-invalid");
+      campaignInput.style.borderColor = "";
       return;
     }
 
@@ -118,6 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
     campaignError.hidden = false;
     campaignInput.classList.add("input-error");
     campaignInput.setAttribute("aria-invalid", "true");
+    campaignInput.style.borderColor = "#e4002b";
   }
 
   function isNoManualTrackingSelected() {
@@ -155,6 +193,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (isBlocked) {
       campaignInput.classList.remove("input-error");
       campaignInput.removeAttribute("aria-invalid");
+      campaignInput.style.borderColor = "";
       if (campaignError) {
         campaignError.hidden = true;
         campaignError.innerHTML = "";
@@ -177,7 +216,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return errors.length === 0;
   }
 
-  // Source: leer starten
   const sourcePlaceholder = document.createElement("option");
   sourcePlaceholder.textContent = "Please select Source";
   sourcePlaceholder.disabled = true;
@@ -191,7 +229,6 @@ document.addEventListener("DOMContentLoaded", () => {
     sourceSelect.appendChild(o);
   });
 
-  // Medium: disabled starten
   mediumSelect.disabled = true;
   const mediumPlaceholder = document.createElement("option");
   mediumPlaceholder.textContent = "Please select Source first";
@@ -221,7 +258,6 @@ document.addEventListener("DOMContentLoaded", () => {
   contentInput.addEventListener("input", validateCampaignField);
   termInput.addEventListener("input", validateCampaignField);
 
-  // Optionale Felder ein/ausklappen
   const toggleBtn = document.querySelector(".optional-toggle");
   const optionalFields = document.querySelector(".optional-fields");
 
@@ -236,7 +272,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // UTM generieren
   window.generateUTM = function () {
     if (isNoManualTrackingSelected()) {
       toggleNoManualTrackingMode();
@@ -272,7 +307,6 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("utmHistory", JSON.stringify(history));
   };
 
-  // Copy
   window.copyUTM = function () {
     resultField.select();
     document.execCommand("copy");
