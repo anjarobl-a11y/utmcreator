@@ -2,9 +2,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const utmConfig = {
     google: ["⛔ no_manual_tracking"],
-    microsoftads: ["⛔ no_manual_tracking"],
+    microsoft: ["⛔ no_manual_tracking"],
     awin: ["⛔ no_manual_tracking"],
     newsletter: ["⛔ no_manual_tracking"],
+    amazon: ["sp","sb","sd","dsp"],
     instagram: ["paid social","organic social","creator"],
     facebook: ["paid social","organic social","creator"],
     tiktok: ["paid social","organic social","creator"],
