@@ -1,10 +1,14 @@
 document.addEventListener("DOMContentLoaded", () => {
 
   const utmConfig = {
-    instagram: ["paid social","organic social"],
-    facebook: ["paid social","organic social"],
-    tiktok: ["paid social","organic social"],
-    influencer_brandname: ["influencer"],
+    google: ["⛔ no_manual_tracking"],
+    microsoftads: ["⛔ no_manual_tracking"],
+    awin: ["⛔ no_manual_tracking"],
+    newsletter: ["⛔ no_manual_tracking"],
+    instagram: ["paid social","organic social","creator"],
+    facebook: ["paid social","organic social","creator"],
+    tiktok: ["paid social","organic social","creator"],
+    youtube: ["organic video","creator"],
     intranet: ["internal"],
     offline: ["qr"],
     partner_brandname: ["collab"],
