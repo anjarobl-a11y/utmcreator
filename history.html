@@ -9,10 +9,10 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
 
   <!-- Styles -->
-  <link rel="stylesheet" href="history.css"/>
+  <link rel="stylesheet" href="history.css" />
 </head>
 
 <body class="history-page">
@@ -21,9 +21,18 @@
 
     <h1>UTM History</h1>
 
+    <!-- ✅ SEARCH FIELD -->
+    <input 
+      type="text" 
+      id="searchInput" 
+      placeholder="Search campaign, URL or date…" 
+      style="margin-top:16px;"
+    />
+
     <table class="history-table" id="historyTable">
       <thead>
         <tr>
+          <th>Campaign</th>
           <th>Date</th>
           <th>Tracking URL</th>
         </tr>
@@ -31,6 +40,7 @@
       <tbody></tbody>
     </table>
 
+    <button onclick="exportCSV()">Export CSV</button>
     <button onclick="clearHistory()">Clear History</button>
 
     <p class="history-link">
@@ -40,48 +50,132 @@
   </div>
 
   <script>
+
+    function extractCampaign(url) {
+      try {
+        const params = new URL(url).searchParams;
+        return params.get("utm_campaign") || "no_campaign";
+      } catch {
+        return "invalid_url";
+      }
+    }
+
     function loadHistory() {
       const tableBody = document.querySelector("#historyTable tbody");
       const history = JSON.parse(localStorage.getItem("utmHistory")) || [];
+      const searchValue = document.getElementById("searchInput").value.toLowerCase();
 
       tableBody.innerHTML = "";
 
       const urlCount = {};
-
       history.forEach(entry => {
         urlCount[entry.url] = (urlCount[entry.url] || 0) + 1;
       });
 
-      history.forEach(entry => {
-        const row = document.createElement("tr");
+      const grouped = {};
 
-        if (urlCount[entry.url] > 1) {
-          row.classList.add("duplicate");
+      history.forEach(entry => {
+        const campaign = extractCampaign(entry.url);
+        const date = new Date(entry.createdAt).toLocaleString();
+
+        // ✅ FILTER LOGIC
+        const combinedText = (
+          campaign + " " +
+          entry.url + " " +
+          date
+        ).toLowerCase();
+
+        if (searchValue && !combinedText.includes(searchValue)) {
+          return;
         }
 
-        const dateCell = document.createElement("td");
-        const urlCell = document.createElement("td");
+        if (!grouped[campaign]) {
+          grouped[campaign] = [];
+        }
 
-        const date = new Date(entry.createdAt).toLocaleString();
-        dateCell.textContent = date;
+        grouped[campaign].push(entry);
+      });
 
-        const input = document.createElement("input");
-        input.type = "text";
-        input.value = entry.url;
-        input.readOnly = true;
+      Object.keys(grouped).forEach(campaign => {
 
-        input.addEventListener("click", () => {
-          input.select();
-          document.execCommand("copy");
+        // Group header
+        const groupRow = document.createElement("tr");
+        const groupCell = document.createElement("td");
+        groupCell.colSpan = 3;
+        groupCell.textContent = campaign;
+        groupCell.style.fontWeight = "700";
+        groupCell.style.paddingTop = "16px";
+
+        groupRow.appendChild(groupCell);
+        tableBody.appendChild(groupRow);
+
+        grouped[campaign].forEach(entry => {
+          const row = document.createElement("tr");
+
+          if (urlCount[entry.url] > 1) {
+            row.classList.add("duplicate");
+          }
+
+          const campaignCell = document.createElement("td");
+          const dateCell = document.createElement("td");
+          const urlCell = document.createElement("td");
+
+          campaignCell.textContent = "";
+
+          const date = new Date(entry.createdAt).toLocaleString();
+          dateCell.textContent = date;
+
+          const input = document.createElement("input");
+          input.type = "text";
+          input.value = entry.url;
+          input.readOnly = true;
+
+          input.addEventListener("click", () => {
+            input.select();
+            document.execCommand("copy");
+          });
+
+          urlCell.appendChild(input);
+
+          row.appendChild(campaignCell);
+          row.appendChild(dateCell);
+          row.appendChild(urlCell);
+
+          tableBody.appendChild(row);
         });
 
-        urlCell.appendChild(input);
-
-        row.appendChild(dateCell);
-        row.appendChild(urlCell);
-
-        tableBody.appendChild(row);
       });
+    }
+
+    function exportCSV() {
+      const history = JSON.parse(localStorage.getItem("utmHistory")) || [];
+
+      if (history.length === 0) {
+        alert("No data to export");
+        return;
+      }
+
+      let csv = "campaign,date,url\n";
+
+      history.forEach(entry => {
+        const campaign = extractCampaign(entry.url);
+        const date = new Date(entry.createdAt).toISOString();
+        const url = entry.url.replace(/"/g, '""');
+
+        csv += `"${campaign}","${date}","${url}"\n`;
+      });
+
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const link = document.createElement("a");
+
+      const url = URL.createObjectURL(blob);
+      link.setAttribute("href", url);
+      link.setAttribute("download", "utm-history.csv");
+      link.style.display = "none";
+
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     }
 
     function clearHistory() {
@@ -91,7 +185,15 @@
       }
     }
 
-    document.addEventListener("DOMContentLoaded", loadHistory);
+    // ✅ LIVE SEARCH
+    document.addEventListener("DOMContentLoaded", () => {
+      loadHistory();
+
+      document.getElementById("searchInput").addEventListener("input", () => {
+        loadHistory();
+      });
+    });
+
   </script>
 
 </body>
