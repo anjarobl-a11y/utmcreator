@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", () => {
   const utmConfig = {
     google_ads: ["⛔ no_manual_tracking"],
@@ -20,6 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const PARTNER_SOURCE_VALUE = "partner_brandname";
   const DISCOURAGED_CAMPAIGN_TOKENS = ["mail", "nl"];
   const FIXED_BASE_PREFIX = "https://www.stabilo.com/";
+  const EMPTY_BASE_ERROR_MESSAGE = "Please add the landingpage path after https://www.stabilo.com/.";
 
   const sourceSelect = document.getElementById("source");
   const mediumSelect = document.getElementById("medium");
@@ -35,9 +37,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const campaignLabel = campaignInput
     ? document.querySelector(`label[for="${campaignInput.id}"]`)
     : null;
-  const sourceLabel = sourceSelect
-    ? document.querySelector(`label[for="${sourceSelect.id}"]`)
-    : null;
+
+  let baseError = document.getElementById("baseError");
+  if (!baseError && baseInput) {
+    baseError = document.createElement("div");
+    baseError.id = "baseError";
+    baseError.className = "field-error";
+    baseError.setAttribute("aria-live", "polite");
+    baseError.hidden = true;
+    baseInput.insertAdjacentElement("afterend", baseError);
+  }
 
   let campaignError = document.getElementById("campaignError");
   if (!campaignError && campaignInput) {
@@ -57,6 +66,10 @@ document.addEventListener("DOMContentLoaded", () => {
     campaignGuidance.textContent =
       "Rules: lowercase only, no spaces, use only a-z, 0-9, underscore (_) or hyphen (-).";
     campaignError.insertAdjacentElement("afterend", campaignGuidance);
+  }
+
+  if (baseInput) {
+    baseInput.setAttribute("aria-describedby", "baseError");
   }
 
   if (campaignInput) {
@@ -88,6 +101,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (createButton) {
     createButton.parentNode.insertBefore(noManualTrackingNotice, createButton);
   }
+
   if (copyButton) {
     copyButton.insertAdjacentElement("afterend", copyStatusNotice);
   }
@@ -98,31 +112,45 @@ document.addEventListener("DOMContentLoaded", () => {
   partnerSourceInput.placeholder = "Please enter partner brand name";
   partnerSourceInput.hidden = true;
   partnerSourceInput.autocomplete = "off";
-  partnerSourceInput.setAttribute("aria-label", "Source");
+  partnerSourceInput.setAttribute("aria-label", "Partner brand name");
 
-  const partnerSourceBackLink = document.createElement("a");
-  partnerSourceBackLink.href = "#";
-  partnerSourceBackLink.textContent = "Choose another source";
-  partnerSourceBackLink.hidden = true;
-  partnerSourceBackLink.style.display = "block";
-  partnerSourceBackLink.style.marginTop = "8px";
-  partnerSourceBackLink.style.fontSize = "13px";
-  partnerSourceBackLink.style.fontWeight = "600";
-  partnerSourceBackLink.style.color = "#555555";
-  partnerSourceBackLink.style.textDecoration = "none";
-  partnerSourceBackLink.style.cursor = "pointer";
+  const changeSourceBackLink = document.createElement("a");
+  changeSourceBackLink.href = "#";
+  changeSourceBackLink.textContent = "Choose another source";
+  changeSourceBackLink.hidden = true;
+  changeSourceBackLink.style.display = "block";
+  changeSourceBackLink.style.marginTop = "8px";
+  changeSourceBackLink.style.fontSize = "13px";
+  changeSourceBackLink.style.fontWeight = "600";
+  changeSourceBackLink.style.color = "#555555";
+  changeSourceBackLink.style.textDecoration = "none";
+  changeSourceBackLink.style.cursor = "pointer";
 
   if (sourceSelect) {
     sourceSelect.insertAdjacentElement("afterend", partnerSourceInput);
-    partnerSourceInput.insertAdjacentElement("afterend", partnerSourceBackLink);
+    partnerSourceInput.insertAdjacentElement("afterend", changeSourceBackLink);
   }
 
-  partnerSourceBackLink.addEventListener("mouseenter", () => {
-    partnerSourceBackLink.style.textDecoration = "underline";
+  changeSourceBackLink.addEventListener("mouseenter", () => {
+    changeSourceBackLink.style.textDecoration = "underline";
   });
 
-  partnerSourceBackLink.addEventListener("mouseleave", () => {
-    partnerSourceBackLink.style.textDecoration = "none";
+  changeSourceBackLink.addEventListener("mouseleave", () => {
+    changeSourceBackLink.style.textDecoration = "none";
+  });
+
+  function resetSourceSelection() {
+    disablePartnerSourceMode();
+    sourceSelect.selectedIndex = 0;
+    resetMediumToPlaceholder();
+    toggleNoManualTrackingMode();
+    validateCampaignField();
+    sourceSelect.focus();
+  }
+
+  changeSourceBackLink.addEventListener("click", (event) => {
+    event.preventDefault();
+    resetSourceSelection();
   });
 
   function showCopyStatus(message, isError = false) {
@@ -147,10 +175,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const mediumPlaceholder = document.createElement("option");
     mediumPlaceholder.value = "";
-    mediumPlaceholder.textContent = "Please select Source first";
+    mediumPlaceholder.textContent = "Please select Medium";
     mediumPlaceholder.disabled = true;
     mediumPlaceholder.selected = true;
     mediumSelect.appendChild(mediumPlaceholder);
+  }
+
+  function setMediumOptions(sourceValue) {
+    mediumSelect.innerHTML = "";
+
+    const mediumPlaceholder = document.createElement("option");
+    mediumPlaceholder.value = "";
+    mediumPlaceholder.textContent = "Please select Medium";
+    mediumPlaceholder.disabled = true;
+    mediumPlaceholder.selected = true;
+    mediumSelect.appendChild(mediumPlaceholder);
+
+    (utmConfig[sourceValue] || []).forEach((mediumValue) => {
+      const option = document.createElement("option");
+      option.value = mediumValue;
+      option.textContent = mediumValue;
+      mediumSelect.appendChild(option);
+    });
+
+    mediumSelect.disabled = false;
   }
 
   function isPartnerSourceMode() {
@@ -164,26 +212,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function enablePartnerSourceMode() {
-    sourceSelect.hidden = true;
     partnerSourceInput.hidden = false;
-    partnerSourceBackLink.hidden = false;
-
-    if (sourceLabel) {
-      sourceLabel.setAttribute("for", "partnerSource");
-    }
-
+    changeSourceBackLink.hidden = true;
     partnerSourceInput.focus();
   }
 
   function disablePartnerSourceMode() {
     partnerSourceInput.value = "";
     partnerSourceInput.hidden = true;
-    partnerSourceBackLink.hidden = true;
-    sourceSelect.hidden = false;
-
-    if (sourceLabel) {
-      sourceLabel.setAttribute("for", "source");
-    }
   }
 
   function normalizeTokens(value) {
@@ -228,6 +264,44 @@ document.addEventListener("DOMContentLoaded", () => {
     return path;
   }
 
+  function renderBaseState() {
+    const hasManualPath = sanitizeStabiloPath(baseInput.value).length > 0;
+
+    if (hasManualPath) {
+      baseInput.style.color = "#111111";
+      baseInput.style.borderColor = "";
+      baseInput.classList.remove("input-error");
+      baseInput.removeAttribute("aria-invalid");
+      if (baseError) {
+        baseError.hidden = true;
+        baseError.textContent = "";
+      }
+      return true;
+    }
+
+    baseInput.style.color = "#888888";
+    return false;
+  }
+
+  function validateBaseField() {
+    const hasManualPath = sanitizeStabiloPath(baseInput.value).length > 0;
+
+    if (hasManualPath) {
+      renderBaseState();
+      return true;
+    }
+
+    if (baseError) {
+      baseError.textContent = EMPTY_BASE_ERROR_MESSAGE;
+      baseError.hidden = false;
+    }
+    baseInput.classList.add("input-error");
+    baseInput.setAttribute("aria-invalid", "true");
+    baseInput.style.borderColor = "#e4002b";
+    baseInput.style.color = "#888888";
+    return false;
+  }
+
   function enforceFixedBaseInput() {
     if (!baseInput) {
       return;
@@ -250,6 +324,8 @@ document.addEventListener("DOMContentLoaded", () => {
       );
       baseInput.setSelectionRange(cursorTarget, cursorTarget);
     }
+
+    renderBaseState();
   }
 
   function getNormalizedBaseUrl() {
@@ -382,6 +458,7 @@ document.addEventListener("DOMContentLoaded", () => {
       copyStatusNotice.textContent = "";
     }
 
+    changeSourceBackLink.hidden = !isBlocked;
     noManualTrackingNotice.style.display = isBlocked ? "block" : "none";
 
     if (isBlocked) {
@@ -463,16 +540,7 @@ document.addEventListener("DOMContentLoaded", () => {
   enforceFixedBaseInput();
 
   sourceSelect.addEventListener("change", () => {
-    mediumSelect.innerHTML = "";
-
-    utmConfig[sourceSelect.value].forEach((mediumValue) => {
-      const option = document.createElement("option");
-      option.value = mediumValue;
-      option.textContent = mediumValue;
-      mediumSelect.appendChild(option);
-    });
-
-    mediumSelect.disabled = false;
+    setMediumOptions(sourceSelect.value);
 
     if (sourceSelect.value === PARTNER_SOURCE_VALUE) {
       enablePartnerSourceMode();
@@ -482,16 +550,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     toggleNoManualTrackingMode();
     validateCampaignField();
-  });
-
-  partnerSourceBackLink.addEventListener("click", (event) => {
-    event.preventDefault();
-    disablePartnerSourceMode();
-    sourceSelect.selectedIndex = 0;
-    resetMediumToPlaceholder();
-    toggleNoManualTrackingMode();
-    validateCampaignField();
-    sourceSelect.focus();
   });
 
   mediumSelect.addEventListener("change", () => {
@@ -534,6 +592,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const sanitizedPath = sanitizeStabiloPath(pastedText);
     baseInput.value = `${FIXED_BASE_PREFIX}${sanitizedPath}`;
     baseInput.setSelectionRange(baseInput.value.length, baseInput.value.length);
+    renderBaseState();
   });
 
   baseInput.addEventListener("input", () => {
@@ -576,6 +635,10 @@ document.addEventListener("DOMContentLoaded", () => {
     const effectiveSourceValue = getEffectiveSourceValue();
     const normalizedBaseUrl = getNormalizedBaseUrl();
 
+    if (!validateBaseField()) {
+      return;
+    }
+
     if (!effectiveSourceValue || !mediumSelect.value || !campaignInput.value) {
       alert("Please fill in all required fields.");
       return;
@@ -586,6 +649,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     baseInput.value = normalizedBaseUrl;
+    renderBaseState();
 
     const url = buildTrackingUrl(normalizedBaseUrl, {
       utm_source: effectiveSourceValue,
@@ -621,4 +685,6 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   toggleNoManualTrackingMode();
+  renderBaseState();
 });
+
