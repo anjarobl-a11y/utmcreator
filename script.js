@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", () => {
   const utmConfig = {
     google_ads: ["⛔ no_manual_tracking"],
@@ -118,7 +117,7 @@ document.addEventListener("DOMContentLoaded", () => {
   changeSourceBackLink.href = "#";
   changeSourceBackLink.textContent = "Choose another source";
   changeSourceBackLink.hidden = true;
-  changeSourceBackLink.style.display = "block";
+  changeSourceBackLink.style.display = "none";
   changeSourceBackLink.style.marginTop = "8px";
   changeSourceBackLink.style.fontSize = "13px";
   changeSourceBackLink.style.fontWeight = "600";
@@ -132,12 +131,22 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   changeSourceBackLink.addEventListener("mouseenter", () => {
-    changeSourceBackLink.style.textDecoration = "underline";
+    if (changeSourceBackLink.style.display !== "none") {
+      changeSourceBackLink.style.textDecoration = "underline";
+    }
   });
 
   changeSourceBackLink.addEventListener("mouseleave", () => {
     changeSourceBackLink.style.textDecoration = "none";
   });
+
+  function setChangeSourceLinkVisibility(shouldShow) {
+    changeSourceBackLink.hidden = !shouldShow;
+    changeSourceBackLink.style.display = shouldShow ? "block" : "none";
+    if (!shouldShow) {
+      changeSourceBackLink.style.textDecoration = "none";
+    }
+  }
 
   function resetSourceSelection() {
     disablePartnerSourceMode();
@@ -213,7 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function enablePartnerSourceMode() {
     partnerSourceInput.hidden = false;
-    changeSourceBackLink.hidden = true;
+    setChangeSourceLinkVisibility(false);
     partnerSourceInput.focus();
   }
 
@@ -295,6 +304,7 @@ document.addEventListener("DOMContentLoaded", () => {
       baseError.textContent = EMPTY_BASE_ERROR_MESSAGE;
       baseError.hidden = false;
     }
+
     baseInput.classList.add("input-error");
     baseInput.setAttribute("aria-invalid", "true");
     baseInput.style.borderColor = "#e4002b";
@@ -458,7 +468,7 @@ document.addEventListener("DOMContentLoaded", () => {
       copyStatusNotice.textContent = "";
     }
 
-    changeSourceBackLink.hidden = !isBlocked;
+    setChangeSourceLinkVisibility(isBlocked);
     noManualTrackingNotice.style.display = isBlocked ? "block" : "none";
 
     if (isBlocked) {
@@ -538,6 +548,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   resetMediumToPlaceholder();
   enforceFixedBaseInput();
+  setChangeSourceLinkVisibility(false);
 
   sourceSelect.addEventListener("change", () => {
     setMediumOptions(sourceSelect.value);
