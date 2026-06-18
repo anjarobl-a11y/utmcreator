@@ -1,222 +1,221 @@
 /* =========================
-RESET & GLOBAL
+   RESET & GLOBAL
 ========================= */
 * {
-box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
-margin: 0;
-font-family: "Poppins", Arial, sans-serif;
-background: #f5f5f5;
+  margin: 0;
+  font-family: "Poppins", Arial, sans-serif;
+  background: #f5f5f5;
 }
 
 /* =========================
-CARD CONTAINER
+   CARD CONTAINER
 ========================= */
 .container {
-max-width: 420px;
-margin: 40px auto;
-padding: 24px;
-background: #ffffff;
-border-radius: 12px;
-box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  max-width: 420px;
+  margin: 40px auto;
+  padding: 24px;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
 /* =========================
-LOGO (oben, zentriert)
+   LOGO (oben, zentriert)
 ========================= */
 .logo {
-display: block;
-margin: 0 auto 16px auto;
-max-height: 32px;
-width: auto;
-cursor: pointer;
+  display: block;
+  margin: 0 auto 16px auto;
+  max-height: 32px;
+  width: auto;
+  cursor: pointer;
 }
 
 /* =========================
-HEADER – ENDGÜLTIGE BASELINE
-UTM Generator EXAKT mittig
+   HEADER – EXAKT MITTIG
 ========================= */
 .headline-wrapper {
-display: grid;
-grid-template-columns: 1fr auto 1fr; /* 🔑 */
-align-items: center;
-margin-bottom: 24px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  margin-bottom: 24px;
 }
 
-/* Überschrift sitzt IMMER exakt mittig */
 .headline-wrapper h1 {
-grid-column: 2;
-margin: 0;
-text-align: center;
-font-size: 22px;
-font-weight: 700;
-line-height: 1.2;
+  grid-column: 2;
+  margin: 0;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
 }
 
-/* Superheld rechts daneben */
 .hero {
-grid-column: 3;
-justify-self: start;
-max-height: 64px;
-width: auto;
+  grid-column: 3;
+  justify-self: start;
+  max-height: 64px;
+  width: auto;
 }
 
 /* =========================
-FORMULAR
+   FORMULAR
 ========================= */
 label {
-display: block;
-margin-top: 14px;
-font-size: 13px;
-font-weight: 600;
+  display: block;
+  margin-top: 14px;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 input,
 select,
 textarea,
 button {
-font-family: inherit;
+  font-family: inherit;
 }
 
 input,
 select,
 textarea {
-width: 100%;
-height: 40px;
-margin-top: 4px;
-padding: 0 12px;
-font-size: 14px;
-background: #fafafa;
-border: 1px solid #dddddd;
-border-radius: 6px;
+  width: 100%;
+  height: 40px;
+  margin-top: 4px;
+  padding: 0 12px;
+  font-size: 14px;
+  background: #fafafa;
+  border: 1px solid #dddddd;
+  border-radius: 6px;
 }
 
-/* Textarea */
 textarea {
-height: 80px;
-padding: 10px 12px;
-resize: none;
+  height: 80px;
+  padding: 10px 12px;
+  resize: none;
 }
 
-/* Disabled Medium */
 select:disabled {
-background: #eeeeee;
-color: #888888;
-cursor: not-allowed;
+  background: #eeeeee;
+  color: #888888;
+  cursor: not-allowed;
 }
 
 /* =========================
-CAMPAIGN VALIDATION
+   VALIDATION
 ========================= */
 .field-error {
-margin-top: 6px;
-font-size: 12px;
-font-weight: 600;
-line-height: 1.5;
-color: #e4002b;
+  margin-top: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.5;
+  color: #e4002b;
 }
 
 .field-guidance {
-margin: 6px 0 0 0;
-font-size: 12px;
-line-height: 1.5;
-color: #666666;
+  margin: 6px 0 0 0;
+  font-size: 10px;
+  line-height: 1.4;
+  color: #666666;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .input-error {
-border-color: #e4002b;
+  border-color: #e4002b;
 }
 
 /* =========================
-PRIMARY BUTTONS (CTA)
+   PRIMARY BUTTONS (CTA)
 ========================= */
 button {
-width: 100%;
-height: 42px;
-margin-top: 16px;
-background: #e4002b;
-color: #ffffff;
-border: none;
-border-radius: 8px;
-font-size: 14px;
-font-weight: 700;
-cursor: pointer;
+  width: 100%;
+  height: 42px;
+  margin-top: 16px;
+  background: #e4002b;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 button:hover {
-opacity: 0.9;
+  opacity: 0.9;
 }
 
 /* =========================
-OPTIONALE PARAMETER TOGGLE
+   LINKS (klassisch blau + unterstrichen)
 ========================= */
 .optional-toggle {
-margin-top: 16px;
-background: none;
-border: none;
-padding: 0;
-width: auto;
-color: #555555;
-font-size: 13px;
-font-weight: 600;
-cursor: pointer;
+  margin-top: 16px;
+  background: none;
+  border: none;
+  padding: 0;
+  width: auto;
+  height: auto;
+  color: #0000ee;
+  font-size: 13px;
+  font-weight: 400;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .optional-toggle:hover {
-text-decoration: underline;
+  opacity: 1;
+  color: #0000ee;
+  text-decoration: underline;
 }
 
 .optional-fields {
-margin-top: 12px;
+  margin-top: 12px;
 }
 
-/* =========================
-TOOLTIP
-========================= */
-.tooltip {
-margin-left: 4px;
-font-size: 12px;
-position: relative;
-cursor: help;
-}
-
-.tooltip-text {
-visibility: hidden;
-position: absolute;
-width: 180px;
-background: #333333;
-color: #ffffff;
-padding: 6px;
-font-size: 12px;
-line-height: 1.4;
-border-radius: 6px;
-top: -6px;
-left: 100%;
-z-index: 10;
-}
-
-.tooltip:hover .tooltip-text {
-visibility: visible;
-}
-
-/* =========================
-HISTORY LINK
-========================= */
 .history-link {
-margin-top: 16px;
-text-align: left;
+  margin-top: 16px;
+  text-align: left;
 }
 
 .history-link a {
-color: #555555;
-font-size: 13px;
-font-weight: 600;
-text-decoration: none;
-cursor: pointer;
+  color: #0000ee;
+  font-size: 13px;
+  font-weight: 400;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .history-link a:hover {
-text-decoration: underline;
+  color: #0000ee;
+  text-decoration: underline;
+}
+
+/* =========================
+   TOOLTIP
+========================= */
+.tooltip {
+  margin-left: 4px;
+  font-size: 12px;
+  position: relative;
+  cursor: help;
+}
+
+.tooltip-text {
+  visibility: hidden;
+  position: absolute;
+  width: 180px;
+  background: #333333;
+  color: #ffffff;
+  padding: 6px;
+  font-size: 12px;
+  line-height: 1.4;
+  border-radius: 6px;
+  top: -6px;
+  left: 100%;
+  z-index: 10;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
 }
