@@ -1,106 +1,98 @@
+
 <!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>UTM Generator</title>
-  <!-- ✅ Google Font: Poppins -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>UTM History</title>
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
-    rel="stylesheet"
-  />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet"/>
+
   <!-- Styles -->
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="history.css"/>
 </head>
-<body>
+
+<body class="history-page">
+
   <div class="container">
-    <!-- Logo (Reload) -->
-    <a href="./">
-      <img
-        src="https://cdn-live.be-stabilo.com/media/27/56/01/1675089023/STABILO-Logo_RGB_72dpi.png"
-        alt="STABILO Logo"
-        class="logo"
-      />
-    </a>
 
-    <!-- Headline + Superheld -->
-    <div class="headline-wrapper">
-      <h1>UTM Generator</h1>
-      <img src="image.png" alt="" class="hero" />
-    </div>
+    <h1>UTM History</h1>
 
-    <!-- Pflichtfelder -->
-    <label for="base">Landingpage URL *</label>
-    <input id="base" type="url" placeholder="https://www.stabilo.com/…" />
+    <table class="history-table" id="historyTable">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Tracking URL</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
 
-    <label for="source">Source *</label>
-    <select id="source"></select>
-
-    <label for="medium">Medium *</label>
-    <select id="medium"></select>
-
-    <label for="campaign">Campaign *</label>
-    <input
-      id="campaign"
-      type="text"
-      placeholder="spring_sale_2026"
-      aria-describedby="campaignError campaignGuidance"
-    />
-    <div id="campaignError" class="field-error" aria-live="polite" hidden></div>
-    <p id="campaignGuidance" class="field-guidance">
-      Rules: lowercase only, no spaces, use only a-z, 0-9, underscore (_) or hyphen (-).
-    </p>
-
-    <!-- Optionale Felder -->
-    <div class="optional-wrapper">
-      <button
-        type="button"
-        class="optional-toggle"
-        aria-expanded="false"
-      >
-        Show optional parameters
-      </button>
-
-      <div class="optional-fields" hidden>
-        <label for="content">
-          Content (utm_content)
-          <span class="tooltip">ⓘ
-            <span class="tooltip-text">
-              e. g. creative format or variants
-            </span>
-          </span>
-        </label>
-        <input id="content" type="text" placeholder="e. g. story, reel, banner_a, carousel, video" />
-
-        <label for="term">
-          Keyword (utm_term)
-          <span class="tooltip">ⓘ
-            <span class="tooltip-text">
-              e. g. keywords or target group
-            </span>
-          </span>
-        </label>
-        <input id="term" type="text" placeholder="e. g. fineliner, lookalike, retargeting, prospecting" />
-      </div>
-    </div>
-
-    <button onclick="generateUTM()">Create tracking URL </button>
-
-    <textarea
-      id="result"
-      readonly
-      placeholder="Your tracking URL will appear here"
-    ></textarea>
-
-    <button onclick="copyUTM()">Copy URL</button>
+    <button onclick="clearHistory()">Clear History</button>
 
     <p class="history-link">
-      <a href="history.html">Show UTM Generator history</a>
+      <a href="index.html">Back to UTM Generator</a>
     </p>
+
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    function loadHistory() {
+      const tableBody = document.querySelector("#historyTable tbody");
+      const history = JSON.parse(localStorage.getItem("utmHistory")) || [];
+
+      tableBody.innerHTML = "";
+
+      const urlCount = {};
+
+      history.forEach(entry => {
+        urlCount[entry.url] = (urlCount[entry.url] || 0) + 1;
+      });
+
+      history.forEach(entry => {
+        const row = document.createElement("tr");
+
+        if (urlCount[entry.url] > 1) {
+          row.classList.add("duplicate");
+        }
+
+        const dateCell = document.createElement("td");
+        const urlCell = document.createElement("td");
+
+        const date = new Date(entry.createdAt).toLocaleString();
+        dateCell.textContent = date;
+
+        const input = document.createElement("input");
+        input.type = "text";
+        input.value = entry.url;
+        input.readOnly = true;
+
+        input.addEventListener("click", () => {
+          input.select();
+          document.execCommand("copy");
+        });
+
+        urlCell.appendChild(input);
+
+        row.appendChild(dateCell);
+        row.appendChild(urlCell);
+
+        tableBody.appendChild(row);
+      });
+    }
+
+    function clearHistory() {
+      if (confirm("Are you sure you want to delete all entries?")) {
+        localStorage.removeItem("utmHistory");
+        loadHistory();
+      }
+    }
+
+    document.addEventListener("DOMContentLoaded", loadHistory);
+  </script>
+
 </body>
 </html>
