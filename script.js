@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", () => {
   const utmConfig = {
     google_ads: ["⛔ no_manual_tracking"],
@@ -17,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
   };
 
   const NO_MANUAL_TRACKING_VALUE = "⛔ no_manual_tracking";
+  const PARTNER_SOURCE_VALUE = "partner_brandname";
   const DISCOURAGED_CAMPAIGN_TOKENS = ["mail", "nl"];
 
   const sourceSelect = document.getElementById("source");
@@ -34,6 +36,10 @@ document.addEventListener("DOMContentLoaded", () => {
     ? document.querySelector(`label[for="${campaignInput.id}"]`)
     : null;
 
+  const sourceLabel = sourceSelect
+    ? document.querySelector(`label[for="${sourceSelect.id}"]`)
+    : null;
+
   let campaignError = document.getElementById("campaignError");
   if (!campaignError && campaignInput) {
     campaignError = document.createElement("div");
@@ -47,7 +53,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!campaignGuidance && campaignError) {
     campaignGuidance = document.createElement("p");
     campaignGuidance.id = "campaignGuidance";
-    campaignGuidance.textContent = "Rules: lowercase only, no spaces, use only a-z, 0-9, underscore (_) or hyphen (-).";
+    campaignGuidance.textContent =
+      "Rules: lowercase only, no spaces, use only a-z, 0-9, underscore (_) or hyphen (-).";
     campaignError.insertAdjacentElement("afterend", campaignGuidance);
   }
 
@@ -71,7 +78,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const noManualTrackingNotice = document.createElement("div");
-  noManualTrackingNotice.innerHTML = "⚡ this platform offers you a tracking template option - no manual UTM setup required";
+  noManualTrackingNotice.innerHTML =
+    "⚡ this platform offers you a tracking template option - no manual UTM setup required";
   noManualTrackingNotice.setAttribute("role", "status");
   noManualTrackingNotice.setAttribute("aria-live", "polite");
   noManualTrackingNotice.style.display = "none";
@@ -81,8 +89,113 @@ document.addEventListener("DOMContentLoaded", () => {
   noManualTrackingNotice.style.lineHeight = "1.5";
   noManualTrackingNotice.style.color = "#555555";
 
+  const copyStatusNotice = document.createElement("div");
+  copyStatusNotice.setAttribute("role", "status");
+  copyStatusNotice.setAttribute("aria-live", "polite");
+  copyStatusNotice.hidden = true;
+  copyStatusNotice.style.marginTop = "8px";
+  copyStatusNotice.style.fontSize = "13px";
+  copyStatusNotice.style.fontWeight = "600";
+  copyStatusNotice.style.lineHeight = "1.5";
+  copyStatusNotice.style.color = "#2e7d32";
+
   if (createButton) {
     createButton.parentNode.insertBefore(noManualTrackingNotice, createButton);
+  }
+
+  if (copyButton) {
+    copyButton.insertAdjacentElement("afterend", copyStatusNotice);
+  }
+
+  const partnerSourceInput = document.createElement("input");
+  partnerSourceInput.id = "partnerSource";
+  partnerSourceInput.type = "text";
+  partnerSourceInput.placeholder = "Please enter partner brand name";
+  partnerSourceInput.hidden = true;
+  partnerSourceInput.autocomplete = "off";
+  partnerSourceInput.setAttribute("aria-label", "Source");
+
+  const partnerSourceBackLink = document.createElement("a");
+  partnerSourceBackLink.href = "#";
+  partnerSourceBackLink.textContent = "Choose another source";
+  partnerSourceBackLink.hidden = true;
+  partnerSourceBackLink.style.display = "block";
+  partnerSourceBackLink.style.marginTop = "8px";
+  partnerSourceBackLink.style.fontSize = "13px";
+  partnerSourceBackLink.style.fontWeight = "600";
+  partnerSourceBackLink.style.color = "#555555";
+  partnerSourceBackLink.style.textDecoration = "none";
+  partnerSourceBackLink.style.cursor = "pointer";
+
+  if (sourceSelect) {
+    sourceSelect.insertAdjacentElement("afterend", partnerSourceInput);
+    partnerSourceInput.insertAdjacentElement("afterend", partnerSourceBackLink);
+  }
+
+  partnerSourceBackLink.addEventListener("mouseenter", () => {
+    partnerSourceBackLink.style.textDecoration = "underline";
+  });
+
+  partnerSourceBackLink.addEventListener("mouseleave", () => {
+    partnerSourceBackLink.style.textDecoration = "none";
+  });
+
+  function showCopyStatus(message, isError = false) {
+    if (!copyStatusNotice) {
+      return;
+    }
+
+    copyStatusNotice.textContent = message;
+    copyStatusNotice.style.color = isError ? "#e4002b" : "#2e7d32";
+    copyStatusNotice.hidden = false;
+
+    window.clearTimeout(showCopyStatus.timeoutId);
+    showCopyStatus.timeoutId = window.setTimeout(() => {
+      copyStatusNotice.hidden = true;
+      copyStatusNotice.textContent = "";
+    }, 3000);
+  }
+
+  function resetMediumToPlaceholder() {
+    mediumSelect.innerHTML = "";
+    mediumSelect.disabled = true;
+
+    const mediumPlaceholder = document.createElement("option");
+    mediumPlaceholder.value = "";
+    mediumPlaceholder.textContent = "Please select Source first";
+    mediumPlaceholder.disabled = true;
+    mediumPlaceholder.selected = true;
+    mediumSelect.appendChild(mediumPlaceholder);
+  }
+
+  function isPartnerSourceMode() {
+    return !partnerSourceInput.hidden;
+  }
+
+  function getEffectiveSourceValue() {
+    return isPartnerSourceMode()
+      ? partnerSourceInput.value.trim()
+      : sourceSelect.value;
+  }
+
+  function enablePartnerSourceMode() {
+    sourceSelect.hidden = true;
+    partnerSourceInput.hidden = false;
+    partnerSourceBackLink.hidden = false;
+    if (sourceLabel) {
+      sourceLabel.setAttribute("for", "partnerSource");
+    }
+    partnerSourceInput.focus();
+  }
+
+  function disablePartnerSourceMode() {
+    partnerSourceInput.value = "";
+    partnerSourceInput.hidden = true;
+    partnerSourceBackLink.hidden = true;
+    sourceSelect.hidden = false;
+    if (sourceLabel) {
+      sourceLabel.setAttribute("for", "source");
+    }
   }
 
   function normalizeTokens(value) {
@@ -90,6 +203,41 @@ document.addEventListener("DOMContentLoaded", () => {
       .toLowerCase()
       .split(/[_-]+/)
       .filter(Boolean);
+  }
+
+  function normalizeTrackingInputValue(inputElement) {
+    const originalValue = inputElement.value;
+    const selectionStart = inputElement.selectionStart ?? originalValue.length;
+    const valueBeforeCursor = originalValue.slice(0, selectionStart);
+
+    const normalizedValue = originalValue
+      .toLowerCase()
+      .replace(/\s+/g, "_");
+
+    const normalizedValueBeforeCursor = valueBeforeCursor
+      .toLowerCase()
+      .replace(/\s+/g, "_");
+
+    if (originalValue !== normalizedValue) {
+      inputElement.value = normalizedValue;
+      const newCursorPosition = normalizedValueBeforeCursor.length;
+      inputElement.setSelectionRange(newCursorPosition, newCursorPosition);
+    }
+  }
+
+  function buildTrackingUrl(baseUrl, params) {
+    const separator = baseUrl.includes("?")
+      ? (baseUrl.endsWith("?") || baseUrl.endsWith("&") ? "" : "&")
+      : "?";
+
+    const searchParams = new URLSearchParams();
+    Object.entries(params).forEach(([key, value]) => {
+      if (value) {
+        searchParams.set(key, value);
+      }
+    });
+
+    return `${baseUrl}${separator}${searchParams.toString()}`;
   }
 
   function getCampaignErrors() {
@@ -109,12 +257,15 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     if (!/^[a-z0-9_-]+$/.test(campaignValue)) {
-      errors.push("Do not use other special characters. Only a-z, 0-9, underscore (_) and hyphen (-) are allowed.");
+      errors.push(
+        "Do not use other special characters. Only a-z, 0-9, underscore (_) and hyphen (-) are allowed."
+      );
     }
 
     const campaignTokens = normalizeTokens(campaignValue);
+
     const duplicateFields = [
-      { label: "source", value: sourceSelect.value },
+      { label: "source", value: getEffectiveSourceValue() },
       { label: "medium", value: mediumSelect.value },
       { label: "content", value: contentInput.value },
       { label: "term", value: termInput.value }
@@ -122,16 +273,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     duplicateFields.forEach(field => {
       const comparisonTokens = normalizeTokens(field.value);
-      const hasDuplicateToken = comparisonTokens.some(token => campaignTokens.includes(token));
+      const hasDuplicateToken = comparisonTokens.some(token =>
+        campaignTokens.includes(token)
+      );
 
       if (hasDuplicateToken) {
-        errors.push(`Avoid duplicated information across your UTM parameters. The campaign repeats information from utm_${field.label}.`);
+        errors.push(
+          `Avoid duplicated information across your UTM parameters. The campaign repeats information from utm_${field.label}.`
+        );
       }
     });
 
-    const discouragedTokensFound = DISCOURAGED_CAMPAIGN_TOKENS.filter(token => campaignTokens.includes(token));
+    const discouragedTokensFound = DISCOURAGED_CAMPAIGN_TOKENS.filter(token =>
+      campaignTokens.includes(token)
+    );
+
     if (discouragedTokensFound.length > 0) {
-      errors.push("Use consistent vocabulary across all campaigns. For email traffic, use email instead of mail or nl. If the naming convention is missing in the template, ask to extend the template instead of inventing one yourself.");
+      errors.push(
+        "Use consistent vocabulary across all campaigns. For email traffic, use email instead of mail or nl. If the naming convention is missing in the template, ask to extend the template instead of inventing one yourself."
+      );
     }
 
     return [...new Set(errors)];
@@ -188,16 +348,23 @@ document.addEventListener("DOMContentLoaded", () => {
       copyButton.disabled = isBlocked;
     }
 
+    if (copyStatusNotice) {
+      copyStatusNotice.hidden = isBlocked;
+      copyStatusNotice.textContent = "";
+    }
+
     noManualTrackingNotice.style.display = isBlocked ? "block" : "none";
 
     if (isBlocked) {
       campaignInput.classList.remove("input-error");
       campaignInput.removeAttribute("aria-invalid");
       campaignInput.style.borderColor = "";
+
       if (campaignError) {
         campaignError.hidden = true;
         campaignError.innerHTML = "";
       }
+
       campaignInput.value = "";
       contentInput.value = "";
       termInput.value = "";
@@ -216,7 +383,41 @@ document.addEventListener("DOMContentLoaded", () => {
     return errors.length === 0;
   }
 
+  async function copyTextToClipboard(text) {
+    if (!text) {
+      return false;
+    }
+
+    if (navigator.clipboard && window.isSecureContext) {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch (error) {
+        // fallback below
+      }
+    }
+
+    resultField.focus();
+    resultField.select();
+    resultField.setSelectionRange(0, resultField.value.length);
+
+    try {
+      return document.execCommand("copy");
+    } catch (error) {
+      return false;
+    }
+  }
+
+  function openUrlPreview(url) {
+    if (!url) {
+      return;
+    }
+
+    window.open(url, "_blank", "noopener,noreferrer");
+  }
+
   const sourcePlaceholder = document.createElement("option");
+  sourcePlaceholder.value = "";
   sourcePlaceholder.textContent = "Please select Source";
   sourcePlaceholder.disabled = true;
   sourcePlaceholder.selected = true;
@@ -229,24 +430,40 @@ document.addEventListener("DOMContentLoaded", () => {
     sourceSelect.appendChild(o);
   });
 
-  mediumSelect.disabled = true;
-  const mediumPlaceholder = document.createElement("option");
-  mediumPlaceholder.textContent = "Please select Source first";
-  mediumPlaceholder.disabled = true;
-  mediumPlaceholder.selected = true;
-  mediumSelect.appendChild(mediumPlaceholder);
+  resetMediumToPlaceholder();
 
   sourceSelect.addEventListener("change", () => {
     mediumSelect.innerHTML = "";
+
     utmConfig[sourceSelect.value].forEach(m => {
       const o = document.createElement("option");
       o.value = m;
       o.textContent = m;
       mediumSelect.appendChild(o);
     });
+
     mediumSelect.disabled = false;
+
+    if (sourceSelect.value === PARTNER_SOURCE_VALUE) {
+      enablePartnerSourceMode();
+    } else {
+      disablePartnerSourceMode();
+    }
+
     toggleNoManualTrackingMode();
     validateCampaignField();
+  });
+
+  partnerSourceBackLink.addEventListener("click", event => {
+    event.preventDefault();
+
+    disablePartnerSourceMode();
+
+    sourceSelect.selectedIndex = 0;
+    resetMediumToPlaceholder();
+    toggleNoManualTrackingMode();
+    validateCampaignField();
+    sourceSelect.focus();
   });
 
   mediumSelect.addEventListener("change", () => {
@@ -254,7 +471,16 @@ document.addEventListener("DOMContentLoaded", () => {
     validateCampaignField();
   });
 
-  campaignInput.addEventListener("input", validateCampaignField);
+  campaignInput.addEventListener("input", () => {
+    normalizeTrackingInputValue(campaignInput);
+    validateCampaignField();
+  });
+
+  partnerSourceInput.addEventListener("input", () => {
+    normalizeTrackingInputValue(partnerSourceInput);
+    validateCampaignField();
+  });
+
   contentInput.addEventListener("input", validateCampaignField);
   termInput.addEventListener("input", validateCampaignField);
 
@@ -272,13 +498,15 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  window.generateUTM = function () {
+  window.generateUTM = async function () {
     if (isNoManualTrackingSelected()) {
       toggleNoManualTrackingMode();
       return;
     }
 
-    if (!baseInput.value || !sourceSelect.value || !mediumSelect.value || !campaignInput.value) {
+    const effectiveSourceValue = getEffectiveSourceValue();
+
+    if (!baseInput.value || !effectiveSourceValue || !mediumSelect.value || !campaignInput.value) {
       alert("Please fill in all required fields.");
       return;
     }
@@ -287,32 +515,38 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    let url =
-      `${baseInput.value}?utm_source=${sourceSelect.value}` +
-      `&utm_medium=${mediumSelect.value}` +
-      `&utm_campaign=${campaignInput.value}`;
-
-    if (contentInput.value) {
-      url += `&utm_content=${encodeURIComponent(contentInput.value)}`;
-    }
-
-    if (termInput.value) {
-      url += `&utm_term=${encodeURIComponent(termInput.value)}`;
-    }
+    const url = buildTrackingUrl(baseInput.value, {
+      utm_source: effectiveSourceValue,
+      utm_medium: mediumSelect.value,
+      utm_campaign: campaignInput.value,
+      utm_content: contentInput.value,
+      utm_term: termInput.value
+    });
 
     resultField.value = url;
 
     const history = JSON.parse(localStorage.getItem("utmHistory")) || [];
     history.unshift({ url, createdAt: new Date().toISOString() });
     localStorage.setItem("utmHistory", JSON.stringify(history));
+
+    const wasCopied = await copyTextToClipboard(url);
+    if (wasCopied) {
+      showCopyStatus("URL copied");
+    } else {
+      showCopyStatus("URL generated, but copy failed", true);
+    }
+
+    openUrlPreview(url);
   };
 
-  window.copyUTM = function () {
-    resultField.select();
-    document.execCommand("copy");
+  window.copyUTM = async function () {
+    const wasCopied = await copyTextToClipboard(resultField.value);
+    if (wasCopied) {
+      showCopyStatus("URL copied");
+    } else if (resultField.value) {
+      showCopyStatus("Copy failed", true);
+    }
   };
 
   toggleNoManualTrackingMode();
 });
-
-
