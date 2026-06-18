@@ -1,4 +1,3 @@
-
 document.addEventListener("DOMContentLoaded", () => {
   const utmConfig = {
     google_ads: ["⛔ no_manual_tracking"],
@@ -20,6 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const NO_MANUAL_TRACKING_VALUE = "⛔ no_manual_tracking";
   const PARTNER_SOURCE_VALUE = "partner_brandname";
   const DISCOURAGED_CAMPAIGN_TOKENS = ["mail", "nl"];
+  const FIXED_BASE_PREFIX = "https://www.stabilo.com/";
 
   const sourceSelect = document.getElementById("source");
   const mediumSelect = document.getElementById("medium");
@@ -35,7 +35,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const campaignLabel = campaignInput
     ? document.querySelector(`label[for="${campaignInput.id}"]`)
     : null;
-
   const sourceLabel = sourceSelect
     ? document.querySelector(`label[for="${sourceSelect.id}"]`)
     : null;
@@ -44,6 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!campaignError && campaignInput) {
     campaignError = document.createElement("div");
     campaignError.id = "campaignError";
+    campaignError.className = "field-error";
     campaignError.setAttribute("aria-live", "polite");
     campaignError.hidden = true;
     campaignInput.insertAdjacentElement("afterend", campaignError);
@@ -53,6 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!campaignGuidance && campaignError) {
     campaignGuidance = document.createElement("p");
     campaignGuidance.id = "campaignGuidance";
+    campaignGuidance.className = "field-guidance";
     campaignGuidance.textContent =
       "Rules: lowercase only, no spaces, use only a-z, 0-9, underscore (_) or hyphen (-).";
     campaignError.insertAdjacentElement("afterend", campaignGuidance);
@@ -60,21 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (campaignInput) {
     campaignInput.setAttribute("aria-describedby", "campaignError campaignGuidance");
-  }
-
-  if (campaignError) {
-    campaignError.style.marginTop = "6px";
-    campaignError.style.fontSize = "12px";
-    campaignError.style.fontWeight = "600";
-    campaignError.style.lineHeight = "1.5";
-    campaignError.style.color = "#e4002b";
-  }
-
-  if (campaignGuidance) {
-    campaignGuidance.style.margin = "6px 0 0 0";
-    campaignGuidance.style.fontSize = "12px";
-    campaignGuidance.style.lineHeight = "1.5";
-    campaignGuidance.style.color = "#666666";
   }
 
   const noManualTrackingNotice = document.createElement("div");
@@ -102,7 +88,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (createButton) {
     createButton.parentNode.insertBefore(noManualTrackingNotice, createButton);
   }
-
   if (copyButton) {
     copyButton.insertAdjacentElement("afterend", copyStatusNotice);
   }
@@ -182,9 +167,11 @@ document.addEventListener("DOMContentLoaded", () => {
     sourceSelect.hidden = true;
     partnerSourceInput.hidden = false;
     partnerSourceBackLink.hidden = false;
+
     if (sourceLabel) {
       sourceLabel.setAttribute("for", "partnerSource");
     }
+
     partnerSourceInput.focus();
   }
 
@@ -193,6 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
     partnerSourceInput.hidden = true;
     partnerSourceBackLink.hidden = true;
     sourceSelect.hidden = false;
+
     if (sourceLabel) {
       sourceLabel.setAttribute("for", "source");
     }
@@ -213,7 +201,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const normalizedValue = originalValue
       .toLowerCase()
       .replace(/\s+/g, "_");
-
     const normalizedValueBeforeCursor = valueBeforeCursor
       .toLowerCase()
       .replace(/\s+/g, "_");
@@ -225,12 +212,58 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  function sanitizeStabiloPath(value) {
+    let path = String(value || "").trim();
+
+    if (!path) {
+      return "";
+    }
+
+    path = path.replace(/^https?:\/\/([^/]+)\/?/i, "");
+    path = path.replace(/^www\.stabilo\.com\/?/i, "");
+    path = path.replace(/^stabilo\.com\/?/i, "");
+    path = path.replace(/^\/+/, "");
+    path = path.replace(/\s+/g, "");
+
+    return path;
+  }
+
+  function enforceFixedBaseInput() {
+    if (!baseInput) {
+      return;
+    }
+
+    const selectionStart = baseInput.selectionStart ?? FIXED_BASE_PREFIX.length;
+    const safeSelectionStart = Math.max(selectionStart, FIXED_BASE_PREFIX.length);
+    const currentValue = baseInput.value || "";
+    const editablePart = currentValue.startsWith(FIXED_BASE_PREFIX)
+      ? currentValue.slice(FIXED_BASE_PREFIX.length)
+      : currentValue;
+    const sanitizedPath = sanitizeStabiloPath(editablePart);
+    const normalizedValue = `${FIXED_BASE_PREFIX}${sanitizedPath}`;
+
+    if (baseInput.value !== normalizedValue) {
+      baseInput.value = normalizedValue;
+      const cursorTarget = Math.min(
+        normalizedValue.length,
+        Math.max(FIXED_BASE_PREFIX.length, safeSelectionStart)
+      );
+      baseInput.setSelectionRange(cursorTarget, cursorTarget);
+    }
+  }
+
+  function getNormalizedBaseUrl() {
+    const sanitizedPath = sanitizeStabiloPath(baseInput.value);
+    return `${FIXED_BASE_PREFIX}${sanitizedPath}`;
+  }
+
   function buildTrackingUrl(baseUrl, params) {
     const separator = baseUrl.includes("?")
       ? (baseUrl.endsWith("?") || baseUrl.endsWith("&") ? "" : "&")
       : "?";
 
     const searchParams = new URLSearchParams();
+
     Object.entries(params).forEach(([key, value]) => {
       if (value) {
         searchParams.set(key, value);
@@ -263,7 +296,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const campaignTokens = normalizeTokens(campaignValue);
-
     const duplicateFields = [
       { label: "source", value: getEffectiveSourceValue() },
       { label: "medium", value: mediumSelect.value },
@@ -271,12 +303,9 @@ document.addEventListener("DOMContentLoaded", () => {
       { label: "term", value: termInput.value }
     ];
 
-    duplicateFields.forEach(field => {
+    duplicateFields.forEach((field) => {
       const comparisonTokens = normalizeTokens(field.value);
-      const hasDuplicateToken = comparisonTokens.some(token =>
-        campaignTokens.includes(token)
-      );
-
+      const hasDuplicateToken = comparisonTokens.some((token) => campaignTokens.includes(token));
       if (hasDuplicateToken) {
         errors.push(
           `Avoid duplicated information across your UTM parameters. The campaign repeats information from utm_${field.label}.`
@@ -284,7 +313,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    const discouragedTokensFound = DISCOURAGED_CAMPAIGN_TOKENS.filter(token =>
+    const discouragedTokensFound = DISCOURAGED_CAMPAIGN_TOKENS.filter((token) =>
       campaignTokens.includes(token)
     );
 
@@ -311,7 +340,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    campaignError.innerHTML = errors.map(error => `<div>${error}</div>`).join("");
+    campaignError.innerHTML = errors.map((error) => `<div>${error}</div>`).join("");
     campaignError.hidden = false;
     campaignInput.classList.add("input-error");
     campaignInput.setAttribute("aria-invalid", "true");
@@ -325,7 +354,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function toggleNoManualTrackingMode() {
     const isBlocked = isNoManualTrackingSelected();
 
-    [campaignLabel, campaignInput, campaignError, campaignGuidance].forEach(element => {
+    [campaignLabel, campaignInput, campaignError, campaignGuidance].forEach((element) => {
       if (!element) return;
       element.hidden = isBlocked;
     });
@@ -423,23 +452,24 @@ document.addEventListener("DOMContentLoaded", () => {
   sourcePlaceholder.selected = true;
   sourceSelect.appendChild(sourcePlaceholder);
 
-  Object.keys(utmConfig).forEach(source => {
-    const o = document.createElement("option");
-    o.value = source;
-    o.textContent = source;
-    sourceSelect.appendChild(o);
+  Object.keys(utmConfig).forEach((source) => {
+    const option = document.createElement("option");
+    option.value = source;
+    option.textContent = source;
+    sourceSelect.appendChild(option);
   });
 
   resetMediumToPlaceholder();
+  enforceFixedBaseInput();
 
   sourceSelect.addEventListener("change", () => {
     mediumSelect.innerHTML = "";
 
-    utmConfig[sourceSelect.value].forEach(m => {
-      const o = document.createElement("option");
-      o.value = m;
-      o.textContent = m;
-      mediumSelect.appendChild(o);
+    utmConfig[sourceSelect.value].forEach((mediumValue) => {
+      const option = document.createElement("option");
+      option.value = mediumValue;
+      option.textContent = mediumValue;
+      mediumSelect.appendChild(option);
     });
 
     mediumSelect.disabled = false;
@@ -454,11 +484,9 @@ document.addEventListener("DOMContentLoaded", () => {
     validateCampaignField();
   });
 
-  partnerSourceBackLink.addEventListener("click", event => {
+  partnerSourceBackLink.addEventListener("click", (event) => {
     event.preventDefault();
-
     disablePartnerSourceMode();
-
     sourceSelect.selectedIndex = 0;
     resetMediumToPlaceholder();
     toggleNoManualTrackingMode();
@@ -469,6 +497,47 @@ document.addEventListener("DOMContentLoaded", () => {
   mediumSelect.addEventListener("change", () => {
     toggleNoManualTrackingMode();
     validateCampaignField();
+  });
+
+  baseInput.addEventListener("focus", () => {
+    enforceFixedBaseInput();
+    const caretPosition = Math.max(baseInput.selectionStart ?? 0, FIXED_BASE_PREFIX.length);
+    baseInput.setSelectionRange(caretPosition, caretPosition);
+  });
+
+  baseInput.addEventListener("click", () => {
+    if ((baseInput.selectionStart ?? 0) < FIXED_BASE_PREFIX.length) {
+      baseInput.setSelectionRange(FIXED_BASE_PREFIX.length, FIXED_BASE_PREFIX.length);
+    }
+  });
+
+  baseInput.addEventListener("keydown", (event) => {
+    const selectionStart = baseInput.selectionStart ?? 0;
+    const selectionEnd = baseInput.selectionEnd ?? 0;
+    const hasSelection = selectionEnd > selectionStart;
+
+    const isProtectedKey =
+      (event.key === "Backspace" && selectionStart <= FIXED_BASE_PREFIX.length && !hasSelection) ||
+      (event.key === "Delete" && selectionStart < FIXED_BASE_PREFIX.length) ||
+      (event.key === "ArrowLeft" && selectionStart <= FIXED_BASE_PREFIX.length && selectionEnd <= FIXED_BASE_PREFIX.length) ||
+      (event.key === "Home");
+
+    if (isProtectedKey) {
+      event.preventDefault();
+      baseInput.setSelectionRange(FIXED_BASE_PREFIX.length, FIXED_BASE_PREFIX.length);
+    }
+  });
+
+  baseInput.addEventListener("paste", (event) => {
+    event.preventDefault();
+    const pastedText = (event.clipboardData || window.clipboardData).getData("text");
+    const sanitizedPath = sanitizeStabiloPath(pastedText);
+    baseInput.value = `${FIXED_BASE_PREFIX}${sanitizedPath}`;
+    baseInput.setSelectionRange(baseInput.value.length, baseInput.value.length);
+  });
+
+  baseInput.addEventListener("input", () => {
+    enforceFixedBaseInput();
   });
 
   campaignInput.addEventListener("input", () => {
@@ -505,8 +574,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const effectiveSourceValue = getEffectiveSourceValue();
+    const normalizedBaseUrl = getNormalizedBaseUrl();
 
-    if (!baseInput.value || !effectiveSourceValue || !mediumSelect.value || !campaignInput.value) {
+    if (!effectiveSourceValue || !mediumSelect.value || !campaignInput.value) {
       alert("Please fill in all required fields.");
       return;
     }
@@ -515,7 +585,9 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    const url = buildTrackingUrl(baseInput.value, {
+    baseInput.value = normalizedBaseUrl;
+
+    const url = buildTrackingUrl(normalizedBaseUrl, {
       utm_source: effectiveSourceValue,
       utm_medium: mediumSelect.value,
       utm_campaign: campaignInput.value,
