@@ -120,9 +120,9 @@ document.addEventListener("DOMContentLoaded", () => {
   changeSourceBackLink.style.display = "none";
   changeSourceBackLink.style.marginTop = "8px";
   changeSourceBackLink.style.fontSize = "13px";
-  changeSourceBackLink.style.fontWeight = "600";
-  changeSourceBackLink.style.color = "#555555";
-  changeSourceBackLink.style.textDecoration = "none";
+  changeSourceBackLink.style.fontWeight = "400";
+  changeSourceBackLink.style.color = "#0000ee";
+  changeSourceBackLink.style.textDecoration = "underline";
   changeSourceBackLink.style.cursor = "pointer";
 
   if (sourceSelect) {
@@ -137,14 +137,14 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   changeSourceBackLink.addEventListener("mouseleave", () => {
-    changeSourceBackLink.style.textDecoration = "none";
+    changeSourceBackLink.style.textDecoration = "underline";
   });
 
   function setChangeSourceLinkVisibility(shouldShow) {
     changeSourceBackLink.hidden = !shouldShow;
     changeSourceBackLink.style.display = shouldShow ? "block" : "none";
     if (!shouldShow) {
-      changeSourceBackLink.style.textDecoration = "none";
+      changeSourceBackLink.style.textDecoration = "underline";
     }
   }
 
@@ -698,4 +698,5 @@ document.addEventListener("DOMContentLoaded", () => {
   toggleNoManualTrackingMode();
   renderBaseState();
 });
+
 
