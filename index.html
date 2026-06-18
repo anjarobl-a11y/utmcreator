@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>UTM Generator</title>
-
   <!-- ✅ Google Font: Poppins -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,14 +11,11 @@
     href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
     rel="stylesheet"
   />
-
   <!-- Styles -->
   <link rel="stylesheet" href="style.css" />
 </head>
-
 <body>
   <div class="container">
-
     <!-- Logo (Reload) -->
     <a href="./">
       <img
@@ -37,7 +33,18 @@
 
     <!-- Pflichtfelder -->
     <label for="base">Landingpage URL *</label>
-    <input id="base" type="url" placeholder="https://www.stabilo.com/…" />
+    <input
+      id="base"
+      type="text"
+      inputmode="url"
+      autocomplete="off"
+      spellcheck="false"
+      value="https://www.stabilo.com/"
+      aria-describedby="baseGuidance"
+    />
+    <p id="baseGuidance" class="field-guidance">
+      Fixed domain: https://www.stabilo.com/ — please add only the country/language path, e. g. de or fr.
+    </p>
 
     <label for="source">Source *</label>
     <select id="source"></select>
@@ -57,10 +64,8 @@
       >
         Show optional parameters
       </button>
-
       <div class="optional-fields" hidden>
-
-                <label for="content">
+        <label for="content">
           Content (utm_content)
           <span class="tooltip">ⓘ
             <span class="tooltip-text">
@@ -69,7 +74,7 @@
           </span>
         </label>
         <input id="content" type="text" placeholder="e. g. story, reel, banner_a, carousel, video" />
-        
+
         <label for="term">
           Keyword (utm_term)
           <span class="tooltip">ⓘ
@@ -79,11 +84,10 @@
           </span>
         </label>
         <input id="term" type="text" placeholder="e. g. fineliner, lookalike, retargeting, prospecting" />
-        
       </div>
     </div>
 
-    <button onclick="generateUTM()">Create tracking URL </button>
+    <button onclick="generateUTM()">Create tracking URL</button>
 
     <textarea
       id="result"
@@ -96,7 +100,6 @@
     <p class="history-link">
       <a href="history.html">Show UTM Generator history</a>
     </p>
-
   </div>
 
   <script src="script.js"></script>
