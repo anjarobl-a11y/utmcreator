@@ -1,5 +1,6 @@
+
 /* =========================
-   RESET & GLOBAL
+RESET & GLOBAL
 ========================= */
 * {
   box-sizing: border-box;
@@ -12,7 +13,7 @@ body {
 }
 
 /* =========================
-   CARD CONTAINER
+CARD CONTAINER
 ========================= */
 .container {
   max-width: 420px;
@@ -24,7 +25,7 @@ body {
 }
 
 /* =========================
-   LOGO (oben, zentriert)
+LOGO (oben, zentriert)
 ========================= */
 .logo {
   display: block;
@@ -35,7 +36,7 @@ body {
 }
 
 /* =========================
-   HEADER – EXAKT MITTIG
+HEADER – EXAKT MITTIG
 ========================= */
 .headline-wrapper {
   display: grid;
@@ -61,7 +62,7 @@ body {
 }
 
 /* =========================
-   FORMULAR
+FORMULAR
 ========================= */
 label {
   display: block;
@@ -103,7 +104,7 @@ select:disabled {
 }
 
 /* =========================
-   VALIDATION
+VALIDATION
 ========================= */
 .field-error {
   margin-top: 6px;
@@ -122,12 +123,13 @@ select:disabled {
   letter-spacing: 0.04em;
 }
 
+/* ✅ FIXED: previously broken rule */
 .input-error {
-  border-color: #e4002b;
+  border: 1px solid #e4002b;
 }
 
 /* =========================
-   PRIMARY BUTTONS (CTA)
+PRIMARY BUTTONS (CTA)
 ========================= */
 button {
   width: 100%;
@@ -147,7 +149,7 @@ button:hover {
 }
 
 /* =========================
-   LINKS (klassisch blau + unterstrichen)
+LINKS (klassisch blau + unterstrichen)
 ========================= */
 .optional-toggle {
   margin-top: 16px;
@@ -192,7 +194,7 @@ button:hover {
 }
 
 /* =========================
-   TOOLTIP
+TOOLTIP
 ========================= */
 .tooltip {
   margin-left: 4px;
