@@ -1,4 +1,3 @@
-
 /* =========================
 RESET & GLOBAL
 ========================= */
@@ -123,7 +122,6 @@ VALIDATION
   letter-spacing: 0.04em;
 }
 
-/* ✅ FIXED: previously broken rule */
 .input-error {
   border: 1px solid #e4002b;
 }
@@ -146,6 +144,29 @@ button {
 
 button:hover {
   opacity: 0.9;
+}
+
+.result-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.result-actions button {
+  margin-top: 0;
+}
+
+.secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #3b6fe3;
+}
+
+.button-icon {
+  font-size: 14px;
+  line-height: 1;
 }
 
 /* =========================
