@@ -32,7 +32,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const optionalWrapper = document.querySelector(".optional-wrapper");
   const createButton = document.querySelector('button[onclick="generateUTM()"]');
   const copyButton = document.querySelector('button[onclick="copyUTM()"]');
-
+  const openButton = document.querySelector('button[onclick="openUTM()"]');
+  const resultActions = document.querySelector(".result-actions");
   const campaignLabel = campaignInput
     ? document.querySelector(`label[for="${campaignInput.id}"]`)
     : null;
@@ -101,8 +102,8 @@ document.addEventListener("DOMContentLoaded", () => {
     createButton.parentNode.insertBefore(noManualTrackingNotice, createButton);
   }
 
-  if (copyButton) {
-    copyButton.insertAdjacentElement("afterend", copyStatusNotice);
+  if (resultActions) {
+    resultActions.insertAdjacentElement("afterend", copyStatusNotice);
   }
 
   const partnerSourceInput = document.createElement("input");
@@ -242,7 +243,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const originalValue = inputElement.value;
     const selectionStart = inputElement.selectionStart ?? originalValue.length;
     const valueBeforeCursor = originalValue.slice(0, selectionStart);
-
     const normalizedValue = originalValue
       .toLowerCase()
       .replace(/\s+/g, "_");
@@ -259,7 +259,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function sanitizeStabiloPath(value) {
     let path = String(value || "").trim();
-
     if (!path) {
       return "";
     }
@@ -269,7 +268,6 @@ document.addEventListener("DOMContentLoaded", () => {
     path = path.replace(/^stabilo\.com\/?/i, "");
     path = path.replace(/^\/+/, "");
     path = path.replace(/\s+/g, "");
-
     return path;
   }
 
@@ -304,7 +302,6 @@ document.addEventListener("DOMContentLoaded", () => {
       baseError.textContent = EMPTY_BASE_ERROR_MESSAGE;
       baseError.hidden = false;
     }
-
     baseInput.classList.add("input-error");
     baseInput.setAttribute("aria-invalid", "true");
     baseInput.style.borderColor = "#e4002b";
@@ -347,7 +344,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const separator = baseUrl.includes("?")
       ? (baseUrl.endsWith("?") || baseUrl.endsWith("&") ? "" : "&")
       : "?";
-
     const searchParams = new URLSearchParams();
 
     Object.entries(params).forEach(([key, value]) => {
@@ -402,7 +398,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const discouragedTokensFound = DISCOURAGED_CAMPAIGN_TOKENS.filter((token) =>
       campaignTokens.includes(token)
     );
-
     if (discouragedTokensFound.length > 0) {
       errors.push(
         "Use consistent vocabulary across all campaigns. For email traffic, use email instead of mail or nl. If the naming convention is missing in the template, ask to extend the template instead of inventing one yourself."
@@ -448,21 +443,24 @@ document.addEventListener("DOMContentLoaded", () => {
     if (optionalWrapper) {
       optionalWrapper.hidden = isBlocked;
     }
-
     if (createButton) {
       createButton.hidden = isBlocked;
       createButton.disabled = isBlocked;
     }
-
     if (resultField) {
       resultField.hidden = isBlocked;
     }
-
+    if (resultActions) {
+      resultActions.hidden = isBlocked;
+    }
     if (copyButton) {
       copyButton.hidden = isBlocked;
       copyButton.disabled = isBlocked;
     }
-
+    if (openButton) {
+      openButton.hidden = isBlocked;
+      openButton.disabled = isBlocked;
+    }
     if (copyStatusNotice) {
       copyStatusNotice.hidden = isBlocked;
       copyStatusNotice.textContent = "";
@@ -475,12 +473,10 @@ document.addEventListener("DOMContentLoaded", () => {
       campaignInput.classList.remove("input-error");
       campaignInput.removeAttribute("aria-invalid");
       campaignInput.style.borderColor = "";
-
       if (campaignError) {
         campaignError.hidden = true;
         campaignError.innerHTML = "";
       }
-
       campaignInput.value = "";
       contentInput.value = "";
       termInput.value = "";
@@ -526,10 +522,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function openUrlPreview(url) {
     if (!url) {
-      return;
+      return false;
     }
 
     window.open(url, "_blank", "noopener,noreferrer");
+    return true;
   }
 
   const sourcePlaceholder = document.createElement("option");
@@ -552,13 +549,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   sourceSelect.addEventListener("change", () => {
     setMediumOptions(sourceSelect.value);
-
     if (sourceSelect.value === PARTNER_SOURCE_VALUE) {
       enablePartnerSourceMode();
     } else {
       disablePartnerSourceMode();
     }
-
     toggleNoManualTrackingMode();
     validateCampaignField();
   });
@@ -584,7 +579,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const selectionStart = baseInput.selectionStart ?? 0;
     const selectionEnd = baseInput.selectionEnd ?? 0;
     const hasSelection = selectionEnd > selectionStart;
-
     const isProtectedKey =
       (event.key === "Backspace" && selectionStart <= FIXED_BASE_PREFIX.length && !hasSelection) ||
       (event.key === "Delete" && selectionStart < FIXED_BASE_PREFIX.length) ||
@@ -625,7 +619,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const toggleBtn = document.querySelector(".optional-toggle");
   const optionalFields = document.querySelector(".optional-fields");
-
   if (toggleBtn && optionalFields) {
     toggleBtn.addEventListener("click", () => {
       const isOpen = !optionalFields.hasAttribute("hidden");
@@ -645,7 +638,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const effectiveSourceValue = getEffectiveSourceValue();
     const normalizedBaseUrl = getNormalizedBaseUrl();
-
     if (!validateBaseField()) {
       return;
     }
@@ -682,8 +674,6 @@ document.addEventListener("DOMContentLoaded", () => {
     } else {
       showCopyStatus("URL generated, but copy failed", true);
     }
-
-    openUrlPreview(url);
   };
 
   window.copyUTM = async function () {
@@ -695,8 +685,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
 
+  window.openUTM = function () {
+    if (openUrlPreview(resultField.value)) {
+      return;
+    }
+
+    showCopyStatus("No URL available to open", true);
+  };
+
   toggleNoManualTrackingMode();
   renderBaseState();
 });
-
-
