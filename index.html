@@ -60,6 +60,7 @@
       >
         Show optional parameters
       </button>
+
       <div class="optional-fields" hidden>
         <label for="content">
           Content (utm_content)
@@ -91,7 +92,16 @@
       placeholder="Your tracking URL will appear here"
     ></textarea>
 
-    <button onclick="copyUTM()">Copy URL</button>
+    <div class="result-actions">
+      <button type="button" class="secondary-button" onclick="copyUTM()">
+        <span class="button-icon" aria-hidden="true">📋</span>
+        <span>Copy URL</span>
+      </button>
+      <button type="button" class="secondary-button" onclick="openUTM()">
+        <span class="button-icon" aria-hidden="true">✔</span>
+        <span>Open URL</span>
+      </button>
+    </div>
 
     <p class="history-link">
       <a href="history.html">Show UTM Generator history</a>
@@ -101,3 +111,4 @@
   <script src="script.js"></script>
 </body>
 </html>
+
