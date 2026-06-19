@@ -1,19 +1,19 @@
 document.addEventListener("DOMContentLoaded", () => {
   const utmConfig = {
-    amazon: ["sp", "sb", "sd", "dsp"],
+    amazon: ["dsp","sb", "sd", "sp"],
     awin: ["⛔ no_manual_tracking"],
     cb: ["affiliate"],
-    facebook: ["paid_social", "organic_social", "creator"],
+    facebook: ["creator", "organic_social", "paid_social"],
     google_ads: ["⛔ no_manual_tracking"],
-    instagram: ["paid_social", "organic_social", "creator"],
+    instagram: ["creator", "organic_social", "paid_social"],
     intranet: ["internal"],
     microsoft_ads: ["⛔ no_manual_tracking"],
-    newsletter: ["⛔ no_manual_tracking"],
+    brevo: ["⛔ no_manual_tracking"],
     offline: ["qr"],
     partner_brandname: ["collab"],
     sovendus: ["affiliate"],
-    tiktok: ["paid_social", "organic_social", "creator"],
-    youtube: ["organic_video", "creator"]
+    tiktok: ["creator", "organic_social", "paid_social"],
+    youtube: ["creator", "organic_video"]
   };
 
   const NO_MANUAL_TRACKING_VALUE = "⛔ no_manual_tracking";
