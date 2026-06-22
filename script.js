@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const noManualTrackingNotice = document.createElement("div");
   noManualTrackingNotice.innerHTML =
-    "⚡ this platform offers you a tracking template option - no manual UTM setup required";
+    "⚡ this platform offers you a tracking template / dynamic variables option - no manual UTM setup";
   noManualTrackingNotice.setAttribute("role", "status");
   noManualTrackingNotice.setAttribute("aria-live", "polite");
   noManualTrackingNotice.style.display = "none";
