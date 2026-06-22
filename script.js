@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", () => {
     google_ads: ["⛔ no_manual_tracking"],
     instagram: ["creator", "organic_social", "paid_social"],
     intranet: ["internal"],
+    meta: ["⛔ no_manual_tracking"],
     microsoft_ads: ["⛔ no_manual_tracking"],
     offline: ["qr"],
     partner_brandname: ["collab"],
